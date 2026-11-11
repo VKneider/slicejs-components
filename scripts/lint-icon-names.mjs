@@ -86,6 +86,12 @@ const PATTERNS = [
    /\bicon\s*:\s*'([a-z0-9-]+)'/g,
 ].map((re) => ({ re }));
 
+// Values that use the `icon` prop but are not icon names:
+//   - 'none' is Modal's documented "no icon" value (turn the tone icon off).
+//   - 'icon' is DataList's field mapping: show the item's own `icon` field.
+// Both are API vocabulary, not spelling mistakes, and neither can be an icon.
+const NON_ICON_VALUES = new Set(['none', 'icon']);
+
 // The Icon reference page documents the `name` prop with placeholder values.
 // Those are illustrations of the prop, not icon references, so excluding the
 // page keeps the report about real usage.
@@ -114,7 +120,7 @@ for (const file of markdownFiles(ROOT)) {
       let match;
       while ((match = re.exec(source)) !== null) {
          const name = match[1];
-         if (NAMES_SET.has(name)) continue;
+         if (NAMES_SET.has(name) || NON_ICON_VALUES.has(name)) continue;
 
          const line = source.slice(0, match.index).split('\n').length;
          const hint = suggest(name);

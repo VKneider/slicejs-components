@@ -214,7 +214,7 @@ test.describe('Navbar — current page', () => {
       await page.evaluate((path) => history.replaceState({}, '', path), original);
    });
 
-   test('the indicator slides under the current item', async ({ mount, page }) => {
+   test('the indicator marks the current item\'s label on the bar\'s bottom edge', async ({ mount, page }) => {
       await page.setViewportSize({ width: 1200, height: 600 });
       const c = await mount('Navbar', { items: ROUTED, variant: 'surface' });
       const geometry = async () => page.waitForFunction(() => {
@@ -224,7 +224,12 @@ test.describe('Navbar — current page', () => {
          if (!ind.classList.contains('is-visible') || !item) return null;
          const a = ind.getBoundingClientRect();
          const b = item.getBoundingClientRect();
-         return Math.abs(a.left - b.left) < 1.5 && Math.abs(a.width - b.width) < 1.5 && a.top >= b.bottom ? true : null;
+         const bar = el.querySelector('.slice_nav_header').getBoundingClientRect();
+         const style = getComputedStyle(item);
+         const left = b.left + parseFloat(style.paddingLeft);
+         const width = b.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+         // As wide as the label, sitting on the bottom edge of the bar.
+         return Math.abs(a.left - left) < 1.5 && Math.abs(a.width - width) < 1.5 && Math.abs(a.bottom - bar.bottom) < 1.5 ? true : null;
       }).then((handle) => handle.jsonValue());
       await c.component.evaluate((el) => el.setActivePath('/docs'));
       expect(await geometry()).toBe(true);
@@ -364,5 +369,33 @@ test.describe('Navbar — scrolling', () => {
       expect(await c.component.evaluate((el) => el.getBoundingClientRect().height)).toBe(0);
       await c.component.evaluate((el) => { el.spacer = true; });
       expect(await c.component.evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThan(40);
+   });
+});
+
+test.describe('Navbar — panelContent', () => {
+   test('shown only in the mobile panel; replaced content is detached, not destroyed', async ({ mount, page }) => {
+      const c = await mount('Navbar', { items: ITEMS, breakpoint: 10000 });
+      const out = await c.component.evaluate(async (el) => {
+         const badge = await slice.build('Badge', { sliceId: 'nav-panel-badge', label: 'docs tree' });
+         el.panelContent = badge;
+         const inPanel = !!el.querySelector('.nav_bar_panel .nav_bar_panel_extra slice-badge');
+         el.panelContent = null;
+         return { inPanel, alive: slice.controller.activeComponents.has('nav-panel-badge'), detached: !badge.isConnected };
+      });
+      expect(out).toEqual({ inPanel: true, alive: true, detached: true });
+      await expect(c.locator('.nav_bar_panel_extra')).toBeHidden();
+
+      await c.component.evaluate((el) => {
+         const box = document.createElement('div');
+         box.id = 'extra';
+         box.textContent = 'Section menu';
+         el.panelContent = box;
+      });
+      await c.component.getByRole('button', { name: 'Open menu' }).click();
+      await expect(c.locator('#extra')).toBeVisible();
+      // Wide screens: not shown.
+      await c.component.evaluate((el) => { el.closeMenu(); el.breakpoint = 0; });
+      await expect(c.locator('#extra')).toBeHidden();
+      expect(c.pageErrors()).toEqual([]);
    });
 });

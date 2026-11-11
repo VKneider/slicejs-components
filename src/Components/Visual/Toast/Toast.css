@@ -104,9 +104,9 @@ slice-toast .slice-toast__close:hover {
   opacity: 1;
 }
 
-/* NOTE: `.toast-provider-container` is created by ToastProvider and appended to
-   document.body (it lives outside any <slice-toast>), so it intentionally stays a
-   globally-unique class — see §8. */
+/* NOTE: `.toast-provider-container` is created by ToastProvider and lives in
+   document.body — or in the open modal <dialog> while there is one — outside any
+   <slice-toast>, so it intentionally stays a globally-unique class — see §8. */
 .toast-provider-container {
   position: fixed;
   z-index: 11000;
@@ -116,6 +116,19 @@ slice-toast .slice-toast__close:hover {
   pointer-events: none;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+/* Shown as a popover (top layer): undo the browser's popover box. */
+.toast-provider-container[popover] {
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: auto;
+  height: auto;
+  background: transparent;
+  color: inherit;
+  overflow-x: visible;
 }
 
 .toast-provider-container[data-position="top-right"] {

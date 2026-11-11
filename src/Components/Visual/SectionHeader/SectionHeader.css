@@ -1,0 +1,186 @@
+/* SectionHeader — eyebrow, title, description and actions at the top of a section. */
+
+slice-section-header {
+  --slice-section-header-color: var(--primary-color, #7c3aed);
+  --slice-section-header-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  --slice-section-header-title: clamp(1.45rem, 1.1rem + 1.3vw, 1.9rem);
+  --slice-section-header-measure: 62ch;
+
+  display: block;
+  /* A content block takes its row, also inside a flex or grid parent (and a container
+     query needs a definite width). */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-section-header[hidden] {
+  display: none;
+}
+
+slice-section-header[data-size='sm'] {
+  --slice-section-header-title: 1.2rem;
+}
+
+slice-section-header[data-size='lg'] {
+  --slice-section-header-title: clamp(1.9rem, 1.3rem + 2.4vw, 2.75rem);
+  --slice-section-header-measure: 58ch;
+}
+
+slice-section-header[data-tone='neutral'] { --slice-section-header-ink: var(--font-secondary-color, #5d5a6d); }
+slice-section-header[data-tone='info'] { --slice-section-header-ink: var(--info-color-readable, color-mix(in srgb, var(--info-color, #0284c7) 64%, #000)); }
+slice-section-header[data-tone='success'] { --slice-section-header-ink: var(--success-color-readable, color-mix(in srgb, var(--success-color, #16a34a) 72%, #000)); }
+slice-section-header[data-tone='warning'] { --slice-section-header-ink: var(--warning-color-readable, color-mix(in srgb, var(--warning-color, #d97706) 66%, #000)); }
+slice-section-header[data-tone='danger'] { --slice-section-header-ink: var(--danger-color-readable, color-mix(in srgb, var(--danger-color, #dc2626) 84%, #000)); }
+
+slice-section-header .slice-section-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+}
+
+slice-section-header.has-divider .slice-section-header__inner {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--slice-border-raised, color-mix(in srgb, var(--font-primary-color, #1d1b29) 14%, transparent));
+}
+
+slice-section-header[data-align='center'] .slice-section-header__inner {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+slice-section-header .slice-section-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 320px;
+  min-width: 0;
+  max-width: var(--slice-section-header-measure);
+}
+
+slice-section-header[data-align='center'] .slice-section-header__text {
+  flex: none;
+  align-items: center;
+  width: 100%;
+}
+
+/* The heading comes first in the DOM (it is what heading navigation lands on);
+   the eyebrow is drawn above it. */
+slice-section-header .slice-section-header__eyebrow {
+  order: -1;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slice-section-header-ink);
+}
+
+/* Page styles for headings (borders, margins, padding) do not reach in. */
+slice-section-header .slice-section-header__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: var(--slice-section-header-title);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  scroll-margin-top: 80px;
+}
+
+/* A line that belongs to the title itself, as opposed to `divider`, which
+   separates the whole header from the content below. */
+slice-section-header[data-title-style='underline'] .slice-section-header__title::after,
+slice-section-header[data-title-style='rule'] .slice-section-header__title::after {
+  content: '';
+  display: block;
+  margin-top: 10px;
+}
+
+slice-section-header[data-title-style='underline'] .slice-section-header__title::after {
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--slice-section-header-ink);
+}
+
+slice-section-header[data-title-style='rule'] .slice-section-header__title::after {
+  width: 100%;
+  height: 1px;
+  background: var(--slice-border-raised, color-mix(in srgb, var(--font-primary-color, #1d1b29) 14%, transparent));
+}
+
+slice-section-header[data-align='center'][data-title-style='underline'] .slice-section-header__title::after,
+slice-section-header[data-align='center'][data-title-style='rule'] .slice-section-header__title::after {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+slice-section-header .slice-section-header__description {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--font-secondary-color, #5d5a6d);
+  text-wrap: pretty;
+}
+
+slice-section-header[data-size='lg'] .slice-section-header__description {
+  font-size: 1.1rem;
+}
+
+slice-section-header[data-size='sm'] .slice-section-header__description {
+  font-size: 0.92rem;
+}
+
+slice-section-header .slice-section-header__eyebrow[hidden],
+slice-section-header .slice-section-header__title[hidden],
+slice-section-header .slice-section-header__description[hidden],
+slice-section-header .slice-section-header__actions[hidden] {
+  display: none;
+}
+
+slice-section-header .slice-section-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+slice-section-header .slice-section-header__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--slice-section-header-ink);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+slice-section-header .slice-section-header__link::after {
+  content: '→';
+  transition: transform 0.15s ease;
+}
+
+slice-section-header .slice-section-header__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+slice-section-header .slice-section-header__link:focus-visible {
+  outline: 2px solid var(--primary-color, #7c3aed);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  slice-section-header .slice-section-header__link:hover::after {
+    transform: translateX(3px);
+  }
+}

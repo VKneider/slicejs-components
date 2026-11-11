@@ -1,0 +1,36 @@
+<div class="documentation-content timelinedocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="timeline">
+     <span class="doc-title-text">Timeline</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Timeline</code> shows things that happened — or will — in time: the jobs of a career, the history of an order, the releases of a product, who changed what on a record. Each event has a date, a marker on a line, a title, a sentence, and anything else it needs.</p>
+<p>Dates are written in the app's language (through <code>slice.translator</code>, or <code>locale</code>), and the whole timeline is written again when the language changes.</p>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>A career or a story</strong>: jobs, studies, milestones of a project (<code>layout: 'split'</code> or <code>'alternate'</code>).</li><li><strong>The history of something in progress</strong>: an order (ordered, shipped, out for delivery), a ticket, an application — with <code>state: 'current'</code> and <code>'upcoming'</code>.</li><li><strong>A changelog</strong> grouped by month or year.</li><li><strong>Activity on a record</strong>: "Ana changed the status · 3 hours ago", grouped by day.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>A process without dates</strong> (how to enrol, how it works): <span data-inline-link="0"></span>.</li><li><strong>Records you search, sort or select</strong>: <span data-inline-link="1"></span> or <span data-inline-link="2"></span>.</li><li><strong>A task the user goes through screen by screen</strong>: a Stepper.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>items: [{ id, date, dateLabel, title, text, icon, tone, state, badge, href, target, content }]</code>.</li></ul>
+<p>- <code>date</code>: a <code>Date</code>, a timestamp or an ISO text (<code>'2026-03-02'</code> is that local day).   - <code>dateLabel</code>: your own text instead of the formatted date ("2019 – 2022", "Q3").   - <code>tone</code>: the marker's colour for that event. <code>icon</code>: shown with <code>marker: 'icon'</code>.   - <code>state</code>: <code>done</code> (default), <code>current</code> (a ring, and <code>aria-current="step"</code>) or <code>upcoming</code> (hollow, quiet, dashed line).   - <code>href</code>: the title becomes a link (through the router for app paths). <code>content</code>: a string, a node, a component or an array of them.</p>
+<ul><li><code>dateFormat</code>: <code>date</code> (default), <code>datetime</code>, <code>time</code>, <code>month</code>, <code>year</code>, <code>relative</code> ("3 hours ago", with the full date in its tooltip) or <code>none</code>.</li><li><code>groupBy</code>: <code>none</code>, <code>year</code>, <code>month</code> or <code>day</code> ("Today", "Yesterday", then the date). Group headings use <code>headingLevel</code> (default <code>3</code>); event titles go one level below.</li><li><code>sort</code>: <code>none</code> (the order given), <code>newest</code> or <code>oldest</code>.</li><li>An ordered list per group, with <code>&lt;time datetime&gt;</code> on each date. Markers and the line are decorative.</li></ul>
+<h2 id="looks">Looks</h2>
+<ul><li><code>layout</code>: <code>stacked</code> (the date above the title, default), <code>split</code> (a column of dates at the start) or <code>alternate</code> (events on both sides of the line). <code>split</code> and <code>alternate</code> go back to <code>stacked</code> when <strong>the container</strong> is narrower than 560px.</li><li><code>marker</code>: <code>dot</code> or <code>icon</code>. <code>variant</code>: <code>soft</code>, <code>filled</code> or <code>outlined</code>. <code>tone</code> for the whole line, <code>size</code>: <code>md</code> or <code>sm</code>.</li><li>CSS variables: <code>--slice-timeline-date-width</code> (the date column in <code>split</code>), <code>--slice-timeline-space</code> (between events), <code>--slice-timeline-dot</code>, <code>--slice-timeline-icon</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<div class="script-block" data-block-id="doc-block-6"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Pick one date format for the whole timeline. Mixing "3 hours ago" and "Mar 2, 2026" makes readers compare two scales.</div>
+<div class="callout callout-tip">Use <code>dateLabel</code> for ranges and fuzzy dates ("2019 — 2022", "Spring 2025"); keep <code>date</code> too when you sort or group, so the order stays right.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning"><code>upcoming</code> is not "disabled". It says something has not happened yet; do not use it to hide events.</div>
+<div class="component-block" data-block-id="doc-block-7"></div>
+</div>

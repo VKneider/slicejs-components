@@ -109,3 +109,41 @@ test.describe('ToastProvider', () => {
     expect(warned).toBe(true);
   });
 });
+
+test.describe('ToastProvider — over a modal dialog', () => {
+  test('toasts stay on top of, and usable over, an open Modal', async ({ mount }) => {
+    const c = await mount('Modal', { title: 'Edit', open: false });
+    const out = await c.component.evaluate(async (modal) => {
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const toasts = await slice.build('ToastProvider', { singleton: true });
+      // Which toast is under the pointer at its own centre, and where it lives.
+      const hit = () => {
+        const el = [...document.querySelectorAll('.toast-provider-container slice-toast')].pop();
+        const b = el.getBoundingClientRect();
+        const top = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+        return [el.closest('dialog') ? 'dialog' : 'body', !!top && el.contains(top)];
+      };
+      await toasts.show('Before', { duration: 10000 });
+      await wait(400);
+      const before = hit();
+      modal.content = document.createTextNode('Hello');
+      modal.open = true;
+      await wait(500);
+      const opened = hit();            // a toast already on screen moves over the modal
+      await toasts.show('During', { duration: 10000 });
+      await wait(400);
+      const during = hit();
+      modal.open = false;
+      await wait(500);
+      const after = hit();
+      toasts.clear();
+      return { before, opened, during, after };
+    });
+    expect(out).toEqual({
+      before: ['body', true],
+      opened: ['dialog', true],
+      during: ['dialog', true],
+      after: ['body', true],
+    });
+  });
+});

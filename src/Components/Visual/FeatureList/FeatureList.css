@@ -1,0 +1,302 @@
+/* FeatureList — what something offers, item by item. No surfaces by default:
+   the grid and the icons carry it. */
+
+slice-feature-list {
+  --slice-feature-list-color: var(--primary-color, #7c3aed);
+  --slice-feature-list-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  --slice-feature-list-min: 220px;
+  --slice-feature-list-gap-x: 28px;
+  --slice-feature-list-gap-y: 28px;
+  --slice-feature-list-icon-box: 44px;
+  --slice-feature-list-radius: 12px;
+
+  display: block;
+  /* A content block takes its row, also inside a flex or grid parent (and a container
+     query needs a definite width). */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-feature-list[hidden] {
+  display: none;
+}
+
+slice-feature-list[data-size='sm'] {
+  --slice-feature-list-gap-x: 20px;
+  --slice-feature-list-gap-y: 18px;
+  --slice-feature-list-icon-box: 36px;
+}
+
+slice-feature-list[data-tone='neutral'] {
+  --slice-feature-list-color: var(--medium-color, #8a8799);
+  --slice-feature-list-ink: var(--font-primary-color, #1d1b29);
+}
+slice-feature-list[data-tone='info'] {
+  --slice-feature-list-color: var(--info-color, #0284c7);
+  --slice-feature-list-ink: var(--info-color-readable, color-mix(in srgb, var(--info-color, #0284c7) 64%, #000));
+}
+slice-feature-list[data-tone='success'] {
+  --slice-feature-list-color: var(--success-color, #16a34a);
+  --slice-feature-list-ink: var(--success-color-readable, color-mix(in srgb, var(--success-color, #16a34a) 72%, #000));
+}
+slice-feature-list[data-tone='warning'] {
+  --slice-feature-list-color: var(--warning-color, #d97706);
+  --slice-feature-list-ink: var(--warning-color-readable, color-mix(in srgb, var(--warning-color, #d97706) 66%, #000));
+}
+slice-feature-list[data-tone='danger'] {
+  --slice-feature-list-color: var(--danger-color, #dc2626);
+  --slice-feature-list-ink: var(--danger-color-readable, color-mix(in srgb, var(--danger-color, #dc2626) 84%, #000));
+}
+
+/* ── The grid ───────────────────────────────────────────────────── */
+
+slice-feature-list .slice-feature-list__list {
+  display: grid;
+  /* As many columns as fit, never narrower than the minimum (nor wider than the box). */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--slice-feature-list-min)), 1fr));
+  gap: var(--slice-feature-list-gap-y) var(--slice-feature-list-gap-x);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* columns: n is a maximum. Each column is at least 1/n of the row, so no more than n fit;
+   the minimum still wraps them on a narrow screen. */
+slice-feature-list[data-columns] .slice-feature-list__list {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      min(100%, max(var(--slice-feature-list-min),
+        calc((100% - (var(--slice-feature-list-columns) - 1) * var(--slice-feature-list-gap-x)) / var(--slice-feature-list-columns)))),
+      1fr
+    )
+  );
+}
+
+/* list: one item per row, unless `columns` asks for more. */
+slice-feature-list[data-layout='list']:not([data-columns]) .slice-feature-list__list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+slice-feature-list[data-layout='list'] .slice-feature-list__list {
+  gap: calc(var(--slice-feature-list-gap-y) * 0.8);
+}
+
+slice-feature-list[data-layout='compact'] {
+  --slice-feature-list-min: 200px;
+  --slice-feature-list-gap-y: 12px;
+  --slice-feature-list-gap-x: 24px;
+}
+
+/* ── An item ────────────────────────────────────────────────────── */
+
+slice-feature-list .slice-feature-list__item {
+  position: relative;
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+}
+
+slice-feature-list[data-layout='list'] .slice-feature-list__item,
+slice-feature-list[data-layout='compact'] .slice-feature-list__item {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+
+slice-feature-list[data-layout='compact'] .slice-feature-list__item {
+  gap: 10px;
+}
+
+slice-feature-list[data-align='center'][data-layout='grid'] .slice-feature-list__item {
+  justify-items: center;
+  text-align: center;
+}
+
+slice-feature-list[data-variant='soft'] .slice-feature-list__item {
+  padding: 20px;
+  border-radius: var(--slice-feature-list-radius);
+  background: color-mix(in srgb, var(--slice-feature-list-color) 6%, var(--primary-background-color, #fff));
+}
+
+slice-feature-list[data-variant='outlined'] .slice-feature-list__item {
+  padding: 20px;
+  border-radius: var(--slice-feature-list-radius);
+  border: 1px solid var(--slice-border-raised, color-mix(in srgb, var(--font-primary-color, #1d1b29) 14%, transparent));
+  background: var(--primary-background-color, #fff);
+}
+
+slice-feature-list[data-size='sm'][data-variant]:not([data-variant='plain']) .slice-feature-list__item {
+  padding: 14px;
+}
+
+/* An item with a link or an action: the whole item answers the pointer. */
+slice-feature-list .slice-feature-list__item.is-interactive {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+slice-feature-list[data-variant='outlined'] .slice-feature-list__item.is-interactive:hover {
+  border-color: color-mix(in srgb, var(--slice-feature-list-color) 45%, transparent);
+}
+
+slice-feature-list[data-variant='soft'] .slice-feature-list__item.is-interactive:hover {
+  background: color-mix(in srgb, var(--slice-feature-list-color) 11%, var(--primary-background-color, #fff));
+}
+
+/* ── Parts ──────────────────────────────────────────────────────── */
+
+slice-feature-list .slice-feature-list__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--slice-feature-list-icon-box);
+  height: var(--slice-feature-list-icon-box);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--slice-feature-list-color) 12%, transparent);
+  color: var(--slice-feature-list-ink);
+}
+
+slice-feature-list[data-layout='compact'] .slice-feature-list__icon {
+  width: auto;
+  height: 1.5em;
+  background: none;
+  border-radius: 0;
+}
+
+slice-feature-list .slice-feature-list__icon[hidden] {
+  display: none;
+}
+
+/* No icon in list/compact: the text starts the row. */
+slice-feature-list .slice-feature-list__item:has(> .slice-feature-list__icon[hidden]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+slice-feature-list .slice-feature-list__body {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+slice-feature-list .slice-feature-list__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-feature-list[data-size='sm'] .slice-feature-list__title,
+slice-feature-list[data-layout='compact'] .slice-feature-list__title {
+  font-size: 0.95rem;
+}
+
+slice-feature-list[data-layout='list'] .slice-feature-list__title,
+slice-feature-list[data-layout='compact'] .slice-feature-list__title {
+  /* Centred on the icon box when it is one line. */
+  min-height: var(--slice-feature-list-icon-box);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+slice-feature-list[data-layout='list'] .slice-feature-list__item:has(.slice-feature-list__text) .slice-feature-list__title {
+  min-height: 0;
+}
+
+slice-feature-list[data-layout='compact'] .slice-feature-list__title {
+  min-height: 1.5em;
+  font-weight: 600;
+}
+
+slice-feature-list .slice-feature-list__title[hidden] {
+  display: none;
+}
+
+slice-feature-list .slice-feature-list__text {
+  margin: 0;
+  color: var(--font-secondary-color, #5d5a6d);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+slice-feature-list[data-size='sm'] .slice-feature-list__text {
+  font-size: 0.875rem;
+}
+
+slice-feature-list .slice-feature-list__content {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+slice-feature-list .slice-feature-list__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--slice-feature-list-color) 14%, transparent);
+  color: var(--slice-feature-list-ink);
+}
+
+/* The link or button carries the title; its ::after covers the item, so the whole
+   item is the target while only the title is read as the link's name. */
+slice-feature-list .slice-feature-list__target {
+  all: unset;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+slice-feature-list .slice-feature-list__target::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--slice-feature-list-radius);
+}
+
+slice-feature-list[data-variant='plain'] .slice-feature-list__target::after {
+  inset: -8px;
+}
+
+slice-feature-list .slice-feature-list__item.is-interactive:hover .slice-feature-list__target {
+  color: var(--slice-feature-list-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+slice-feature-list .slice-feature-list__target:focus-visible::after {
+  outline: 2px solid var(--primary-color, #7c3aed);
+  outline-offset: 2px;
+}
+
+/* Content inside a linked item stays usable above the stretched link. */
+slice-feature-list .slice-feature-list__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* The content box spaces its children with `gap`; page margins would double it. */
+slice-feature-list .slice-feature-list__content > :is(p, ul, ol, pre, blockquote, figure) {
+  margin: 0;
+}
+
+/* Controls in the content keep their own width (a grid would stretch them). */
+slice-feature-list .slice-feature-list__content > :is(slice-button, slice-badge, slice-chip, slice-link, a, button) {
+  justify-self: start;
+}

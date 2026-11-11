@@ -59,6 +59,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://components.slicejs.com/docs/display/callout</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://components.slicejs.com/docs/display/chip</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -83,8 +88,48 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://components.slicejs.com/docs/display/feature-list</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/heatmap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://components.slicejs.com/docs/display/icon</loc>
     <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/json-viewer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/lightbox</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/quote</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/section-header</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/steps</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/display/timeline</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -175,6 +220,11 @@
   <url>
     <loc>https://components.slicejs.com/docs/input/radio-group</loc>
     <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/input/rating</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -385,6 +435,11 @@
   <url>
     <loc>https://components.slicejs.com/docs/services/shortcut-service</loc>
     <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/services/skeleton-service</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

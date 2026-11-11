@@ -568,6 +568,64 @@ test.describe('Modal', () => {
     expect(detail.reason).toBe('swipe');
   });
 
+  test('a side drawer closes when swiped toward its edge, from the header with a mouse', async ({ mount, page }) => {
+    const c = await mount('Modal', { title: 'Filters', layout: 'drawer', side: 'right', content: 'Status, date…', open: true }, { spies: ['onClose'] });
+    const dialog = c.locator('.slice-modal');
+    await page.waitForTimeout(350);
+    await expect(dialog).toHaveClass(/is-swipeable/);
+    const head = await c.locator('.slice-modal__title').boundingBox();
+    const x = head.x + 10;
+    const y = head.y + head.height / 2;
+    // Toward the other side: nothing.
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x - 150, y, { steps: 8 });
+    await page.mouse.up();
+    await page.waitForTimeout(100);
+    await expect(dialog).toHaveAttribute('open', '');
+    expect(await dialog.evaluate((d) => d.style.transform)).toBe('');
+    // Toward its edge, far enough: closed, with the reason.
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + 260, y, { steps: 10 });
+    await page.mouse.up();
+    await expect.poll(() => c.events('onClose')).toBe(1);
+    expect((await c.eventArgs('onClose'))[0][0].reason).toBe('swipe');
+  });
+
+  test('a side drawer swipes from anywhere with a finger, but not when the finger scrolls', async ({ mount, page }) => {
+    const c = await mount('Modal', { title: 'Menu', layout: 'drawer', side: 'left', content: 'Links', open: true });
+    await page.waitForTimeout(350);
+    const swipe = (dx, dy) => c.component.evaluate((el, [dx, dy]) => {
+      const body = el.querySelector('.slice-modal__body');
+      const b = body.getBoundingClientRect();
+      const x = b.x + b.width / 2;
+      const y = b.y + 10;
+      const ev = (type, px, py, target) => target.dispatchEvent(new PointerEvent(type, { pointerId: 7, pointerType: 'touch', clientX: px, clientY: py, button: 0, bubbles: true }));
+      ev('pointerdown', x, y, body);
+      for (let i = 1; i <= 10; i++) ev('pointermove', x + (dx * i) / 10, y + (dy * i) / 10, window);
+      ev('pointerup', x + dx, y + dy, window);
+    }, [dx, dy]);
+    await swipe(-10, 200);          // a scroll down: not a swipe
+    await page.waitForTimeout(100);
+    await expect(c.locator('.slice-modal')).toHaveAttribute('open', '');
+    await swipe(-220, 10);          // to the left, the side it came from
+    await expect(c.locator('.slice-modal')).not.toHaveAttribute('open', /.*/);
+  });
+
+  test('swipeToClose: false keeps a drawer from closing by swipe', async ({ mount, page }) => {
+    const c = await mount('Modal', { title: 'Wide table', layout: 'drawer', swipeToClose: false, content: 'Rows', open: true });
+    await page.waitForTimeout(350);
+    await expect(c.locator('.slice-modal')).not.toHaveClass(/is-swipeable/);
+    const head = await c.locator('.slice-modal__title').boundingBox();
+    await page.mouse.move(head.x + 10, head.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(head.x + 300, head.y + 5, { steps: 10 });
+    await page.mouse.up();
+    await page.waitForTimeout(150);
+    await expect(c.locator('.slice-modal')).toHaveAttribute('open', '');
+  });
+
   test('drag stays off for layouts that do not float', async ({ mount, page }) => {
     const c = await mount('Modal', { title: 'Drawer', layout: 'drawer', draggable: true, resizable: true, open: true });
     await expect(c.locator('.slice-modal')).toBeVisible();

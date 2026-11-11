@@ -3,3 +3,252 @@
 slice-layout {
   display: block;
 }
+
+/* ── Regions mode (any of header / sidebar / main / aside / footer set) ───── */
+
+/* The knobs, at zero specificity (:where) so any app selector can tune them. */
+:where(slice-layout.slice-layout--regions) {
+  --slice-layout-sidebar-width: 260px;
+  --slice-layout-aside-width: 280px;
+  --slice-layout-content-width: none;
+  --slice-layout-gap: 0px;
+  --slice-layout-pad: clamp(16px, 3vw, 32px);
+  --slice-layout-drawer-width: min(85%, 320px);
+  /* Space above the layout that stays covered while scrolling (an app's fixed
+     navbar outside the layout): sticky parts stop under it. */
+  --slice-layout-sticky-top: 0px;
+  --slice-layout-surface: var(--primary-background-color);
+  --slice-layout-panel: var(--secondary-background-color);
+  --slice-layout-line: var(--slice-border-raised, color-mix(in srgb, var(--font-primary-color) 14%, transparent));
+}
+
+slice-layout.slice-layout--regions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  background: var(--slice-layout-surface);
+  color: var(--font-primary-color);
+}
+
+slice-layout[data-full-height] {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+slice-layout > .slice-layout__header[hidden],
+slice-layout .slice-layout__toggle[hidden],
+slice-layout > .slice-layout__body > .slice-layout__backdrop[hidden],
+slice-layout > .slice-layout__skip[hidden] {
+  display: none !important;
+}
+
+/* Skip link: off-screen until focused, then the first thing on the page. */
+slice-layout > .slice-layout__skip {
+  position: absolute;
+  top: 8px;
+  inset-inline-start: 8px;
+  z-index: 30;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: var(--primary-color-contrast, #fff);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+slice-layout > .slice-layout__skip:focus {
+  transform: none;
+  outline: 2px solid var(--primary-color-contrast, #fff);
+  outline-offset: 2px;
+}
+
+slice-layout:not([data-has-header]) > .slice-layout__header,
+slice-layout:not([data-has-footer]) > .slice-layout__footer,
+slice-layout:not([data-has-sidebar]) > .slice-layout__body > .slice-layout__sidebar,
+slice-layout:not([data-has-aside]) > .slice-layout__body > .slice-layout__aside {
+  display: none;
+}
+
+slice-layout > .slice-layout__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  border-bottom: 1px solid var(--slice-layout-line);
+  background: var(--slice-layout-surface);
+}
+slice-layout > .slice-layout__header > :not(.slice-layout__toggle) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+slice-layout[data-sticky-header] > .slice-layout__header {
+  position: sticky;
+  top: var(--slice-layout-sticky-top);
+  z-index: 20;
+}
+
+slice-layout > .slice-layout__body {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "main";
+  gap: var(--slice-layout-gap);
+  min-width: 0;
+}
+slice-layout[data-has-sidebar] > .slice-layout__body {
+  grid-template-columns: var(--slice-layout-sidebar-width) minmax(0, 1fr);
+  grid-template-areas: "sidebar main";
+}
+slice-layout[data-has-aside] > .slice-layout__body {
+  grid-template-columns: minmax(0, 1fr) var(--slice-layout-aside-width);
+  grid-template-areas: "main aside";
+}
+slice-layout[data-has-sidebar][data-has-aside] > .slice-layout__body {
+  grid-template-columns: var(--slice-layout-sidebar-width) minmax(0, 1fr) var(--slice-layout-aside-width);
+  grid-template-areas: "sidebar main aside";
+}
+
+slice-layout > .slice-layout__body > .slice-layout__sidebar {
+  grid-area: sidebar;
+  min-width: 0;
+  box-sizing: border-box;
+  background: var(--slice-layout-panel);
+  border-inline-end: 1px solid var(--slice-layout-line);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+slice-layout > .slice-layout__body > .slice-layout__sidebar:focus { outline: none; }
+
+/* A tall page scrolls; the sidebar stays in view under the sticky header. */
+slice-layout[data-full-height] > .slice-layout__body > .slice-layout__sidebar,
+slice-layout[data-full-height] > .slice-layout__body > .slice-layout__aside {
+  position: sticky;
+  top: var(--slice-layout-sticky-top);
+  align-self: start;
+  max-height: calc(100vh - var(--slice-layout-sticky-top));
+  max-height: calc(100dvh - var(--slice-layout-sticky-top));
+}
+slice-layout[data-full-height][data-sticky-header] > .slice-layout__body > .slice-layout__sidebar,
+slice-layout[data-full-height][data-sticky-header] > .slice-layout__body > .slice-layout__aside {
+  top: calc(var(--slice-layout-sticky-top) + var(--slice-layout-header-height, 0px));
+  max-height: calc(100dvh - var(--slice-layout-sticky-top) - var(--slice-layout-header-height, 0px));
+}
+
+slice-layout > .slice-layout__body > .slice-layout__main {
+  grid-area: main;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--slice-layout-pad);
+}
+/* Main is focused by the skip link and focusOnNavigate to move the reading point,
+   not as a control: no ring around the whole page. */
+slice-layout > .slice-layout__body > .slice-layout__main:focus { outline: none; }
+slice-layout > .slice-layout__body > .slice-layout__main > .slice-layout__content {
+  max-width: var(--slice-layout-content-width);
+  margin-inline: auto;
+  min-width: 0;
+}
+
+slice-layout > .slice-layout__body > .slice-layout__aside {
+  grid-area: aside;
+  min-width: 0;
+  box-sizing: border-box;
+  border-inline-start: 1px solid var(--slice-layout-line);
+  overflow-y: auto;
+}
+
+slice-layout > .slice-layout__footer {
+  border-top: 1px solid var(--slice-layout-line);
+  min-width: 0;
+}
+
+/* The menu button: only while the sidebar is a drawer. */
+slice-layout .slice-layout__toggle {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+slice-layout .slice-layout__toggle:hover {
+  background: color-mix(in srgb, var(--font-primary-color) 8%, transparent);
+}
+slice-layout .slice-layout__toggle:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+slice-layout > .slice-layout__body > .slice-layout__main > .slice-layout__toggle {
+  margin: 0 0 8px;
+}
+
+/* ── Collapsed: one column; the sidebar is a drawer, the aside goes under main ── */
+
+slice-layout[data-collapsed] > .slice-layout__body,
+slice-layout[data-collapsed][data-has-sidebar] > .slice-layout__body,
+slice-layout[data-collapsed][data-has-aside] > .slice-layout__body,
+slice-layout[data-collapsed][data-has-sidebar][data-has-aside] > .slice-layout__body {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "main" "aside";
+}
+slice-layout[data-collapsed] > .slice-layout__body > .slice-layout__aside {
+  position: static;
+  max-height: none;
+  border-inline-start: 0;
+  border-top: 1px solid var(--slice-layout-line);
+}
+
+slice-layout[data-collapsed] > .slice-layout__body > .slice-layout__sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  z-index: 40;
+  width: var(--slice-layout-drawer-width);
+  max-height: none;
+  border-inline-end: 1px solid var(--slice-layout-line);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.22);
+  transform: translateX(-105%);
+  visibility: hidden;
+  transition: transform 0.22s ease, visibility 0s linear 0.22s;
+}
+slice-layout[data-collapsed]:dir(rtl) > .slice-layout__body > .slice-layout__sidebar {
+  transform: translateX(105%);
+}
+/* collapsedSidebar: 'hidden' — no drawer; the app shows the sidebar's content elsewhere. */
+slice-layout[data-collapsed][data-collapsed-sidebar='hidden'] > .slice-layout__body > .slice-layout__sidebar {
+  display: none;
+}
+
+/* A layout that is the page: the drawer is fixed to the window. */
+slice-layout[data-collapsed][data-full-height] > .slice-layout__body > .slice-layout__sidebar {
+  position: fixed;
+}
+slice-layout[data-sidebar-open] > .slice-layout__body > .slice-layout__sidebar,
+slice-layout[data-sidebar-open]:dir(rtl) > .slice-layout__body > .slice-layout__sidebar {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.22s ease;
+}
+
+slice-layout > .slice-layout__body > .slice-layout__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  background: rgb(0 0 0 / 0.35);
+}
+slice-layout[data-full-height] > .slice-layout__body > .slice-layout__backdrop {
+  position: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  slice-layout > .slice-layout__body > .slice-layout__sidebar { transition: none !important; }
+}

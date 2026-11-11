@@ -1,0 +1,207 @@
+/* Heatmap — values as colour in a grid. Level 0 is a quiet tile; each level after it is a
+   stronger mix of the tone. */
+
+slice-heatmap {
+  --slice-heatmap-color: var(--success-color, #16a34a);
+  --slice-heatmap-empty: color-mix(in srgb, var(--font-primary-color, #1d1b29) 7%, var(--primary-background-color, #fff));
+  --slice-heatmap-cell: 12px;
+  --slice-heatmap-gap: 3px;
+  --slice-heatmap-radius: 3px;
+  --slice-heatmap-columns: 53;
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-heatmap[hidden] {
+  display: none;
+}
+
+slice-heatmap[data-tone='neutral'] { --slice-heatmap-color: var(--font-primary-color, #1d1b29); }
+slice-heatmap[data-tone='accent'] { --slice-heatmap-color: var(--primary-color, #7c3aed); }
+slice-heatmap[data-tone='info'] { --slice-heatmap-color: var(--info-color, #0284c7); }
+slice-heatmap[data-tone='warning'] { --slice-heatmap-color: var(--warning-color, #d97706); }
+slice-heatmap[data-tone='danger'] { --slice-heatmap-color: var(--danger-color, #dc2626); }
+
+/* ── Layout ─────────────────────────────────────────────────────── */
+
+slice-heatmap .slice-heatmap__scroller {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 4px;
+}
+
+slice-heatmap .slice-heatmap__frame {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    '. columns'
+    'rows grid';
+  column-gap: 8px;
+  row-gap: 6px;
+}
+
+slice-heatmap .slice-heatmap__body {
+  display: contents;
+}
+
+slice-heatmap:not(.has-labels) .slice-heatmap__frame {
+  grid-template-areas: 'grid';
+  grid-template-columns: auto;
+  gap: 0;
+}
+
+slice-heatmap:not(.has-labels) :is(.slice-heatmap__columns, .slice-heatmap__rows) {
+  display: none;
+}
+
+slice-heatmap .slice-heatmap__columns {
+  grid-area: columns;
+  display: grid;
+  grid-template-columns: repeat(var(--slice-heatmap-columns), var(--slice-heatmap-cell));
+  column-gap: var(--slice-heatmap-gap);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+/* A month name may be wider than its week: it runs over the next ones. */
+slice-heatmap[data-type='calendar'] .slice-heatmap__columns span {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+slice-heatmap[data-type='grid'] .slice-heatmap__columns span {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The row labels stay in view while a long calendar scrolls sideways. */
+slice-heatmap .slice-heatmap__rows {
+  grid-area: rows;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding-inline-end: 6px;
+  margin-inline-end: -6px;
+  background: var(--primary-background-color, #fff);
+  display: grid;
+  grid-auto-rows: var(--slice-heatmap-cell);
+  row-gap: var(--slice-heatmap-gap);
+  font-size: 0.72rem;
+  color: var(--font-secondary-color, #5d5a6d);
+  text-align: end;
+}
+
+slice-heatmap .slice-heatmap__rows span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+slice-heatmap .slice-heatmap__grid {
+  grid-area: grid;
+  display: grid;
+  row-gap: var(--slice-heatmap-gap);
+  outline: none;
+}
+
+slice-heatmap .slice-heatmap__row {
+  display: flex;
+  gap: var(--slice-heatmap-gap);
+}
+
+/* ── Cells ──────────────────────────────────────────────────────── */
+
+slice-heatmap .slice-heatmap__cell,
+slice-heatmap .slice-heatmap__swatch {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--slice-heatmap-cell);
+  height: var(--slice-heatmap-cell);
+  border-radius: var(--slice-heatmap-radius);
+  background: var(--slice-heatmap-empty);
+}
+
+slice-heatmap .slice-heatmap__cell:not([data-level='0']):not(.is-out),
+slice-heatmap .slice-heatmap__swatch:not([data-level='0']) {
+  background: color-mix(in srgb, var(--slice-heatmap-color) calc(18% + var(--heat, 0) * 0.82%), var(--primary-background-color, #fff));
+}
+
+slice-heatmap .slice-heatmap__cell.is-out {
+  background: transparent;
+}
+
+slice-heatmap .slice-heatmap__cell[role='gridcell'] {
+  cursor: default;
+  outline: 1px solid color-mix(in srgb, var(--font-primary-color, #1d1b29) 6%, transparent);
+  outline-offset: -1px;
+}
+
+slice-heatmap .slice-heatmap__cell[role='gridcell']:hover,
+slice-heatmap .slice-heatmap__cell[role='gridcell']:focus-visible {
+  outline: 2px solid var(--font-primary-color, #1d1b29);
+  outline-offset: 0;
+}
+
+/* ── Footer and tip ─────────────────────────────────────────────── */
+
+slice-heatmap .slice-heatmap__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+slice-heatmap .slice-heatmap__summary {
+  margin: 0;
+}
+
+slice-heatmap .slice-heatmap__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+slice-heatmap .slice-heatmap__legend span:first-child {
+  margin-inline-end: 4px;
+}
+
+slice-heatmap .slice-heatmap__legend span:last-child {
+  margin-inline-start: 4px;
+}
+
+slice-heatmap .slice-heatmap__summary[hidden],
+slice-heatmap .slice-heatmap__legend[hidden],
+slice-heatmap .slice-heatmap__tip[hidden] {
+  display: none;
+}
+
+slice-heatmap .slice-heatmap__tip {
+  position: absolute;
+  z-index: 5;
+  max-width: 260px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--font-primary-color, #1d1b29);
+  color: var(--primary-background-color, #fff);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+}

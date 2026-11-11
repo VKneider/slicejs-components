@@ -1,0 +1,34 @@
+<div class="documentation-content jsonviewerdocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="jsonviewer">
+     <span class="doc-title-text">JsonViewer</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>JsonViewer</code> shows a JSON value as a tree: objects and arrays fold open, strings, numbers, booleans and <code>null</code> have their own colour, and the path (<code>user.addresses[0].city</code>) or the value of any node can be copied.</p>
+<p>Only what is open is in the page, and a long array opens in ranges of 100 (<code>[0 … 99]</code>), so a large response stays fast.</p>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>API responses in documentation</strong>: what an endpoint returns, ready to explore.</li><li><strong>The raw data of a record</strong> in an admin panel ("View JSON").</li><li><strong>Webhooks, events and logs</strong> whose shape changes from one to the next.</li><li><strong>Configs</strong> that people read more than they edit.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>Data people work with</strong> (sort, filter, select, edit): a <span data-inline-link="0"></span>, a <span data-inline-link="1"></span> or a <span data-inline-link="2"></span>.</li><li><strong>Code to read as text</strong>, with its formatting: <span data-inline-link="3"></span>.</li><li><strong>A hierarchy of pages or files to navigate</strong>: <span data-inline-link="4"></span>.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>data</code>: any JSON value. Dates show as ISO strings; circular references show as <code>[Circular]</code> instead of hanging.</li><li><code>expandDepth</code>: how many levels of keys show at the start — <code>1</code> (default) the top-level keys, closed; <code>2</code> also what is inside them; <code>Infinity</code> everything.</li><li><code>rootName</code> ("response"): a row for the root, and the start of every copied path.</li><li><code>search: true</code>: a box that highlights what matches (keys and values), opens the way to it and counts it; Enter goes to the next match, Shift+Enter to the previous one.</li><li><code>toolbar</code> (default on): Expand all and Collapse all. <code>sortKeys</code> orders keys alphabetically without changing the data. <code>maxStringLength</code> (200) cuts long strings, with a button for the rest.</li><li><code>onSelect({ path, pathText, key, value })</code> on Enter or a click on a value. <code>onCopy({ what, text, path })</code> after a copy.</li><li><code>expandAll()</code> and <code>collapseAll()</code> from code.</li></ul>
+<h3 id="keyboard-and-screen-readers">Keyboard and screen readers</h3>
+<p>It is an ARIA tree with one Tab stop: ↑ ↓ move, → opens (or goes in), ← closes (or goes up), Home / End, Enter selects. On any row, <strong>c</strong> copies the value and <strong>p</strong> copies the path; a polite status says what was copied. The copy buttons on each row do the same with the pointer.</p>
+<h2 id="looks">Looks</h2>
+<ul><li><code>size</code>: <code>md</code> or <code>sm</code>. <code>maxHeight</code> ('320px') makes it scroll.</li><li>Colours come from the theme (<code>--success-color</code> for strings, <code>--info-color</code> for numbers…) and can be set with <code>--slice-json-viewer-string</code>, <code>--slice-json-viewer-number</code>, <code>--slice-json-viewer-boolean</code>, <code>--slice-json-viewer-key</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Open as much as people need at a glance (<code>expandDepth: 2</code> for most API responses) and let search do the rest.</div>
+<div class="callout callout-tip">Give the root a name (<code>rootName: 'response'</code>) when people copy paths into code: they get <code>response.items[0].sku</code>, ready to paste.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">It shows data; it does not hide it. Remove tokens, passwords and personal data before passing a value to a viewer that anyone with the page can read.</div>
+<div class="component-block" data-block-id="doc-block-5"></div>
+</div>

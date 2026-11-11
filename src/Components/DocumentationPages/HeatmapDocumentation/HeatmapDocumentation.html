@@ -1,0 +1,34 @@
+<div class="documentation-content heatmapdocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="heatmap">
+     <span class="doc-title-text">Heatmap</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Heatmap</code> shows how much of something there is in each cell of a grid, as colour: the stronger the colour, the higher the value.</p>
+<ul><li><strong><code>type: 'calendar'</code></strong> (default) lays out days: one column per week, one row per weekday — the activity of a year, the study days of a semester, the sales of a quarter.</li><li><strong><code>type: 'grid'</code></strong> takes any two dimensions with your labels: hour × weekday, product × region, lesson × student.</li></ul>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Patterns over time</strong>: which days are busy, gaps, streaks.</li><li><strong>Two dimensions at once</strong>: when do people visit (hour × weekday), which lessons are hard (student × exercise).</li><li><strong>A glance at a lot of values</strong> where the exact number matters less than the shape.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>Exact numbers to compare or read</strong>: a <span data-inline-link="0"></span>.</li><li><strong>One series over time</strong> (a trend): a line or bar chart.</li><li><strong>Few values</strong> (under a dozen): a list or a small table says it better.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>data</code> for a calendar: <code>[{ date, value }]</code> or <code>{ '2026-03-02': 4 }</code> (the same day twice adds up). For a grid: <code>[{ row, column, value }]</code>, with <code>row</code> and <code>column</code> as labels from <code>rows</code> / <code>columns</code> or as indexes.</li><li><code>start</code> and <code>end</code> (calendar): the range. By default, the 52 weeks up to today. <code>weekStart</code>: <code>0</code> Sunday, <code>1</code> Monday, <code>-1</code> (default) the locale's.</li><li><code>levels</code> (default <code>5</code>, counting the empty one) and <code>thresholds</code>: the lowest value of each step after the empty one (<code>[1, 4, 8, 12]</code>). Without thresholds the steps split 0…max evenly.</li><li><code>label(cell)</code> writes each cell's text (for the tip and screen readers); by default "Mon, Mar 2, 2026: 4" or "Mon, 9: 12". <code>formatValue(value)</code> changes only how values are written.</li><li><code>onCellClick(cell, { event })</code> and the <code>cell-click</code> event: <code>cell</code> is <code>{ date | row, column, value, level }</code>. <code>cells</code> returns them all.</li><li><code>summary: true</code> adds "1,284 in total"; <code>legend</code> (default on) shows Less ▢▢▢▢ More.</li></ul>
+<h3 id="keyboard-and-screen-readers">Keyboard and screen readers</h3>
+<p>It is an ARIA grid with one Tab stop (the latest day in a calendar): arrows move between cells, skipping the days outside the range; Home / End go to the ends of a row; Enter or Space reports the cell. Every cell has its own text, so colour is never the only way to read it; the focused or hovered cell shows it in a tip.</p>
+<h2 id="looks">Looks</h2>
+<ul><li><code>tone</code>: the colour (<code>success</code> by default, like a contributions graph). <code>cellSize</code> in px (default <code>12</code>); the gap scales with it.</li><li><code>labels</code>: month and weekday names (calendar) or row and column labels (grid). A calendar wider than its box scrolls, and opens on its most recent weeks.</li><li>CSS variables: <code>--slice-heatmap-color</code>, <code>--slice-heatmap-empty</code>, <code>--slice-heatmap-radius</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Write a <code>label</code> that says the unit ("3 contributions on Mar 2"). The default only knows the number.</div>
+<div class="callout callout-tip">Use <code>thresholds</code> when the steps mean something (30 minutes, an hour, two hours). Even steps change meaning every time the maximum changes.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">A heatmap shows a pattern, not exact values. If people need to compare numbers, give them the table too.</div>
+<div class="component-block" data-block-id="doc-block-5"></div>
+</div>

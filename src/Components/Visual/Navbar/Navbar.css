@@ -22,7 +22,7 @@ slice-nav-bar {
   --nav-bg: var(--primary-color);
   --nav-fg: var(--primary-color-contrast);
   --nav-border: transparent;
-  --nav-muted: color-mix(in srgb, var(--primary-color-contrast) 82%, transparent);
+  --nav-muted: color-mix(in srgb, var(--primary-color-contrast) 72%, transparent);
   --nav-accent: var(--primary-color-contrast);
   --nav-hover: color-mix(in srgb, var(--primary-color-contrast) 14%, transparent);
   --nav-panel-bg: var(--primary-color);
@@ -357,16 +357,17 @@ slice-nav-bar .nav_bar_indicator {
   left: 0;
   z-index: 0;
   width: 0;
-  height: 2.5px;
-  border-radius: 999px;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
   background: var(--nav-accent);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.3s cubic-bezier(0.3, 0.7, 0.2, 1), width 0.3s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease;
+  transition: transform 0.2s ease, width 0.2s ease, opacity 0.15s ease;
 }
 
 /* Placed by Navbar.js: under the label (underline) or behind it (pill). */
 slice-nav-bar[data-indicator='pill'] .nav_bar_indicator {
+  border-radius: var(--nav-radius);
   background: color-mix(in srgb, var(--nav-accent) 16%, transparent);
 }
 
@@ -379,6 +380,24 @@ slice-nav-bar[data-indicator='none'] .nav_bar_indicator {
 }
 
 /* ----------------------------------------------------------------- actions */
+
+/* panelContent: only in the mobile panel, on the page's own surface so any
+   component inside it keeps its normal colours. */
+slice-nav-bar:not(.nav_bar--mobile) .nav_bar_panel_extra,
+slice-nav-bar .nav_bar_panel_extra[hidden] {
+  display: none;
+}
+
+slice-nav-bar.nav_bar--mobile .nav_bar_panel_extra {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--primary-background-color);
+  color: var(--font-primary-color);
+}
 
 slice-nav-bar .nav_bar_buttons {
   display: flex;
@@ -630,12 +649,20 @@ slice-nav-bar.nav_bar--mobile .nav_bar_item--dropdown .slice_dropdown:hover {
   background: color-mix(in srgb, currentColor 8%, transparent);
 }
 
+/* The current page in the panel: full colour and weight, the others quieter.
+   No tinted card and no side stripe — the contrast is the mark. */
+slice-nav-bar.nav_bar--mobile .nav_bar_item .item,
+slice-nav-bar.nav_bar--mobile .nav_bar_item slice-link .item,
+slice-nav-bar.nav_bar--mobile .nav_bar_item--dropdown .slice_dropdown {
+  color: color-mix(in srgb, var(--nav-panel-fg) 72%, transparent);
+  font-weight: 500;
+}
+
 slice-nav-bar.nav_bar--mobile .nav_bar_item.is-active > .item,
 slice-nav-bar.nav_bar--mobile .nav_bar_item.is-active slice-link .item,
 slice-nav-bar.nav_bar--mobile .nav_bar_item--dropdown.is-active .slice_dropdown {
   color: var(--nav-panel-accent);
-  background: color-mix(in srgb, var(--nav-panel-accent) 12%, transparent);
-  box-shadow: inset 3px 0 0 var(--nav-panel-accent);
+  font-weight: 700;
 }
 
 slice-nav-bar.nav_bar--mobile .nav_bar_indicator {

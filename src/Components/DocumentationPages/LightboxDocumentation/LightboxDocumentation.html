@@ -1,0 +1,33 @@
+<div class="documentation-content lightboxdocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="lightbox">
+     <span class="doc-title-text">Lightbox</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Lightbox</code> shows images at full size, one at a time, over a dark screen: the photos of a product, a portfolio, a listing, the screenshots of a release.</p>
+<p>It sits on a native modal <code>&lt;dialog&gt;</code>, so the page behind is inert, Escape works and focus comes back to what opened it. On top of that: arrows and swipes to move, zoom with pan, thumbnails, captions, a count, the next image preloaded, and a message when an image fails.</p>
+<div class="code-block" data-block-id="doc-block-1"></div>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Galleries</strong>: product photos, a portfolio, the pictures of a place.</li><li><strong>Images that need detail</strong>: a floor plan, a screenshot, a diagram — zoom and pan.</li><li><strong>Thumbnails that link to the full image</strong>: <code>attach()</code> keeps the links (they work without JavaScript) and opens the viewer instead.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>Browsing a few pictures inside the page</strong> (a hero, a testimonial strip): <span data-inline-link="0"></span>.</li><li><strong>A layout of images</strong> with no full-size view: a <span data-inline-link="1"></span>.</li><li><strong>Documents, video or anything that is not an image</strong>: a <span data-inline-link="2"></span> with the right content.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>items</code>: <code>{ src, alt, caption, thumb, srcset, sizes }</code> or plain URLs. <code>alt</code> is read out; <code>caption</code> is shown under the image.</li><li><code>open(index)</code>, <code>close()</code>, <code>next()</code>, <code>prev()</code>, <code>go(index)</code>, <code>isOpen</code>, <code>index</code>. <code>loop</code> wraps from the last to the first.</li><li><code>attach(container, { selector })</code>: clicks on <code>selector</code> inside the container (<code>'a[href]'</code> by default, or <code>'img'</code>) open the viewer at that element. The items are read from the page at the moment of the click — <code>href</code> (or <code>data-full</code>) for the image, the <code>&lt;img&gt;</code>'s <code>alt</code>, and <code>data-caption</code> or the <code>&lt;figcaption&gt;</code> for the caption — so a gallery that changes keeps working. Ctrl/⌘-click still opens the link in a new tab. Returns a function that detaches it.</li><li><code>thumbnails</code> (on): a strip of small images to jump to any of them, the current one marked.</li><li><code>zoom</code> (on) and <code>maxZoom</code> (2.5): the zoom button, a click on the picture (zooms towards that point; a second click zooms out), + − 0; drag to pan while zoomed.</li><li>The next and previous images load in the background; a spinner shows only if an image is slow; a broken image says so.</li><li><code>onChange(index, item)</code>, <code>onOpen(index, item)</code>, <code>onClose(index)</code>.</li><li>Texts are built in (English and Spanish) and replaceable with <code>texts</code>: <code>label</code>, <code>count</code> ("{index} / {total}"), <code>prev</code>, <code>next</code>, <code>close</code>, <code>zoomIn</code>, <code>zoomOut</code>, <code>thumb</code>, <code>error</code>.</li></ul>
+<h3 id="keyboard-pointer-and-screen-readers">Keyboard, pointer and screen readers</h3>
+<ul><li>← → move (the other way round in right-to-left pages), Home and End go to the first and last, Escape zooms out first and closes on the second press, + − 0 zoom. While zoomed the arrows pan.</li><li>Swipe left or right to move, down to close. A click on the picture zooms in at that point; another click zooms out. A double click counts as one zoom. A click on the dark area around the image closes.</li><li>The dialog is named "Image viewer"; the buttons say "Previous image", "Next image", "Zoom in", "Close"; thumbnails say "Image 3".</li><li>The page does not scroll behind it; the lock is the same one Modal uses, so a lightbox over a modal works.</li></ul>
+<h2 id="looks">Looks</h2>
+<p>Dark by design, whatever the theme. CSS variables on the dialog: <code>--slice-lightbox-bg</code>, <code>--slice-lightbox-fg</code>, <code>--slice-lightbox-muted</code>, <code>--slice-lightbox-control</code>, <code>--slice-lightbox-control-hover</code>. On phones the arrows sit over the image.</p>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Write an <code>alt</code> for every image: it is what the viewer reads out when the image changes. Use <code>caption</code> for what everyone should see (a title, a price, a date).</div>
+<div class="callout callout-tip">Give <code>thumb</code> a small version of each image for galleries of many photos. The strip loads them lazily, but large originals as thumbnails still cost bandwidth.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">Keep the links. <code>attach()</code> opens the viewer on a normal click, but the <code>&lt;a href&gt;</code> is what works without JavaScript, with Ctrl/⌘-click and for search engines.</div>
+<div class="component-block" data-block-id="doc-block-5"></div>
+</div>

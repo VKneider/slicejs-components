@@ -1,0 +1,184 @@
+/* Quote — what someone said, then who said it. */
+
+slice-quote {
+  --slice-quote-color: var(--primary-color, #7c3aed);
+  --slice-quote-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  /* Stars follow the brand primary instead of the warning gold, so they read as
+     part of the quote's accent rather than as an emoji. Override with
+     --slice-quote-star for a different rating colour. */
+  --slice-quote-star: var(--primary-color, #7c3aed);
+  --slice-quote-text-size: 1.05rem;
+  --slice-quote-pad: 24px;
+  --slice-quote-radius: 16px;
+
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 100%;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-quote[hidden] {
+  display: none;
+}
+
+slice-quote[data-size='sm'] {
+  --slice-quote-text-size: 0.95rem;
+  --slice-quote-pad: 18px;
+}
+
+slice-quote[data-size='lg'] {
+  --slice-quote-text-size: clamp(1.25rem, 1rem + 1.1vw, 1.65rem);
+  --slice-quote-pad: 32px;
+}
+
+slice-quote[data-tone='neutral'] { --slice-quote-color: var(--medium-color, #8a8799); --slice-quote-ink: var(--font-secondary-color, #5d5a6d); }
+slice-quote[data-tone='info'] { --slice-quote-color: var(--info-color, #0284c7); --slice-quote-ink: var(--info-color-readable, color-mix(in srgb, var(--info-color, #0284c7) 64%, #000)); }
+slice-quote[data-tone='success'] { --slice-quote-color: var(--success-color, #16a34a); --slice-quote-ink: var(--success-color-readable, color-mix(in srgb, var(--success-color, #16a34a) 72%, #000)); }
+slice-quote[data-tone='warning'] { --slice-quote-color: var(--warning-color, #d97706); --slice-quote-ink: var(--warning-color-readable, color-mix(in srgb, var(--warning-color, #d97706) 66%, #000)); }
+slice-quote[data-tone='danger'] { --slice-quote-color: var(--danger-color, #dc2626); --slice-quote-ink: var(--danger-color-readable, color-mix(in srgb, var(--danger-color, #dc2626) 84%, #000)); }
+
+slice-quote .slice-quote__figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+}
+
+slice-quote[data-variant='soft'] .slice-quote__figure,
+slice-quote[data-variant='outlined'] .slice-quote__figure {
+  padding: var(--slice-quote-pad);
+  border-radius: var(--slice-quote-radius);
+}
+
+slice-quote[data-variant='soft'] .slice-quote__figure {
+  background: color-mix(in srgb, var(--slice-quote-color) 7%, var(--primary-background-color, #fff));
+}
+
+slice-quote[data-variant='outlined'] .slice-quote__figure {
+  border: 1px solid var(--slice-border-raised, color-mix(in srgb, var(--font-primary-color, #1d1b29) 14%, transparent));
+  background: var(--primary-background-color, #fff);
+}
+
+slice-quote[data-align='center'] .slice-quote__figure {
+  align-items: center;
+  text-align: center;
+}
+
+/* The opening mark: decoration in the tone, sized with the text. */
+slice-quote .slice-quote__mark {
+  display: block;
+  height: 0.55em;
+  margin-bottom: -2px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: calc(var(--slice-quote-text-size) * 3.2);
+  font-weight: 700;
+  line-height: 1;
+  color: color-mix(in srgb, var(--slice-quote-color) 55%, transparent);
+  user-select: none;
+}
+
+slice-quote .slice-quote__mark[hidden],
+slice-quote .slice-quote__rating[hidden],
+slice-quote .slice-quote__caption[hidden],
+slice-quote .slice-quote__avatar[hidden],
+slice-quote .slice-quote__author[hidden],
+slice-quote .slice-quote__meta[hidden],
+slice-quote .slice-quote__source[hidden] {
+  display: none;
+}
+
+slice-quote .slice-quote__rating {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+slice-quote .slice-quote__star {
+  color: color-mix(in srgb, var(--font-primary-color, #1d1b29) 18%, transparent);
+}
+
+slice-quote .slice-quote__star[data-fill='full'] {
+  color: var(--slice-quote-star);
+}
+
+slice-quote .slice-quote__star[data-fill='half'] {
+  background: linear-gradient(90deg, var(--slice-quote-star) 50%, color-mix(in srgb, var(--font-primary-color, #1d1b29) 18%, transparent) 50%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+slice-quote .slice-quote__text {
+  display: grid;
+  gap: 0.7em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: var(--slice-quote-text-size);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+slice-quote[data-size='lg'] .slice-quote__text {
+  font-weight: 550;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+slice-quote .slice-quote__text > p {
+  margin: 0;
+}
+
+/* The caption sits at the bottom, so quotes of different lengths in a row line up. */
+slice-quote .slice-quote__caption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+slice-quote[data-align='center'] .slice-quote__caption {
+  flex-direction: column;
+  gap: 8px;
+}
+
+slice-quote .slice-quote__avatar {
+  display: inline-flex;
+  flex: none;
+}
+
+slice-quote .slice-quote__who {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+slice-quote .slice-quote__author {
+  font-weight: 650;
+}
+
+slice-quote .slice-quote__meta {
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+slice-quote .slice-quote__source {
+  font-size: 0.82rem;
+  font-style: normal;
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+slice-quote .slice-quote__source a {
+  color: var(--slice-quote-ink);
+  text-underline-offset: 2px;
+}

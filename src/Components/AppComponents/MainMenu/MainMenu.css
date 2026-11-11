@@ -1,25 +1,17 @@
+/* A plain block that fills the column it is put in: the Layout's sidebar, or the
+   Navbar's mobile panel. */
 slice-mainmenu {
-  position: fixed;
-  top: var(--docs-navbar-height, 72px);
-  left: 0;
-  font-family: var(--font-family);
-  background-color: var(--primary-background-color);
-  border-right: 1px solid color-mix(in srgb, var(--primary-color-shade) 65%, transparent);
-  display: flex;
-  align-items: flex-start;
-  height: calc(100% - var(--docs-navbar-height, 72px));
-  width: var(--docs-left-sidebar-width, 17%);
-  transition: transform 0.3s ease, width 0.3s ease;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  z-index: 90;
-}
-.slice_menu {
-  position: relative;
-  z-index: 200;
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+.slice_menu {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -82,98 +74,15 @@ slice-mainmenu {
   opacity: 0.8;
 }
 
-.slice_menu_button {
-  position: fixed;
-  top: 14px;
-  left: 16px;
-  visibility: hidden;
-  width: min-content;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 10px;
-  background: var(--primary-color);
-  z-index: 320;
-}
-
-.menu_title {
-  visibility: hidden;
-}
-
-.slice_close_menu {
-  visibility: hidden;
-  cursor: pointer;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.slice_close_menu:hover {
-  background-color: color-mix(in srgb, var(--primary-color) 12%, transparent);
-}
-
-.slice_menu_overlay {
-  position: fixed;
-  top: var(--docs-navbar-height, 72px);
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: transparent;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 85;
-  display: none;
-}
-
-.slice_menu_overlay.is-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 slice-treeview .simple_treeview::-webkit-scrollbar,
 slice-mainmenu::-webkit-scrollbar {
   width: 0px;
 }
-slice-treeview .simple_treeview::-webkit-scrollbar:horizontal,
-slice-mainmenu::-webkit-scrollbar:horizontal  {
-  height: 0px;
+
+/* Inside the Navbar's mobile panel: on the panel's light surface. */
+slice-nav-bar slice-mainmenu .slice_menu {
+  margin-top: 0;
 }
-
-@media only screen and (max-width: 770px) {
-  slice-mainmenu {
-    top: var(--docs-navbar-height, 72px);
-    position: fixed;
-    z-index: 95;
-    display: flex;
-    width: 80%;
-    max-width: 360px;
-    height: calc(100% - var(--docs-navbar-height, 72px));
-    background-color: var(--primary-background-color);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    will-change: transform;
-  }
-
-  .slice_menu_overlay {
-    display: block;
-  }
-
-  .slice_menu_button {
-    visibility: visible;
-  }
-
-  .menu_title {
-    visibility: visible;
-  }
-
-  .slice_menu_open {
-    transform: translateX(0);
-    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
-  }
-
-  .slice_close_menu {
-    visibility: visible;
-  }
+slice-nav-bar slice-mainmenu .slice_menu_search {
+  background: transparent;
 }

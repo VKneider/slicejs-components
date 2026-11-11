@@ -148,6 +148,28 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/button.md"
     },
     {
+      "id": "callout",
+      "title": "Callout",
+      "kind": "Visual",
+      "component": "Callout",
+      "sourcePath": "src/markdown/callout.md",
+      "route": "/docs/display/callout",
+      "section": "Display",
+      "group": "Content",
+      "order": 42,
+      "description": "A highlighted passage inside content — a note, a tip, a warning before a step, a definition. Tone for the meaning, variant for the loudness; part of what the page says, never a live region.",
+      "tags": [
+        "callout",
+        "note",
+        "tip",
+        "admonition",
+        "warning",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/callout.md"
+    },
+    {
       "id": "card",
       "title": "Card",
       "kind": "Visual",
@@ -480,6 +502,29 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/empty-state.md"
     },
     {
+      "id": "feature-list",
+      "title": "FeatureList",
+      "kind": "Visual",
+      "component": "FeatureList",
+      "sourcePath": "src/markdown/feature-list.md",
+      "route": "/docs/display/feature-list",
+      "section": "Display",
+      "group": "Content",
+      "order": 41,
+      "description": "What something offers, item by item — an icon, a title and a sentence on one grid. Services, benefits, what a plan includes, a course's topics. Information, not a set of cards.",
+      "tags": [
+        "features",
+        "benefits",
+        "services",
+        "grid",
+        "list",
+        "landing",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/feature-list.md"
+    },
+    {
       "id": "fetch-manager",
       "title": "FetchManager",
       "kind": "Service",
@@ -575,10 +620,16 @@
       "section": "Layout",
       "group": "Containers",
       "order": 22,
-      "description": "Grid component documentation with layout composition scenarios.",
+      "description": "Content in rows and columns — columns by the grid's own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.",
       "tags": [
         "grid",
-        "layout"
+        "layout",
+        "responsive",
+        "columns",
+        "areas",
+        "bento",
+        "gallery",
+        "dashboard"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/grid.md"
     },
@@ -630,6 +681,29 @@
         "stale-while-revalidate"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/guides/data-loading.md"
+    },
+    {
+      "id": "heatmap",
+      "title": "Heatmap",
+      "kind": "Visual",
+      "component": "Heatmap",
+      "sourcePath": "src/markdown/heatmap.md",
+      "route": "/docs/display/heatmap",
+      "section": "Display",
+      "group": "Content",
+      "order": 47,
+      "description": "How much, where in a grid — activity per day over a year, or any two dimensions such as hour × weekday. Colour steps from the theme, a legend, a tip on hover and focus, and a keyboard grid where every cell has its own text.",
+      "tags": [
+        "heatmap",
+        "calendar",
+        "activity",
+        "contributions",
+        "chart",
+        "grid",
+        "data",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/heatmap.md"
     },
     {
       "id": "html-service",
@@ -736,6 +810,30 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/input.md"
     },
     {
+      "id": "json-viewer",
+      "title": "JsonViewer",
+      "kind": "Visual",
+      "component": "JsonViewer",
+      "sourcePath": "src/markdown/json-viewer.md",
+      "route": "/docs/display/json-viewer",
+      "section": "Display",
+      "group": "Content",
+      "order": 46,
+      "description": "A JSON value as a tree you can read — objects and arrays fold open, values coloured by type, search that opens the way to every match, and the path or value of any node one key away.",
+      "tags": [
+        "json",
+        "tree",
+        "viewer",
+        "inspector",
+        "api",
+        "payload",
+        "debug",
+        "data",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/json-viewer.md"
+    },
+    {
       "id": "layout",
       "title": "Layout",
       "kind": "Visual",
@@ -745,12 +843,43 @@
       "section": "Layout",
       "group": "Containers",
       "order": 10,
-      "description": "Layout container documentation with view swapping scenarios.",
+      "description": "The frame of an app or a site — header, sidebar, main, aside and footer, with landmarks, a skip link, a sticky header and a sidebar that becomes a drawer on narrow screens.",
       "tags": [
         "layout",
+        "app shell",
+        "frame",
+        "sidebar",
+        "drawer",
+        "header",
+        "footer",
+        "landmarks",
         "container"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/layout.md"
+    },
+    {
+      "id": "lightbox",
+      "title": "Lightbox",
+      "kind": "Visual",
+      "component": "Lightbox",
+      "sourcePath": "src/markdown/lightbox.md",
+      "route": "/docs/display/lightbox",
+      "section": "Display",
+      "group": "Content",
+      "order": 48,
+      "description": "Photos at full size, one at a time — keyboard, swipe, zoom with pan, thumbnails, captions and preloading — on a native modal dialog. Open it from code or turn an existing gallery of links into one with attach().",
+      "tags": [
+        "lightbox",
+        "gallery",
+        "image",
+        "photo",
+        "viewer",
+        "zoom",
+        "swipe",
+        "media",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/lightbox.md"
     },
     {
       "id": "link",
@@ -969,6 +1098,29 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/query-service.md"
     },
     {
+      "id": "quote",
+      "title": "Quote",
+      "kind": "Visual",
+      "component": "Quote",
+      "sourcePath": "src/markdown/quote.md",
+      "route": "/docs/display/quote",
+      "section": "Display",
+      "group": "Content",
+      "order": 45,
+      "description": "What someone said and who said it — testimonials, reviews, a line from an interview. A figure with a blockquote and a caption, an avatar, a star rating and the source; in a grid or one at a time in a carousel.",
+      "tags": [
+        "quote",
+        "testimonial",
+        "review",
+        "blockquote",
+        "rating",
+        "carousel",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/quote.md"
+    },
+    {
       "id": "radio-group",
       "title": "RadioGroup",
       "kind": "Visual",
@@ -978,7 +1130,7 @@
       "section": "Input Components",
       "group": "Basic",
       "order": 14,
-      "description": "Single-choice control that owns its value — keyboard, forms and card pickers included.",
+      "description": "Single-choice control that owns its value — keyboard, forms, card pickers and a segmented-buttons look included.",
       "tags": [
         "radio",
         "radiogroup",
@@ -987,6 +1139,29 @@
         "choice"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/radio-group.md"
+    },
+    {
+      "id": "rating",
+      "title": "Rating",
+      "kind": "Visual",
+      "component": "Rating",
+      "sourcePath": "src/markdown/rating.md",
+      "route": "/docs/input/rating",
+      "section": "Input Components",
+      "group": "Basic",
+      "order": 15,
+      "description": "A score from 1 to 5 (or 10) with stars — in a review form, a survey or a quick \"how was it?\" — and the same stars, read-only, to show an average. Halves, a word per value, and native radios underneath.",
+      "tags": [
+        "rating",
+        "stars",
+        "score",
+        "review",
+        "feedback",
+        "survey",
+        "input",
+        "forms"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/rating.md"
     },
     {
       "id": "realtime-service",
@@ -1032,6 +1207,29 @@
         "container"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/route.md"
+    },
+    {
+      "id": "section-header",
+      "title": "SectionHeader",
+      "kind": "Visual",
+      "component": "SectionHeader",
+      "sourcePath": "src/markdown/section-header.md",
+      "route": "/docs/display/section-header",
+      "section": "Display",
+      "group": "Content",
+      "order": 40,
+      "description": "The top of a section — eyebrow, a real heading, a description and actions such as \"View all\" or \"Contact me\". Start or centre aligned, three sizes, linkable with an anchor.",
+      "tags": [
+        "section",
+        "header",
+        "heading",
+        "title",
+        "eyebrow",
+        "landing",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/section-header.md"
     },
     {
       "id": "select",
@@ -1099,6 +1297,29 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/Sidemenu.md"
     },
     {
+      "id": "skeleton-service",
+      "title": "SkeletonService",
+      "kind": "Service",
+      "component": "SkeletonService",
+      "sourcePath": "src/markdown/skeleton-service.md",
+      "route": "/docs/services/skeleton-service",
+      "section": "Services",
+      "group": "Interaction",
+      "order": 64,
+      "description": "The loading state of any component, drawn from the component itself. Its text, images, fields and buttons turn into shimmering blocks of their exact size while data loads — nothing to declare on the component, no skeleton markup to write, and the layout does not move when the data arrives.",
+      "tags": [
+        "service",
+        "skeleton",
+        "loading",
+        "placeholder",
+        "shimmer",
+        "aria-busy",
+        "async",
+        "data"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/skeleton-service.md"
+    },
+    {
       "id": "slider",
       "title": "Slider",
       "kind": "Visual",
@@ -1117,6 +1338,29 @@
         "number"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/slider.md"
+    },
+    {
+      "id": "steps",
+      "title": "Steps",
+      "kind": "Visual",
+      "component": "Steps",
+      "sourcePath": "src/markdown/steps.md",
+      "route": "/docs/display/steps",
+      "section": "Display",
+      "group": "Content",
+      "order": 43,
+      "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
+      "tags": [
+        "steps",
+        "process",
+        "how it works",
+        "onboarding",
+        "timeline",
+        "ordered list",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/steps.md"
     },
     {
       "id": "storage-service",
@@ -1270,6 +1514,30 @@
         "settings"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/theme-switcher.md"
+    },
+    {
+      "id": "timeline",
+      "title": "Timeline",
+      "kind": "Visual",
+      "component": "Timeline",
+      "sourcePath": "src/markdown/timeline.md",
+      "route": "/docs/display/timeline",
+      "section": "Display",
+      "group": "Content",
+      "order": 44,
+      "description": "Events in time on one line — a career, the history of an order, a changelog, the activity on a record. Dates in the app's language, groups by year, month or day, and done, current and upcoming events.",
+      "tags": [
+        "timeline",
+        "history",
+        "activity",
+        "changelog",
+        "career",
+        "tracking",
+        "events",
+        "content",
+        "display"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/timeline.md"
     },
     {
       "id": "toast",

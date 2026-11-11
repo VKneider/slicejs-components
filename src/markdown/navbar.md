@@ -36,7 +36,7 @@ tags: [navbar, navigation, header, menu, mobile]
 - `size`: `'sm'` (52px), `'md'` (64px, default) or `'lg'` (76px). To use another height, set the `--nav-height` CSS property on the element.
 - `align`: where the links sit, `'start'`, `'center'` (default) or `'end'`.
 - `indicator` marks the current page:
-  - `'underline'` (default): a bar that slides under the link.
+  - `'underline'` (default): a short bar as wide as the label, on the bottom edge of the bar, like a tab. The other links are quieter, so the current one also reads by contrast. In the mobile panel there is no bar: the current page is in full colour and bold.
   - `'pill'`: a soft background that slides behind the link.
   - `'none'`: colour only.
 
@@ -69,6 +69,7 @@ At `breakpoint` (768px by default) and below, the links and actions move behind 
 - The menu closes on its own when the window grows past the breakpoint.
 - Dropdowns inside it stack their submenus with a "‹ Back" row.
 - `openMenu()`, `closeMenu()`, `toggleMenu()` and `isMenuOpen` drive it from code. `onMenuToggle(open)` tells you when it opens or closes.
+- `panelContent`: a node or component shown **only in the mobile panel**, under the links — a section's own navigation (a docs tree, account links, filters). It keeps the page's colours, is hidden on wide screens, and is never destroyed by the navbar, so you can move it back to your page's sidebar on desktop. This way a page has one menu button, not one for the site and another for the section.
 
 ## Live Preview
 :::component name="Navbar"

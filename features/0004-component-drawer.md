@@ -2,11 +2,11 @@
 id: "0004"
 title: "Component: Drawer"
 repo: "slicejs-components"
-status: proposed
+status: rejected
 area: components
 priority: high
 created: 2026-10-28
-updated: 2026-10-28
+updated: 2026-11-09
 target: "TBD"
 owners: []
 related:
@@ -112,3 +112,4 @@ drawer.show();
 ## Decision log
 
 - 2026-10-28 - Created as `proposed` from `WANTED_COMPONENTS.md`; priority high because it blocks common app layouts.
+- 2026-11-09 — Rejected as a separate component: `Modal` already ships `layout: 'drawer'` with `side` (`left`, `right`, `top`, `bottom`), drawer sizes (320 / 400 / 560 / 720px), the slide in and out from its edge, reduced motion, focus trap and return, Escape, backdrop, shared scroll lock for stacked layers, `onBeforeClose` with reasons, `show()` and `mobileLayout: 'sheet'` for phones — every point of this proposal. A second component would duplicate that contract. The docs example "Orders: a filters drawer" (`modal.md`) is the reference. Possible follow-ups on `Modal`: swipe-to-close for drawers (today only sheets), and `modal: false` for a non-blocking side panel if a real case appears. The persistent panels of `Layout` and `Navbar` are navigation chrome, not this.

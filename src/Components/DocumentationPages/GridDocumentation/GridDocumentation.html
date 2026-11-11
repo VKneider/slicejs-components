@@ -7,18 +7,26 @@
    <span class="copy-md-slot" data-copy-md></span>
  </div>
 <h2 id="overview">Overview</h2>
-<p><code>Grid</code> arranges content in structured rows and columns with configurable templates and spacing.</p>
+<p><code>Grid</code> lays content out in rows and columns: four metric cards on a dashboard, a gallery of photos, a "bento" section of features with one big tile, or the regions of a page.</p>
+<p>What makes it more than <code>display: grid</code>:</p>
+<ul><li><strong>Breakpoints measured on the grid itself</strong>, not on the window. A grid of <code>{ 0: 1, 560: 2, 960: 4 }</code> columns shows one column inside a narrow sidebar or a modal, and four on a wide page — the same code in both places.</li><li><strong>Automatic columns</strong> with <code>minItemWidth</code>: as many columns as fit, each at least that wide.</li><li><strong>Items that span</strong> (<code>{ node, colSpan, rowSpan }</code>), and a span never asks for more columns than there are, so a 2-wide tile becomes 1 wide on a phone instead of overflowing.</li><li><strong>Named areas</strong>, also per width: <code>['header header', 'main side']</code>.</li></ul>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Sets of similar things</strong>: metric cards, products, photos, team members, features.</li><li><strong>Bento sections</strong> on a landing: one large tile and several small ones.</li><li><strong>A page or panel with regions</strong> (header, main, side) that rearrange by width.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>A list people read top to bottom</strong> (messages, search results): a plain list or a <span data-inline-link="0"></span>.</li><li><strong>Rows of data with columns to compare and sort</strong>: a <span data-inline-link="1"></span>.</li><li><strong>An application frame</strong> with navigation, a sidebar that collapses into a drawer and a skip link: <span data-inline-link="2"></span>.</li><li><strong>Two or three things in a row</strong> that should just wrap: a flex row in your own CSS is enough.</li></ul>
 <h2 id="core-behavior">Core Behavior</h2>
-<ul><li><code>columns</code> and <code>rows</code> define the base matrix.</li><li><code>gap</code> controls spacing between cells.</li><li><code>items</code> appends DOM nodes as grid children.</li></ul>
-<h2 id="prop-scenarios">Prop Scenarios</h2>
+<ul><li><code>columns</code>: a number (default <code>1</code>), or breakpoints by the grid's width — <code>{ 0: 1, 560: 2, 960: 4 }</code> means 1 column, 2 from 560px, 4 from 960px.</li><li><code>minItemWidth</code>: automatic columns (<code>220</code> or <code>'14rem'</code>). Wins over <code>columns</code>.</li><li><code>items</code>: live DOM nodes or components, or <code>{ node, colSpan, rowSpan, area }</code>. <code>colSpan</code> is a number or <code>'full'</code> (the whole row). Assigning <code>items</code> <strong>replaces</strong> the content: nodes still present are moved, not rebuilt; components that leave are destroyed.</li><li><code>areas</code>: an array of rows (<code>['header header', 'main side']</code>), or breakpoints of them. Items with <code>area</code> go there; an item whose area is missing at the current width falls into the normal flow.</li><li><code>gap</code> (a CSS length or a number of pixels, <code>10px</code> by default) and <code>rowGap</code> for a different space between rows.</li><li><code>autoRows</code>: the height of the rows the grid creates (<code>'140px'</code>, <code>'minmax(120px, auto)'</code>), needed for <code>rowSpan</code> tiles of equal height.</li><li><code>dense</code>: later small items fill the holes left by big ones. The visual order then differs from the DOM order, which is what keyboard and screen readers follow — use it for galleries, not for steps.</li><li><code>align</code> and <code>justify</code>: how items sit in their cell (<code>stretch</code> by default, <code>start</code>, <code>center</code>, <code>end</code>).</li><li><code>columnTemplate</code> and <code>rowTemplate</code>: raw CSS templates when nothing above fits; they win over the rest.</li><li><code>columnCount</code> (read-only) and the <code>data-columns</code> attribute: the columns shown right now.</li><li><code>setItem(item)</code> and <code>setItems(items)</code> append; <code>clear()</code> empties it and destroys the components.</li></ul>
+<h2 id="examples">Examples</h2>
 <div class="script-block" data-block-id="doc-block-1"></div>
 <div class="script-block" data-block-id="doc-block-2"></div>
 <div class="script-block" data-block-id="doc-block-3"></div>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Use <code>gap</code> to control spacing — default is <code>10px</code>. Combine <code>columnTemplate</code> with fixed and flexible units (<code>200px 1fr</code>) for mixed layouts.</div>
+<div class="callout callout-tip">Prefer breakpoints on the grid (<code>columns: { 0: 1, 600: 2, 960: 4 }</code>) or <code>minItemWidth</code> over media queries. The same grid then works in a page, a sidebar and a modal.</div>
+<div class="callout callout-tip">Use <code>colSpan</code> and <code>rowSpan</code> with <code>autoRows</code> for bento layouts: without a row height, a tall tile's rows are only as tall as their content.</div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Grid items must be valid DOM nodes. Strings are not automatically converted. Items array can be replaced at runtime via <code>grid.items = [...]</code>.</div>
+<div class="callout callout-warning"><code>dense</code> and named areas change where things appear, not their order in the DOM. Keyboard focus and screen readers follow the DOM, so keep the DOM in reading order.</div>
+<div class="callout callout-warning">Assigning <code>items</code> replaces everything. To add one, pass the old list plus the new item (<code>grid.items = [...grid.items, card]</code>) or call <code>setItem(card)</code>.</div>
 <div class="component-block" data-block-id="doc-block-6"></div>
 </div>

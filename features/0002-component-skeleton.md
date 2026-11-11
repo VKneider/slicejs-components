@@ -2,14 +2,16 @@
 id: "0002"
 title: "Component: Skeleton"
 repo: "slicejs-components"
-status: proposed
+status: done
 area: components
 priority: medium
 created: 2026-10-28
-updated: 2026-10-28
+updated: 2026-11-09
 target: "TBD"
 owners: []
 related:
+  - "src/Components/Service/SkeletonService/SkeletonService.js"
+  - "src/markdown/skeleton-service.md"
   - "src/Components/Visual/Loading/Loading.js"
   - "src/Components/Visual/Loading/Loading.css"
   - "src/markdown/loading.md"
@@ -113,3 +115,4 @@ Composition examples to document:
 ## Decision log
 
 - 2026-10-28 - Created as `proposed` from `WANTED_COMPONENTS.md`; one feature per wanted component.
+- 2026-11-09 — Built as a headless **SkeletonService** instead of a Skeleton component. A component of generic blocks (text, rect, circle) promises a shape that is not the real one, so the page jumps when the data arrives, and every view needs hand-written skeleton markup kept in sync with the real one. The service draws the skeleton from what the element renders: it marks the leaves (text runs, images, fields, buttons, avatars), and CSS turns each into a block of its exact size. Nothing is declared on components (no `static sample`): the caller covers what is on screen (refresh), or builds the component with placeholder text (first load); `repeat` copies the first row for lists without constructing components. `aria-busy`, `inert` and one polite "Loading…". See `skeleton-service.md`.

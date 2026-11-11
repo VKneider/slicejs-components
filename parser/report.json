@@ -29,6 +29,10 @@
       "component": "ButtonDocumentation"
     },
     {
+      "filePath": "src/markdown/callout.md",
+      "component": "CalloutDocumentation"
+    },
+    {
       "filePath": "src/markdown/card.md",
       "component": "CardDocumentation"
     },
@@ -93,6 +97,10 @@
       "component": "EmptyStateDocumentation"
     },
     {
+      "filePath": "src/markdown/feature-list.md",
+      "component": "FeatureListDocumentation"
+    },
+    {
       "filePath": "src/markdown/fetch-manager.md",
       "component": "FetchManagerDocumentation"
     },
@@ -121,6 +129,10 @@
       "component": "DataAndLoadingDocumentation"
     },
     {
+      "filePath": "src/markdown/heatmap.md",
+      "component": "HeatmapDocumentation"
+    },
+    {
       "filePath": "src/markdown/html-service.md",
       "component": "HtmlServiceDocumentation"
     },
@@ -141,8 +153,16 @@
       "component": "InputDocumentation"
     },
     {
+      "filePath": "src/markdown/json-viewer.md",
+      "component": "JsonViewerDocumentation"
+    },
+    {
       "filePath": "src/markdown/layout.md",
       "component": "LayoutDocumentation"
+    },
+    {
+      "filePath": "src/markdown/lightbox.md",
+      "component": "LightboxDocumentation"
     },
     {
       "filePath": "src/markdown/link.md",
@@ -189,8 +209,16 @@
       "component": "QueryServiceDocumentation"
     },
     {
+      "filePath": "src/markdown/quote.md",
+      "component": "QuoteDocumentation"
+    },
+    {
       "filePath": "src/markdown/radio-group.md",
       "component": "RadioGroupDocumentation"
+    },
+    {
+      "filePath": "src/markdown/rating.md",
+      "component": "RatingDocumentation"
     },
     {
       "filePath": "src/markdown/realtime-service.md",
@@ -199,6 +227,10 @@
     {
       "filePath": "src/markdown/route.md",
       "component": "RouteDocumentation"
+    },
+    {
+      "filePath": "src/markdown/section-header.md",
+      "component": "SectionHeaderDocumentation"
     },
     {
       "filePath": "src/markdown/select.md",
@@ -213,8 +245,16 @@
       "component": "SideMenuDocumentation"
     },
     {
+      "filePath": "src/markdown/skeleton-service.md",
+      "component": "SkeletonServiceDocumentation"
+    },
+    {
       "filePath": "src/markdown/slider.md",
       "component": "SliderDocumentation"
+    },
+    {
+      "filePath": "src/markdown/steps.md",
+      "component": "StepsDocumentation"
     },
     {
       "filePath": "src/markdown/storage-service.md",
@@ -243,6 +283,10 @@
     {
       "filePath": "src/markdown/theme-switcher.md",
       "component": "ThemeSwitcherDocumentation"
+    },
+    {
+      "filePath": "src/markdown/timeline.md",
+      "component": "TimelineDocumentation"
     },
     {
       "filePath": "src/markdown/toast-provider.md",

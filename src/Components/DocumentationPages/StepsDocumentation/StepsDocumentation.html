@@ -1,0 +1,33 @@
+<div class="documentation-content stepsdocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="steps">
+     <span class="doc-title-text">Steps</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Steps</code> explains a process in order: "How it works", "How to enrol", "Getting your certificate", the steps to install a tool. Each step has a marker (its number, an icon or a dot), a title, a sentence, and anything else it needs — a command, a link, an image.</p>
+<p>It is an ordered list (<code>&lt;ol&gt;</code>), so a screen reader announces the order and the count ("2 of 4").</p>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>"How it works"</strong> on a landing: three or four steps from sign-up to result.</li><li><strong>Instructions</strong>: install, configure, deploy — with the command inside each step.</li><li><strong>A process someone follows outside the app</strong>: how to apply, how to return an order.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>The screens of a task the user is going through</strong> (done, current, next; Back and Continue): that is a Stepper. <code>Steps</code> only shows a process; it has no current step and nothing to navigate.</li><li><strong>Things that are not in order</strong>: a <span data-inline-link="0"></span>.</li><li><strong>Events with dates</strong> (a history, a changelog): a timeline.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>items: [{ title, text, icon, content, id }]</code>. <code>content</code> takes a string, a node, a component or an array of them; text is never markup.</li><li><code>marker</code>: <code>number</code> (default), <code>icon</code> (each step's <code>icon</code>; a step without one keeps its number, so the order still reads) or <code>dot</code>.</li><li><code>start</code>: the number of the first step, for a list that continues another one. It is set on the <code>&lt;ol&gt;</code> too.</li><li><code>orientation</code>: <code>vertical</code> (default) or <code>horizontal</code>. Horizontal goes back to vertical when <strong>its container</strong> is narrower than 600px — a container query, so it also works inside a narrow column on a wide screen.</li><li><code>connector</code>: the line between markers (none after the last step).</li><li><code>headingLevel</code> (default <code>3</code>): every title is a heading. The markers and the line are decorative.</li></ul>
+<h2 id="looks">Looks</h2>
+<ul><li><code>variant</code>: the marker — <code>soft</code> (a tint, default), <code>filled</code> or <code>outlined</code>.</li><li><code>tone</code>: the colour of markers and line (<code>accent</code> by default). <code>size</code>: <code>md</code> or <code>sm</code>.</li><li>CSS variables: <code>--slice-steps-marker</code> (its size), <code>--slice-steps-gap</code>, <code>--slice-steps-space</code> (between steps), <code>--slice-steps-line</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Three to five steps. More than that is usually two processes, or a guide with sections.</div>
+<div class="callout callout-tip">Start each title with a verb ("Create", "Choose", "Pay"). The reader should be able to follow the process from the titles alone.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">Do not fake a wizard with Steps by colouring the "current" one. A task the user is going through needs a current step that assistive technology knows about, and navigation between steps: that is the Stepper's job.</div>
+<div class="component-block" data-block-id="doc-block-6"></div>
+</div>

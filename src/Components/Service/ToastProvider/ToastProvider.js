@@ -20,6 +20,13 @@ export default class ToastProvider {
     this._destroyed = false;
 
     this._handleToastDismissed = this._handleToastDismissed.bind(this);
+    // A modal <dialog> opening or closing moves the container (see _rehost).
+    // `toggle` and `close` do not bubble: listen in the capture phase.
+    this._handleDialogChange = () => {
+      if (this._container && this._toasts.size) queueMicrotask(() => this._rehost());
+    };
+    document.addEventListener('toggle', this._handleDialogChange, true);
+    document.addEventListener('close', this._handleDialogChange, true);
 
     // A second provider means a second container stacked over the first and a
     // second pool. Almost always a missing { singleton: true }: say so.
@@ -59,6 +66,7 @@ export default class ToastProvider {
 
     this._toasts.set(id, toast);
     this._getContainer().appendChild(toast);
+    this._rehost();
     toast.show();
     this._enforceMax();
 
@@ -96,6 +104,8 @@ export default class ToastProvider {
   beforeDestroy() {
     if (!this._destroyed) ToastProvider._live = Math.max(0, ToastProvider._live - 1);
     this._destroyed = true;
+    document.removeEventListener('toggle', this._handleDialogChange, true);
+    document.removeEventListener('close', this._handleDialogChange, true);
     const owned = [...this._toasts.values(), ...this._idle];
     this._toasts.clear();
     this._idle = [];
@@ -155,9 +165,31 @@ export default class ToastProvider {
       this._container = document.createElement('div');
       this._container.className = 'toast-provider-container';
       this._container.dataset.position = this._position;
+      // A popover, so it is shown in the top layer: above a modal dialog's
+      // backdrop, whatever z-index the page uses.
+      if (typeof this._container.showPopover === 'function') this._container.setAttribute('popover', 'manual');
       document.body.appendChild(this._container);
     }
     return this._container;
+  }
+
+  // While a modal <dialog> is open the rest of the page is inert: a toast outside
+  // it could be seen at most, never closed or clicked. So the container lives in
+  // the open modal (the last one) and in <body> otherwise, and is (re)shown as a
+  // popover after the move, which puts it on top of that dialog.
+  _rehost() {
+    const container = this._container;
+    if (!container) return;
+    const modals = [...document.querySelectorAll('dialog[open]')].filter((d) => {
+      try { return d.matches(':modal'); } catch { return false; }
+    });
+    const host = modals[modals.length - 1] || document.body;
+    if (container.parentNode !== host) host.appendChild(container);
+    if (typeof container.showPopover === 'function' && container.hasAttribute('popover')) {
+      try {
+        if (!container.matches(':popover-open')) container.showPopover();
+      } catch { /* not connected */ }
+    }
   }
 
   _enforceMax() {

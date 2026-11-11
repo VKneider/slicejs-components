@@ -72,7 +72,7 @@ Every way of closing has a reason, and `onClose({ returnValue, reason })` report
 - `'backdrop'`: a click outside the dialog.
 - `'close-button'`: the ✕.
 - `'action'`: an action button.
-- `'swipe'`: a sheet dragged down.
+- `'swipe'`: a sheet dragged down, or a drawer dragged toward the edge it came from.
 - `'form'`: a `<form method="dialog">` inside was submitted. The return value is the value of the button that submitted it.
 - `'api'`: your code called `close()`.
 
@@ -80,6 +80,7 @@ How to control it:
 - `onBeforeClose({ reason, returnValue })` runs before anything a person does closes the modal. Return `false`, or a promise that resolves to `false`, and the modal stays open.
 - `close(returnValue)` closes it straight away, without asking `onBeforeClose`, because a call from your code is a decision already made. `requestClose(reason, returnValue)` goes through the guard and resolves with whether the modal closed.
 - `dismissable: false` removes the ✕ and ignores Escape and backdrop clicks. `closeOnEscape` and `closeOnBackdrop` turn off one of them alone.
+- **Swipe to close** (`swipeToClose`, on by default): a sheet is dragged down by its handle or header; a drawer is pushed back toward its edge — a right drawer to the right, a left one to the left, from anywhere with a finger (vertical moves still scroll its content) and from the header with a mouse; top and bottom drawers from the header. It follows the finger, closes past a third of its size or with a quick flick, and snaps back otherwise; `onBeforeClose` can still refuse it. Turn it off for a drawer whose content scrolls sideways (a wide table), and with `dismissable: false` it never closes.
 - A backdrop click that is not allowed to close the modal gives it a small shake, so the click does not seem lost.
 - An Escape that something inside the modal already used does not close it. For example, pressing Escape in an open `Select` or `DropDown` closes only the menu.
 - `destroyOnClose: true` destroys and removes the modal once it has closed and finished animating out. Use it for modals you build for a single question.

@@ -1,0 +1,33 @@
+<div class="documentation-content quotedocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="quote">
+     <span class="doc-title-text">Quote</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Quote</code> shows what someone said, and who said it: a client's testimonial on a landing, a student's review of a course, a line from an interview inside an article.</p>
+<p>It is a <code>&lt;figure&gt;</code>: the words in a <code>&lt;blockquote&gt;</code>, the person in a <code>&lt;figcaption&gt;</code> (name, job title, organization, an avatar) and, when there is one, where it was said (<code>&lt;cite&gt;</code>). Several quotes in a grid, or one at a time in an <span data-inline-link="0"></span>, make a testimonials section.</p>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Testimonials</strong> from clients, students or users.</li><li><strong>Reviews</strong> with a star rating.</li><li><strong>A quotation inside an article</strong> or a lesson, with its source.</li><li><strong>One leading quote</strong> at the top of a section (<code>size: 'lg'</code>, <code>align: 'center'</code>).</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>A highlighted note or tip that nobody "said"</strong>: a <span data-inline-link="1"></span>.</li><li><strong>A comment thread or chat</strong> (replies, timestamps, actions): a list built for it.</li><li><strong>Fake or anonymous praise</strong>. A testimonial is only worth something if it is real: keep the person's name, and their permission.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>text</code>: one paragraph, or an array of paragraphs. Always text, never markup.</li><li><code>author</code>, <code>jobTitle</code> and <code>organization</code> ("Job title, Company") go in the caption. (<code>jobTitle</code>, not <code>role</code>: <code>role</code> is the element's ARIA role.)</li><li><code>avatar</code>: an image URL, <code>true</code> for the author's initials, <code>''</code> for none. It is an <span data-inline-link="2"></span>, hidden from screen readers because the name is right next to it.</li><li><code>rating</code>: <code>0</code> (none) to <code>5</code>, halves allowed. The row of stars has one accessible name ("Rated 4.5 out of 5"); <code>texts: { rating: '…' }</code> changes it.</li><li><code>source</code> ("Google review", "Interview, 2024") and <code>href</code>: the source becomes a link (a new tab for an external URL) and the blockquote's <code>cite</code>.</li></ul>
+<h2 id="looks">Looks</h2>
+<ul><li><code>variant</code>: <code>plain</code> (default), <code>soft</code> or <code>outlined</code>. <code>size</code>: <code>sm</code>, <code>md</code> or <code>lg</code>. <code>align</code>: <code>start</code> or <code>center</code>.</li><li><code>tone</code>: the colour of the opening quotation mark; <code>mark: false</code> removes it.</li><li>In a row of quotes, the caption sits at the bottom, so cards of different lengths line up.</li><li>CSS variables: <code>--slice-quote-text-size</code>, <code>--slice-quote-pad</code>, <code>--slice-quote-radius</code>, <code>--slice-quote-star</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Keep testimonials short and specific: what changed for that person ("I used the final project in my first interview") says more than general praise.</div>
+<div class="callout callout-tip">In a carousel, show several quotes per view on wide screens (<code>perView: { 0: 1, 560: 2, 900: 3 }</code>) and keep autoplay slow; people need time to read a whole quote.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">Do not put links or buttons inside the quote text. If the testimonial leads somewhere (a case study), put that link after the quote.</div>
+<div class="component-block" data-block-id="doc-block-6"></div>
+</div>

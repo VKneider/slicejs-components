@@ -18,7 +18,9 @@
   },
   "include": [
     "src/Components/**/*.js",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/App/**/*.js",
+    "src/routes.js"
   ],
   "exclude": [
     "node_modules",

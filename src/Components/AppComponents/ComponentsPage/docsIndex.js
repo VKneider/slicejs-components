@@ -132,6 +132,105 @@ const docsIndex = [
     tags: ['code', 'syntax', 'highlight', 'display']
   },
   {
+    title: 'SectionHeader',
+    route: '/docs/display/section-header',
+    description: 'The top of a section — eyebrow, a real heading, a description and actions such as "View all" or "Contact me". Start or centre aligned, three sizes, linkable with an anchor.',
+    section: 'Display',
+    group: 'Content',
+    order: 40,
+    navLabel: 'SectionHeader',
+    component: 'SectionHeaderDocumentation',
+    tags: ['section', 'header', 'heading', 'title', 'eyebrow', 'landing', 'content', 'display']
+  },
+  {
+    title: 'FeatureList',
+    route: '/docs/display/feature-list',
+    description: 'What something offers, item by item — an icon, a title and a sentence on one grid. Services, benefits, what a plan includes, a course\'s topics. Information, not a set of cards.',
+    section: 'Display',
+    group: 'Content',
+    order: 41,
+    navLabel: 'FeatureList',
+    component: 'FeatureListDocumentation',
+    tags: ['features', 'benefits', 'services', 'grid', 'list', 'landing', 'content', 'display']
+  },
+  {
+    title: 'Callout',
+    route: '/docs/display/callout',
+    description: 'A highlighted passage inside content — a note, a tip, a warning before a step, a definition. Tone for the meaning, variant for the loudness; part of what the page says, never a live region.',
+    section: 'Display',
+    group: 'Content',
+    order: 42,
+    navLabel: 'Callout',
+    component: 'CalloutDocumentation',
+    tags: ['callout', 'note', 'tip', 'admonition', 'warning', 'content', 'display']
+  },
+  {
+    title: 'Steps',
+    route: '/docs/display/steps',
+    description: 'How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.',
+    section: 'Display',
+    group: 'Content',
+    order: 43,
+    navLabel: 'Steps',
+    component: 'StepsDocumentation',
+    tags: ['steps', 'process', 'how it works', 'onboarding', 'timeline', 'ordered list', 'content', 'display']
+  },
+  {
+    title: 'Timeline',
+    route: '/docs/display/timeline',
+    description: 'Events in time on one line — a career, the history of an order, a changelog, the activity on a record. Dates in the app\'s language, groups by year, month or day, and done, current and upcoming events.',
+    section: 'Display',
+    group: 'Content',
+    order: 44,
+    navLabel: 'Timeline',
+    component: 'TimelineDocumentation',
+    tags: ['timeline', 'history', 'activity', 'changelog', 'career', 'tracking', 'events', 'content', 'display']
+  },
+  {
+    title: 'Quote',
+    route: '/docs/display/quote',
+    description: 'What someone said and who said it — testimonials, reviews, a line from an interview. A figure with a blockquote and a caption, an avatar, a star rating and the source; in a grid or one at a time in a carousel.',
+    section: 'Display',
+    group: 'Content',
+    order: 45,
+    navLabel: 'Quote',
+    component: 'QuoteDocumentation',
+    tags: ['quote', 'testimonial', 'review', 'blockquote', 'rating', 'carousel', 'content', 'display']
+  },
+  {
+    title: 'JsonViewer',
+    route: '/docs/display/json-viewer',
+    description: 'A JSON value as a tree you can read — objects and arrays fold open, values coloured by type, search that opens the way to every match, and the path or value of any node one key away.',
+    section: 'Display',
+    group: 'Content',
+    order: 46,
+    navLabel: 'JsonViewer',
+    component: 'JsonViewerDocumentation',
+    tags: ['json', 'tree', 'viewer', 'inspector', 'api', 'payload', 'debug', 'data', 'display']
+  },
+  {
+    title: 'Heatmap',
+    route: '/docs/display/heatmap',
+    description: 'How much, where in a grid — activity per day over a year, or any two dimensions such as hour × weekday. Colour steps from the theme, a legend, a tip on hover and focus, and a keyboard grid where every cell has its own text.',
+    section: 'Display',
+    group: 'Content',
+    order: 47,
+    navLabel: 'Heatmap',
+    component: 'HeatmapDocumentation',
+    tags: ['heatmap', 'calendar', 'activity', 'contributions', 'chart', 'grid', 'data', 'display']
+  },
+  {
+    title: 'Lightbox',
+    route: '/docs/display/lightbox',
+    description: 'Photos at full size, one at a time — keyboard, swipe, zoom with pan, thumbnails, captions and preloading — on a native modal dialog. Open it from code or turn an existing gallery of links into one with attach().',
+    section: 'Display',
+    group: 'Content',
+    order: 48,
+    navLabel: 'Lightbox',
+    component: 'LightboxDocumentation',
+    tags: ['lightbox', 'gallery', 'image', 'photo', 'viewer', 'zoom', 'swipe', 'media', 'display']
+  },
+  {
     title: 'ConfirmActionModal',
     route: '/docs/display/confirm-action-modal',
     description: 'Promise-based "are you sure?" modal and single-value prompt, built on Modal, with an event-manager channel.',
@@ -299,7 +398,7 @@ const docsIndex = [
   {
     title: 'RadioGroup',
     route: '/docs/input/radio-group',
-    description: 'Single-choice control that owns its value — keyboard, forms and card pickers included.',
+    description: 'Single-choice control that owns its value — keyboard, forms, card pickers and a segmented-buttons look included.',
     section: 'Input Components',
     group: 'Basic',
     order: 14,
@@ -317,6 +416,17 @@ const docsIndex = [
     navLabel: 'Switch',
     component: 'SwitchDocumentation',
     tags: ['switch', 'input', 'toggle']
+  },
+  {
+    title: 'Rating',
+    route: '/docs/input/rating',
+    description: 'A score from 1 to 5 (or 10) with stars — in a review form, a survey or a quick "how was it?" — and the same stars, read-only, to show an average. Halves, a word per value, and native radios underneath.',
+    section: 'Input Components',
+    group: 'Basic',
+    order: 15,
+    navLabel: 'Rating',
+    component: 'RatingDocumentation',
+    tags: ['rating', 'stars', 'score', 'review', 'feedback', 'survey', 'input', 'forms']
   },
   {
     title: 'Slider',
@@ -398,13 +508,13 @@ const docsIndex = [
   {
     title: 'Layout',
     route: '/docs/layout/layout',
-    description: 'Layout container documentation with view swapping scenarios.',
+    description: 'The frame of an app or a site — header, sidebar, main, aside and footer, with landmarks, a skip link, a sticky header and a sidebar that becomes a drawer on narrow screens.',
     section: 'Layout',
     group: 'Containers',
     order: 10,
     navLabel: 'Layout',
     component: 'LayoutDocumentation',
-    tags: ['layout', 'container']
+    tags: ['layout', 'app shell', 'frame', 'sidebar', 'drawer', 'header', 'footer', 'landmarks', 'container']
   },
   {
     title: 'Card',
@@ -431,13 +541,13 @@ const docsIndex = [
   {
     title: 'Grid',
     route: '/docs/layout/grid',
-    description: 'Grid component documentation with layout composition scenarios.',
+    description: 'Content in rows and columns — columns by the grid\'s own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.',
     section: 'Layout',
     group: 'Containers',
     order: 22,
     navLabel: 'Grid',
     component: 'GridDocumentation',
-    tags: ['grid', 'layout']
+    tags: ['grid', 'layout', 'responsive', 'columns', 'areas', 'bento', 'gallery', 'dashboard']
   },
   {
     title: 'ElementCarrousel',
@@ -614,6 +724,17 @@ const docsIndex = [
     navLabel: 'ShortcutService',
     component: 'ShortcutServiceDocumentation',
     tags: ['service', 'keyboard', 'shortcuts', 'hotkeys', 'keybindings', 'accessibility', 'command palette', 'scope']
+  },
+  {
+    title: 'SkeletonService',
+    route: '/docs/services/skeleton-service',
+    description: 'The loading state of any component, drawn from the component itself. Its text, images, fields and buttons turn into shimmering blocks of their exact size while data loads — nothing to declare on the component, no skeleton markup to write, and the layout does not move when the data arrives.',
+    section: 'Services',
+    group: 'Interaction',
+    order: 64,
+    navLabel: 'SkeletonService',
+    component: 'SkeletonServiceDocumentation',
+    tags: ['service', 'skeleton', 'loading', 'placeholder', 'shimmer', 'aria-busy', 'async', 'data']
   },
   {
     title: 'FetchManager',

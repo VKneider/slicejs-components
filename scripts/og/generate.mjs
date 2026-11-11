@@ -35,7 +35,12 @@ process.env.PLAYWRIGHT_BROWSERS_PATH ||= '0';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
 const PUBLIC = path.join(ROOT, 'src', 'public');
-const SEO_MANIFEST = path.join(PUBLIC, 'seo-manifest.json');
+// The parser writes the framework manifest shape to `seo.json` (there is no
+// separate `seo-manifest.json` since the SEO refactor). The cards read the same
+// file the server injects into the shell, so a route cannot be indexable for
+// crawlers and invisible to the card generator.
+const SEO_MANIFEST = path.join(PUBLIC, 'seo.json');
+const MARKDOWN_DIR = path.join(ROOT, 'src', 'markdown');
 const OG_DIR = path.join(PUBLIC, 'og');
 const OG_MANIFEST = path.join(OG_DIR, 'manifest.json');
 
@@ -104,14 +109,53 @@ const writeIfChanged = (file, content) => {
   throw new Error('could not read the image size');
 };
 
-const indexableRoutes = (seo) => Object.entries(seo.routes || {})
-  .filter(([, meta]) => meta && meta.indexable)
-  .map(([route, meta]) => ({ route, meta }))
-  .sort((a, b) => a.route.localeCompare(b.route));
+/**
+ * `seo.json` carries what a crawler needs; the card also shows the page's
+ * section and group, which live only in the markdown front matter. Read them
+ * once so a docs card reads "Display · Content", like the page does.
+ */
+const readDocsMeta = () => {
+  const meta = new Map();
+  if (!fs.existsSync(MARKDOWN_DIR)) return meta;
+
+  for (const entry of fs.readdirSync(MARKDOWN_DIR)) {
+    if (!entry.endsWith('.md')) continue;
+    const source = fs.readFileSync(path.join(MARKDOWN_DIR, entry), 'utf8');
+    const frontMatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(source);
+    if (!frontMatter) continue;
+
+    const value = (key) => {
+      const match = new RegExp(`^${key}:\\s*(.+)$`, 'm').exec(frontMatter[1]);
+      return match ? match[1].trim().replace(/^['"]|['"]$/g, '') : undefined;
+    };
+
+    const route = value('route');
+    if (route) meta.set(route, { section: value('section'), group: value('group') });
+  }
+
+  return meta;
+};
+
+const isIndexable = (meta) => Boolean(meta)
+  && meta.robots !== false
+  && meta.robots?.index !== false;
+
+const indexableRoutes = (seo) => {
+  const docsMeta = readDocsMeta();
+  return Object.entries(seo.routes || {})
+    .filter(([, meta]) => isIndexable(meta))
+    .map(([route, meta]) => ({ route, meta: { ...meta, ...(docsMeta.get(route) || {}) } }))
+    .sort((a, b) => a.route.localeCompare(b.route));
+};
 
 // ── --check: no browser, no server ─────────────────────────────────────────
 
 const runCheck = () => {
+  if (!fs.existsSync(SEO_MANIFEST)) {
+    console.error('src/public/seo.json is missing. Run: pnpm run docs:generate');
+    process.exit(1);
+  }
+
   const seo = readJson(SEO_MANIFEST);
   const routes = indexableRoutes(seo);
   const problems = [];
@@ -413,6 +457,10 @@ const runPool = async (items, limit, worker) => {
 };
 
 const generate = async () => {
+  if (!fs.existsSync(SEO_MANIFEST)) {
+    throw new Error('src/public/seo.json is missing. Run: pnpm run docs:generate');
+  }
+
   const seo = readJson(SEO_MANIFEST);
   const origin = seo.origin || 'https://components.slicejs.com';
   const host = origin.replace(/^https?:\/\//, '');

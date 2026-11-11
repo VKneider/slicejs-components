@@ -117,6 +117,7 @@ export interface BreadcrumbsProps {
   onClick?: (...args: unknown[]) => unknown;
   onClickCallback?: (...args: unknown[]) => unknown;
   separator?: string;
+  texts?: Record<string, unknown>;
 }
 
 export interface BreadcrumbsDocumentationProps {
@@ -138,6 +139,21 @@ export interface ButtonProps {
 }
 
 export interface ButtonDocumentationProps {
+  [key: string]: unknown;
+}
+
+export interface CalloutProps {
+  [key: string]: unknown;
+  content?: unknown;
+  icon?: unknown;
+  size?: 'sm' | 'md';
+  text?: string;
+  title?: string;
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  variant?: 'soft' | 'outlined' | 'ghost';
+}
+
+export interface CalloutDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -514,6 +530,7 @@ export interface DropDownProps {
   options?: unknown[];
   placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
   size?: 'sm' | 'md' | 'lg';
+  texts?: Record<string, unknown>;
   trigger?: 'click' | 'hover';
   variant?: 'outlined' | 'filled' | 'soft' | 'ghost' | 'plain';
 }
@@ -563,6 +580,25 @@ export interface ExternalDepsProbeProps {
   [key: string]: unknown;
   date?: string;
   markdown?: string;
+}
+
+export interface FeatureListProps {
+  [key: string]: unknown;
+  align?: 'start' | 'center';
+  ariaLabel?: string;
+  columns?: number;
+  headingLevel?: number;
+  items?: unknown[];
+  layout?: 'grid' | 'list' | 'compact';
+  minItemWidth?: string;
+  onItemClick?: (...args: unknown[]) => unknown;
+  size?: 'sm' | 'md';
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  variant?: 'plain' | 'soft' | 'outlined';
+}
+
+export interface FeatureListDocumentationProps {
+  [key: string]: unknown;
 }
 
 export interface FetchManagerProps {
@@ -630,6 +666,7 @@ export interface FormProps {
   resetText?: string;
   schema?: unknown[];
   submitText?: string;
+  texts?: Record<string, unknown>;
   variant?: string;
 }
 
@@ -643,10 +680,17 @@ export interface GamePageProps {
 
 export interface GridProps {
   [key: string]: unknown;
-  columns?: number;
+  align?: 'stretch' | 'start' | 'center' | 'end';
+  areas?: unknown;
+  autoRows?: string;
+  columns?: unknown;
   columnTemplate?: string;
-  gap?: string;
+  dense?: boolean;
+  gap?: unknown;
   items?: unknown[];
+  justify?: 'stretch' | 'start' | 'center' | 'end';
+  minItemWidth?: unknown;
+  rowGap?: unknown;
   rows?: number;
   rowTemplate?: string;
 }
@@ -662,6 +706,34 @@ export interface GsapDemoProps {
 }
 
 export interface GsapShowcaseProps {
+  [key: string]: unknown;
+}
+
+export interface HeatmapProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  cellSize?: number;
+  columns?: unknown[];
+  data?: unknown;
+  end?: unknown;
+  formatValue?: (...args: unknown[]) => unknown;
+  label?: (...args: unknown[]) => unknown;
+  labels?: boolean;
+  legend?: boolean;
+  levels?: number;
+  locale?: string;
+  onCellClick?: (...args: unknown[]) => unknown;
+  rows?: unknown[];
+  start?: unknown;
+  summary?: boolean;
+  texts?: Record<string, unknown>;
+  thresholds?: unknown[];
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  type?: 'calendar' | 'grid';
+  weekStart?: number;
+}
+
+export interface HeatmapDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -737,6 +809,7 @@ export interface InputProps {
   size?: string;
   step?: unknown;
   suffix?: string;
+  texts?: Record<string, unknown>;
   type?: string;
   validateOn?: 'blur' | 'input' | 'manual';
   validator?: (...args: unknown[]) => unknown;
@@ -748,13 +821,73 @@ export interface InputDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface JsonViewerProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  copyable?: boolean;
+  data?: unknown;
+  expandDepth?: number;
+  maxHeight?: string;
+  maxStringLength?: number;
+  onCopy?: (...args: unknown[]) => unknown;
+  onSelect?: (...args: unknown[]) => unknown;
+  rootName?: string;
+  search?: boolean;
+  size?: 'sm' | 'md';
+  sortKeys?: boolean;
+  texts?: Record<string, unknown>;
+  toolbar?: boolean;
+}
+
+export interface JsonViewerDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface LayoutProps {
   [key: string]: unknown;
+  aside?: unknown;
+  asideWidth?: unknown;
+  closeOnNavigate?: boolean;
+  collapseBelow?: unknown;
+  collapsedSidebar?: 'drawer' | 'hidden';
+  contentWidth?: unknown;
+  focusOnNavigate?: boolean;
+  footer?: unknown;
+  fullHeight?: boolean;
+  header?: unknown;
+  landmarks?: boolean;
   layout?: Record<string, unknown>;
+  main?: unknown;
+  onSidebarToggle?: (...args: unknown[]) => unknown;
+  sidebar?: unknown;
+  sidebarLabel?: string;
+  sidebarOpen?: boolean;
+  sidebarWidth?: unknown;
+  skipLink?: boolean;
+  stickyHeader?: boolean;
+  texts?: Record<string, unknown>;
   view?: Record<string, unknown>;
 }
 
 export interface LayoutDocumentationProps {
+  [key: string]: unknown;
+}
+
+export interface LightboxProps {
+  [key: string]: unknown;
+  index?: number;
+  items?: unknown[];
+  loop?: boolean;
+  maxZoom?: number;
+  onChange?: (...args: unknown[]) => unknown;
+  onClose?: (...args: unknown[]) => unknown;
+  onOpen?: (...args: unknown[]) => unknown;
+  texts?: Record<string, unknown>;
+  thumbnails?: boolean;
+  zoom?: boolean;
+}
+
+export interface LightboxDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -777,6 +910,7 @@ export interface LoadingProps {
   minVisibleMs?: number;
   progress?: number;
   size?: string;
+  texts?: Record<string, unknown>;
   variant?: string;
   welcome?: unknown;
 }
@@ -841,6 +975,8 @@ export interface ModalProps {
   scrollLock?: boolean;
   side?: 'right' | 'left' | 'top' | 'bottom';
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  swipeToClose?: boolean;
+  texts?: Record<string, unknown>;
   title?: string;
   tone?: 'neutral' | 'info' | 'success' | 'warning' | 'danger';
   width?: string;
@@ -877,9 +1013,11 @@ export interface NavbarProps {
   logo?: Record<string, unknown>;
   mobileMenu?: 'drawer' | 'fullscreen' | 'sheet';
   onMenuToggle?: (...args: unknown[]) => unknown;
+  panelContent?: unknown;
   position?: 'static' | 'sticky' | 'fixed';
   size?: 'sm' | 'md' | 'lg';
   spacer?: boolean;
+  texts?: Record<string, unknown>;
   variant?: 'filled' | 'surface' | 'glass' | 'transparent' | 'floating';
 }
 
@@ -943,8 +1081,31 @@ export interface QueryServiceDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface QuoteProps {
+  [key: string]: unknown;
+  align?: 'start' | 'center';
+  author?: string;
+  avatar?: unknown;
+  href?: string;
+  jobTitle?: string;
+  mark?: boolean;
+  organization?: string;
+  rating?: number;
+  size?: 'sm' | 'md' | 'lg';
+  source?: string;
+  text?: unknown;
+  texts?: Record<string, unknown>;
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  variant?: 'plain' | 'soft' | 'outlined';
+}
+
+export interface QuoteDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface RadioGroupProps {
   [key: string]: unknown;
+  ariaLabel?: string;
   customColor?: Record<string, unknown>;
   disabled?: boolean;
   label?: string;
@@ -956,10 +1117,35 @@ export interface RadioGroupProps {
   required?: boolean;
   size?: 'sm' | 'md' | 'lg';
   value?: string;
-  variant?: 'default' | 'outlined' | 'soft' | 'plain' | 'card';
+  variant?: 'default' | 'outlined' | 'soft' | 'plain' | 'card' | 'buttons';
 }
 
 export interface RadioGroupDocumentationProps {
+  [key: string]: unknown;
+}
+
+export interface RatingProps {
+  [key: string]: unknown;
+  allowHalf?: boolean;
+  ariaLabel?: string;
+  clearable?: boolean;
+  disabled?: boolean;
+  icon?: string;
+  label?: string;
+  labels?: unknown[];
+  max?: number;
+  name?: string;
+  onChange?: (...args: unknown[]) => unknown;
+  readOnly?: boolean;
+  required?: boolean;
+  showValue?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  texts?: Record<string, unknown>;
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  value?: number;
+}
+
+export interface RatingDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -976,6 +1162,25 @@ export interface RouteProps {
 }
 
 export interface RouteDocumentationProps {
+  [key: string]: unknown;
+}
+
+export interface SectionHeaderProps {
+  [key: string]: unknown;
+  actions?: unknown[];
+  align?: 'start' | 'center';
+  anchor?: string;
+  description?: string;
+  divider?: boolean;
+  eyebrow?: string;
+  headingLevel?: number;
+  size?: 'sm' | 'md' | 'lg';
+  title?: string;
+  titleStyle?: 'plain' | 'underline' | 'rule';
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+}
+
+export interface SectionHeaderDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -1004,6 +1209,7 @@ export interface SelectProps {
   selectAll?: boolean;
   selected?: unknown[];
   size?: 'sm' | 'md' | 'lg';
+  texts?: Record<string, unknown>;
   value?: unknown[];
   variant?: 'outlined' | 'filled' | 'ghost';
   virtual?: 'auto' | 'on' | 'off';
@@ -1043,6 +1249,14 @@ export interface SideMenuDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface SkeletonServiceProps {
+  [key: string]: unknown;
+}
+
+export interface SkeletonServiceDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface SliderProps {
   [key: string]: unknown;
   customColor?: Record<string, unknown>;
@@ -1064,6 +1278,24 @@ export interface SliderProps {
 }
 
 export interface SliderDocumentationProps {
+  [key: string]: unknown;
+}
+
+export interface StepsProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  connector?: boolean;
+  headingLevel?: number;
+  items?: unknown[];
+  marker?: 'number' | 'icon' | 'dot';
+  orientation?: 'vertical' | 'horizontal';
+  size?: 'sm' | 'md';
+  start?: number;
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  variant?: 'soft' | 'filled' | 'outlined';
+}
+
+export interface StepsDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -1167,6 +1399,7 @@ export interface TabsProps {
   orientation?: 'horizontal' | 'vertical';
   size?: 'sm' | 'md' | 'lg';
   stateKey?: string;
+  texts?: Record<string, unknown>;
   urlParam?: string;
   variant?: 'underline' | 'pill' | 'segmented' | 'enclosed' | 'primary' | 'secondary';
 }
@@ -1230,6 +1463,7 @@ export interface ThemeCreatorProps {
 
 export interface ThemeSelectorProps {
   [key: string]: unknown;
+  texts?: Record<string, unknown>;
 }
 
 export interface ThemeSelectorDocumentationProps {
@@ -1241,6 +1475,7 @@ export interface ThemeSwitcherProps {
   display?: Record<string, unknown>;
   label?: string;
   onChange?: (...args: unknown[]) => unknown;
+  texts?: Record<string, unknown>;
   themes?: unknown[];
   variant?: 'button' | 'menu-item';
 }
@@ -1261,12 +1496,33 @@ export interface ThreeShowcaseProps {
   [key: string]: unknown;
 }
 
+export interface TimelineProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  dateFormat?: 'date' | 'datetime' | 'time' | 'month' | 'year' | 'relative' | 'none';
+  groupBy?: 'none' | 'year' | 'month' | 'day';
+  headingLevel?: number;
+  items?: unknown[];
+  layout?: 'stacked' | 'split' | 'alternate';
+  locale?: string;
+  marker?: 'dot' | 'icon';
+  size?: 'sm' | 'md';
+  sort?: 'none' | 'newest' | 'oldest';
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  variant?: 'soft' | 'filled' | 'outlined';
+}
+
+export interface TimelineDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface ToastProps {
   [key: string]: unknown;
   customColor?: Record<string, unknown>;
   dismissable?: boolean;
   duration?: number;
   message?: string;
+  texts?: Record<string, unknown>;
   type?: string;
 }
 
@@ -1351,6 +1607,7 @@ export interface TreeViewProps {
   selection?: 'none' | 'single' | 'multiple';
   size?: 'sm' | 'md' | 'lg';
   stateKey?: string;
+  texts?: Record<string, unknown>;
   virtual?: boolean;
 }
 
@@ -1392,6 +1649,8 @@ export interface SliceComponentPropsMap {
   BreadcrumbsDocumentation: BreadcrumbsDocumentationProps;
   Button: ButtonProps;
   ButtonDocumentation: ButtonDocumentationProps;
+  Callout: CalloutProps;
+  CalloutDocumentation: CalloutDocumentationProps;
   Card: CardProps;
   CardDocumentation: CardDocumentationProps;
   Checkbox: CheckboxProps;
@@ -1438,6 +1697,8 @@ export interface SliceComponentPropsMap {
   EmptyState: EmptyStateProps;
   EmptyStateDocumentation: EmptyStateDocumentationProps;
   ExternalDepsProbe: ExternalDepsProbeProps;
+  FeatureList: FeatureListProps;
+  FeatureListDocumentation: FeatureListDocumentationProps;
   FetchManager: FetchManagerProps;
   FetchManagerDocumentation: FetchManagerDocumentationProps;
   FileDownloadService: FileDownloadServiceProps;
@@ -1451,6 +1712,8 @@ export interface SliceComponentPropsMap {
   GridDocumentation: GridDocumentationProps;
   GsapDemo: GsapDemoProps;
   GsapShowcase: GsapShowcaseProps;
+  Heatmap: HeatmapProps;
+  HeatmapDocumentation: HeatmapDocumentationProps;
   HtmlService: HtmlServiceProps;
   HtmlServiceDocumentation: HtmlServiceDocumentationProps;
   Icon: IconProps;
@@ -1461,8 +1724,12 @@ export interface SliceComponentPropsMap {
   InfiniteScrollServiceDocumentation: InfiniteScrollServiceDocumentationProps;
   Input: InputProps;
   InputDocumentation: InputDocumentationProps;
+  JsonViewer: JsonViewerProps;
+  JsonViewerDocumentation: JsonViewerDocumentationProps;
   Layout: LayoutProps;
   LayoutDocumentation: LayoutDocumentationProps;
+  Lightbox: LightboxProps;
+  LightboxDocumentation: LightboxDocumentationProps;
   Link: LinkProps;
   LinkDocumentation: LinkDocumentationProps;
   Loading: LoadingProps;
@@ -1488,20 +1755,30 @@ export interface SliceComponentPropsMap {
   PropsTable: PropsTableProps;
   QueryService: QueryServiceProps;
   QueryServiceDocumentation: QueryServiceDocumentationProps;
+  Quote: QuoteProps;
+  QuoteDocumentation: QuoteDocumentationProps;
   RadioGroup: RadioGroupProps;
   RadioGroupDocumentation: RadioGroupDocumentationProps;
+  Rating: RatingProps;
+  RatingDocumentation: RatingDocumentationProps;
   RealtimeService: RealtimeServiceProps;
   RealtimeServiceDocumentation: RealtimeServiceDocumentationProps;
   Route: RouteProps;
   RouteDocumentation: RouteDocumentationProps;
+  SectionHeader: SectionHeaderProps;
+  SectionHeaderDocumentation: SectionHeaderDocumentationProps;
   Select: SelectProps;
   SelectDocumentation: SelectDocumentationProps;
   ShortcutService: ShortcutServiceProps;
   ShortcutServiceDocumentation: ShortcutServiceDocumentationProps;
   SideMenu: SideMenuProps;
   SideMenuDocumentation: SideMenuDocumentationProps;
+  SkeletonService: SkeletonServiceProps;
+  SkeletonServiceDocumentation: SkeletonServiceDocumentationProps;
   Slider: SliderProps;
   SliderDocumentation: SliderDocumentationProps;
+  Steps: StepsProps;
+  StepsDocumentation: StepsDocumentationProps;
   StorageService: StorageServiceProps;
   StorageServiceDocumentation: StorageServiceDocumentationProps;
   Switch: SwitchProps;
@@ -1521,6 +1798,8 @@ export interface SliceComponentPropsMap {
   ThreeAimTrainer: ThreeAimTrainerProps;
   ThreeGalaxy: ThreeGalaxyProps;
   ThreeShowcase: ThreeShowcaseProps;
+  Timeline: TimelineProps;
+  TimelineDocumentation: TimelineDocumentationProps;
   Toast: ToastProps;
   ToastDocumentation: ToastDocumentationProps;
   ToastProvider: ToastProviderProps;

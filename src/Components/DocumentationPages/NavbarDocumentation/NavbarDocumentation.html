@@ -16,7 +16,7 @@
 <ul><li><code>variant</code>:</li></ul>
 <p>- <code>'filled'</code> (default): the primary colour, the original look. Same name as in <code>Button</code>; <code>'solid'</code> also works.   - <code>'surface'</code>: the page colour with a fine bottom border.   - <code>'glass'</code>: translucent, blurring what scrolls under it.   - <code>'transparent'</code>: no fill, for use over a hero; it turns into <code>surface</code> once the page scrolls.   - <code>'floating'</code>: a detached pill with a shadow.</p>
 <ul><li><code>size</code>: <code>'sm'</code> (52px), <code>'md'</code> (64px, default) or <code>'lg'</code> (76px). To use another height, set the <code>--nav-height</code> CSS property on the element.</li><li><code>align</code>: where the links sit, <code>'start'</code>, <code>'center'</code> (default) or <code>'end'</code>.</li><li><code>indicator</code> marks the current page:</li></ul>
-<p>- <code>'underline'</code> (default): a bar that slides under the link.   - <code>'pill'</code>: a soft background that slides behind the link.   - <code>'none'</code>: colour only.</p>
+<p>- <code>'underline'</code> (default): a short bar as wide as the label, on the bottom edge of the bar, like a tab. The other links are quieter, so the current one also reads by contrast. In the mobile panel there is no bar: the current page is in full colour and bold.   - <code>'pill'</code>: a soft background that slides behind the link.   - <code>'none'</code>: colour only.</p>
 <h2 id="the-current-page">The current page</h2>
 <p>The link whose <code>path</code> matches the URL gets <code>aria-current="page"</code> and the indicator.</p>
 <ul><li>An exact match wins. Otherwise the longest matching prefix wins, so <code>/docs/table</code> keeps "Docs" marked.</li><li><code>'/'</code> only matches itself, and an item with <code>exact: true</code> only matches its own path.</li><li>A dropdown counts as current when any page inside it does, at any depth.</li><li>The bar follows <code>slice.router</code> navigations and the browser's back and forward buttons. <code>setActivePath(path)</code> sets it by hand; <code>setActivePath(null)</code> goes back to following the URL.</li></ul>
@@ -30,7 +30,7 @@
 <p>- <code>'drawer'</code> (default): a panel from the side.   - <code>'fullscreen'</code>: the whole screen.   - <code>'sheet'</code>: a panel hanging under the bar, which stays visible.</p>
 <ul><li>While the menu is open:</li></ul>
 <p>- Focus stays inside it.   - <strong>Escape</strong>, the ✕, a tap on the dimmed area or following a link closes it, and focus returns to the hamburger.   - The page behind it does not scroll.</p>
-<ul><li>The menu closes on its own when the window grows past the breakpoint.</li><li>Dropdowns inside it stack their submenus with a "‹ Back" row.</li><li><code>openMenu()</code>, <code>closeMenu()</code>, <code>toggleMenu()</code> and <code>isMenuOpen</code> drive it from code. <code>onMenuToggle(open)</code> tells you when it opens or closes.</li></ul>
+<ul><li>The menu closes on its own when the window grows past the breakpoint.</li><li>Dropdowns inside it stack their submenus with a "‹ Back" row.</li><li><code>openMenu()</code>, <code>closeMenu()</code>, <code>toggleMenu()</code> and <code>isMenuOpen</code> drive it from code. <code>onMenuToggle(open)</code> tells you when it opens or closes.</li><li><code>panelContent</code>: a node or component shown <strong>only in the mobile panel</strong>, under the links — a section's own navigation (a docs tree, account links, filters). It keeps the page's colours, is hidden on wide screens, and is never destroyed by the navbar, so you can move it back to your page's sidebar on desktop. This way a page has one menu button, not one for the site and another for the section.</li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="practical-setups">Practical Setups</h2>
@@ -47,5 +47,4 @@
 <div class="callout callout-warning"><code>hideOnScroll</code> and the scrolled state listen to the window's scroll. A bar inside a scrolling panel (not the page) will not see that panel scroll.</div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.navbar.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>openMenu</code>, <code>closeMenu</code>.</p>
-<div class="component-block" data-block-id="doc-block-7"></div>
 </div>

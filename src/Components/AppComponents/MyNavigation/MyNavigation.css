@@ -1,19 +1,11 @@
+/* The page's table of contents. A plain block: the docs Layout puts it in its
+   aside column (sticky under the site bar) and hides it on phones. */
 slice-mynavigation {
-  position: fixed;
-  top: var(--docs-navbar-height, 72px);
-  right: 0;
-  font-family: var(--font-family);
-  background-color: var(--primary-background-color);
-  border-left: 1px solid color-mix(in srgb, var(--primary-color-shade) 65%, transparent);
   display: flex;
   align-items: flex-start;
-  height: calc(100% - var(--docs-navbar-height, 72px));
-  width: var(--docs-right-sidebar-width, 12%);
-  transition: transform 0.3s ease, width 0.3s ease;
-  overflow-x: hidden;
-  overflow-y: auto;
+  width: 100%;
   box-sizing: border-box;
-  z-index: 90;
+  font-family: var(--font-family);
 }
 .my_navigation {
   display: flex;
@@ -30,12 +22,6 @@ slice-mynavigation {
   background: var(--secondary-background-color);
 }
 
-@media only screen and (max-width: 770px) {
-  slice-mynavigation {
-    visibility: hidden;
-    pointer-events: none;
-  }
-}
 slice-mynavigation a[class^="nav-"] {
   text-decoration: none;
   color: var(--font-primary-color);

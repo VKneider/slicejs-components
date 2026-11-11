@@ -52,13 +52,10 @@ export default class ComponentsPage extends HTMLElement {
               ariaLabel: 'Documentation',
               // While searching, show every match opened.
               expanded: query ? 'all' : 'none',
-               onClick: async (item) => {
+               onClick: async (/** @type {any} */ item) => {
                   if (item.path) {
                       treeView.setActiveTreeItem(item);
                       await slice.router.navigate(item.path);
-                      if (typeof mainMenu.handleCloseMenu === 'function') {
-                        mainMenu.handleCloseMenu();
-                     }
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                       document.documentElement.scrollTop = 0;
                   }
@@ -92,17 +89,40 @@ export default class ComponentsPage extends HTMLElement {
          page: visualComponentsMultiRoute,
       });
 
-      // Crear el Layout
+      // The docs frame: the tree on the left, the page in the middle, its
+      // table of contents on the right. The site Navbar lives outside (App), fixed
+      // over the top; `--slice-layout-sticky-top` (ComponentsPage.css) keeps the
+      // sticky sidebars under it.
+      const navbar = /** @type {any} */ (document.querySelector('slice-nav-bar'));
+      const breakpoint = Number(navbar?.breakpoint) || 768;
       const layOut = await slice.build('Layout', {
-         view: visualComponentsMultiRoute,
+         sidebar: mainMenu,
+         main: visualComponentsMultiRoute,
+         aside: myNavigation,
+         sidebarLabel: 'Documentation',
+         sidebarWidth: 'clamp(220px, 17vw, 320px)',
+         asideWidth: 'clamp(180px, 12vw, 250px)',
+         fullHeight: true,
+         // Collapse exactly when the Navbar does (same media query), and do not
+         // add a second menu button: on phones the tree goes into the Navbar's panel.
+         collapseBelow: `(max-width: ${breakpoint}px)`,
+         collapsedSidebar: 'hidden',
+         focusOnNavigate: true,
       });
-
-      // Agregar componentes al Layout
-      layOut.onLayOut(mainMenu);
-      layOut.onLayOut(myNavigation);
-
-      // Añadir el Layout al componente
       this.appendChild(layOut);
+
+      // ONE menu button on narrow screens: the Navbar's. There the docs menu
+      // (search + tree) moves into the Navbar's mobile panel; on wide screens and
+      // outside /docs it goes back to the Layout's sidebar.
+      this._mainMenu = mainMenu;
+      this._layOut = layOut;
+      this._placeMenu = () => this._placeDocsMenu();
+      window.addEventListener('resize', this._placeMenu);
+      window.addEventListener('router:change', this._placeMenu);
+      if (slice.events && typeof slice.events.subscribe === 'function') {
+         this._routeSubscription = slice.events.subscribe('router:change', this._placeMenu, { component: this });
+      }
+      this._placeDocsMenu();
 
       const defaultDocsPath = routesConfig?.defaultRoute?.path || '/docs';
       const initialPath = resolveInitialDocsPath(slice.path, defaultDocsPath);
@@ -116,6 +136,39 @@ export default class ComponentsPage extends HTMLElement {
       }
    }
 
+   // A cached MultiRoute brought the page back (e.g. Home → Docs).
+   update() {
+      this._placeDocsMenu?.();
+   }
+
+   _placeDocsMenu() {
+      const menu = this._mainMenu;
+      if (!menu) return;
+      const navbar = /** @type {any} */ (document.querySelector('slice-nav-bar'));
+      const breakpoint = Number(navbar?.breakpoint) || 768;
+      const narrow = window.matchMedia(`(max-width: ${breakpoint}px)`).matches;
+      const onDocs = typeof slice.path === 'string' && slice.path.startsWith('/docs');
+      if (navbar && narrow && onDocs) {
+         if (navbar.panelContent !== menu) navbar.panelContent = menu;
+      } else {
+         if (navbar && navbar.panelContent === menu) navbar.panelContent = null;
+         // Same node again: the Layout keeps it (nothing is destroyed) and puts it back.
+         if (!this._layOut.querySelector('.slice-layout__sidebar')?.contains(menu)) this._layOut.sidebar = menu;
+      }
+   }
+
+   beforeDestroy() {
+      window.removeEventListener('resize', this._placeMenu);
+      window.removeEventListener('router:change', this._placeMenu);
+      if (this._routeSubscription && typeof slice.events?.unsubscribe === 'function') {
+         slice.events.unsubscribe('router:change', this._routeSubscription);
+      }
+      this._routeSubscription = null;
+      // The menu may be living in the Navbar: take it out so it is destroyed with this page.
+      const navbar = /** @type {any} */ (document.querySelector('slice-nav-bar'));
+      if (navbar && navbar.panelContent === this._mainMenu) navbar.panelContent = null;
+
+   }
 }
 
 customElements.define('slice-components-page', ComponentsPage);

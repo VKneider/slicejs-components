@@ -87,6 +87,14 @@
       "bytes": 38789,
       "kind": "demo"
     },
+    "/docs/display/callout": {
+      "path": "/og/docs-display-callout-79e47c991a.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 52487,
+      "kind": "demo"
+    },
     "/docs/display/chip": {
       "path": "/og/docs-display-chip-6dcc6808c9.png",
       "width": 1200,
@@ -119,12 +127,76 @@
       "bytes": 35558,
       "kind": "demo"
     },
+    "/docs/display/feature-list": {
+      "path": "/og/docs-display-feature-list-a048200094.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 60112,
+      "kind": "demo"
+    },
+    "/docs/display/heatmap": {
+      "path": "/og/docs-display-heatmap-82986a21a8.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 77060,
+      "kind": "demo"
+    },
     "/docs/display/icon": {
       "path": "/og/docs-display-icon-6107459cca.png",
       "width": 1200,
       "height": 630,
       "type": "image/png",
       "bytes": 24797,
+      "kind": "demo"
+    },
+    "/docs/display/json-viewer": {
+      "path": "/og/docs-display-json-viewer-63b52b4000.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 44675,
+      "kind": "demo"
+    },
+    "/docs/display/lightbox": {
+      "path": "/og/docs-display-lightbox-e3cb9ff31d.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 56229,
+      "kind": "demo"
+    },
+    "/docs/display/quote": {
+      "path": "/og/docs-display-quote-75795e91b2.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 55288,
+      "kind": "demo"
+    },
+    "/docs/display/section-header": {
+      "path": "/og/docs-display-section-header-96ee6f9046.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 49394,
+      "kind": "demo"
+    },
+    "/docs/display/steps": {
+      "path": "/og/docs-display-steps-08ee4ffdac.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 54828,
+      "kind": "demo"
+    },
+    "/docs/display/timeline": {
+      "path": "/og/docs-display-timeline-68844031d1.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 42774,
       "kind": "demo"
     },
     "/docs/display/tooltip": {
@@ -245,6 +317,14 @@
       "height": 630,
       "type": "image/png",
       "bytes": 27290,
+      "kind": "demo"
+    },
+    "/docs/input/rating": {
+      "path": "/og/docs-input-rating-c25f92ed56.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 34872,
       "kind": "demo"
     },
     "/docs/input/select": {
@@ -525,6 +605,14 @@
       "height": 630,
       "type": "image/png",
       "bytes": 55181,
+      "kind": "demo"
+    },
+    "/docs/services/skeleton-service": {
+      "path": "/og/docs-services-skeleton-service-aa09ef7bc7.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 47869,
       "kind": "demo"
     },
     "/docs/services/storage-service": {

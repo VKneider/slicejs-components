@@ -289,6 +289,14 @@ test.describe('RadioGroup', () => {
       await expect(page.getByRole('radio', { name: 'Pro' })).toBeVisible();
    });
 
+   test('ariaLabel names a group without a legend; a label wins over it', async ({ mount }) => {
+      const c = await mount('RadioGroup', { options: PLANS, ariaLabel: 'Plan' });
+      await expect(c.component.getByRole('radiogroup', { name: 'Plan' })).toBeVisible();
+      await c.component.evaluate((el) => { el.label = 'Choose a plan'; });
+      await expect(c.component.getByRole('radiogroup', { name: 'Choose a plan' })).toBeVisible();
+      await expect(c.locator('fieldset')).not.toHaveAttribute('aria-label', /.*/);
+   });
+
    test('no label: the legend is hidden and aria-labelledby is absent', async ({ mount }) => {
       const c = await mount('RadioGroup', { options: PLANS });
       await expect(c.locator('legend')).toBeHidden();
@@ -374,6 +382,28 @@ test.describe('RadioGroup', () => {
       const fieldset = c.locator('fieldset');
       await expect(fieldset).toHaveCSS('padding-top', '0px');
       await expect(fieldset).toHaveCSS('border-top-width', '0px');
+   });
+
+   test('variant=buttons: a joined bar, no circles, the chosen option filled', async ({ mount, page }) => {
+      const c = await mount('RadioGroup', { options: PLANS, variant: 'buttons', orientation: 'horizontal', value: 'pro', ariaLabel: 'Plan' });
+      const options = c.locator('.slice_radio_option');
+      await expect(c.locator('.slice_radio_mark').first()).toBeHidden();
+      const tops = await options.evaluateAll((o) => o.map((n) => Math.round(n.getBoundingClientRect().top)));
+      expect(new Set(tops).size).toBe(1);
+      const bg = (i) => options.nth(i).evaluate((n) => getComputedStyle(n).backgroundColor);
+      expect(await bg(1)).not.toBe(await bg(0));
+      // Still radios: arrows move and choose.
+      await c.component.getByRole('radio', { name: 'Pro' }).focus();
+      await page.keyboard.press('ArrowRight');
+      expect(await c.component.evaluate((el) => el.value)).toBe('team');
+      await expect(options.nth(2)).toHaveClass(/slice_radio_option--checked/);
+      await expect(options.nth(2)).toHaveCSS('outline-style', 'solid');
+   });
+
+   test('variant=buttons, vertical: stacked', async ({ mount }) => {
+      const c = await mount('RadioGroup', { options: PLANS, variant: 'buttons' });
+      const tops = await c.locator('.slice_radio_option').evaluateAll((o) => o.map((n) => Math.round(n.getBoundingClientRect().top)));
+      expect(new Set(tops).size).toBe(3);
    });
 
    test('variant=card outlines the selected card with the accent', async ({ mount }) => {

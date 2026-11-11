@@ -2,16 +2,24 @@
 
 slice-grid {
   display: block;
+  width: 100%;
+  min-width: 0;
   background: none;
   background-color: transparent;
 }
 
 slice-grid .grid-container {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   grid-template-rows: repeat(1, 1fr);
   gap: 10px;
   margin: 0 auto;
   background: none;
   background-color: transparent;
+}
+
+/* A long word or a wide table inside a cell must not push the column wider
+   than its share: grid items default to min-width: auto (their content). */
+slice-grid .grid-container > .grid-item {
+  min-width: 0;
 }

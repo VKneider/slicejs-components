@@ -1,0 +1,35 @@
+<div class="documentation-content calloutdocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="callout">
+     <span class="doc-title-text">Callout</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>Callout</code> highlights a passage inside content: "Note: grades are published on Fridays", "Tip: press ? to see every shortcut", "Before you start, back up your database", the definition of a term in a lesson. It is part of what the page <strong>says</strong>, like a paragraph — it does not report that something just happened.</p>
+<p>Two choices, as in <span data-inline-link="0"></span> and <span data-inline-link="1"></span>:</p>
+<ul><li><strong><code>tone</code></strong> is what it <strong>means</strong>: <code>neutral</code>, <code>accent</code>, <code>info</code> (the default), <code>success</code>, <code>warning</code>, <code>danger</code>. Each has its icon (<code>neutral</code> has none).</li><li><strong><code>variant</code></strong> is how <strong>loud</strong> it is: <code>soft</code> (a tint and a side bar, the default), <code>outlined</code>, or <code>ghost</code> (only the bar, for long texts where boxes would be too much).</li></ul>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Notes and tips in documentation, lessons and articles</strong>: something the reader should not miss while reading.</li><li><strong>A warning before a step</strong>: "This deletes every row. Export them first."</li><li><strong>A definition or a key idea</strong> in course material.</li><li><strong>Conditions next to an offer</strong>: "Prices in USD. Taxes are added at checkout."</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>The result of something the user did</strong> (saved, failed, undo): an <span data-inline-link="2"></span>. It is a live region, so screen readers announce it; a Callout is read in its place, like the text around it.</li><li><strong>Something that happened elsewhere or should float</strong>: a <span data-inline-link="3"></span>.</li><li><strong>Content that folds open</strong> (FAQ, details): <span data-inline-link="4"></span>.</li><li><strong>Every other paragraph</strong>. A page full of callouts has nothing highlighted.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>title</code> (a short bold label: "Note", "Before you start"), <code>text</code> (one paragraph) and <code>content</code> for more: a string (another paragraph), a node, a component, or an array of them. Strings are always text, never markup.</li><li><code>icon</code>: <code>''</code> uses the tone's icon, an Icon name (or <code>{ name }</code>) replaces it, <code>false</code> removes it.</li><li><code>role="note"</code>, named by its title; never <code>aria-live</code>. The icon is decorative: say the meaning in the title, not only with the colour.</li><li>Components in <code>content</code> are destroyed when the content is replaced and when the callout is destroyed.</li></ul>
+<h2 id="looks">Looks</h2>
+<ul><li><code>size</code>: <code>'md'</code> (default) or <code>'sm'</code>.</li><li>Same tone tokens as Alert and Badge (<code>--success-color-readable</code>…), so a theme that tunes one tunes all of them. Per-instance spacing: <code>--slice-callout-pad-x</code>, <code>--slice-callout-pad-y</code>, <code>--slice-callout-bar</code>, <code>--slice-callout-radius</code>.</li></ul>
+<h2 id="live-preview">Live Preview</h2>
+<div class="component-block" data-block-id="doc-block-1"></div>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Name it: a title such as "Note", "Tip" or "Before you start" is what a screen reader announces, and what a skimming reader sees first.</div>
+<div class="callout callout-tip">Use <code>ghost</code> in long texts. A thin bar marks the passage without breaking the reading rhythm.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">A Callout is not feedback. If the text appears because something just happened (a save, an error), use an Alert so assistive technology announces it.</div>
+<div class="callout callout-warning">Do not rely on colour. "Warning" in the title says what the yellow means to everyone.</div>
+<div class="component-block" data-block-id="doc-block-6"></div>
+</div>

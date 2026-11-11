@@ -1,5 +1,5 @@
 // Dates the way people say them: "3 hours ago", "Oct 24, 2026, 9:10 AM".
-// Used by DataList (timestamps, grouping by day) and DescriptionList (dates).
+// Used by DataList (timestamps, grouping by day), DescriptionList (dates), Timeline and Heatmap.
 
 /** A Date from a Date, a timestamp or an ISO text; null when it is not one. */
 export function toDate(value) {

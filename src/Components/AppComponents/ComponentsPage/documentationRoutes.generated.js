@@ -93,6 +93,51 @@ const documentationRoutes = {
         component: 'ChipDocumentation'
       },
       {
+        title: 'SectionHeader',
+        path: '/docs/display/section-header',
+        component: 'SectionHeaderDocumentation'
+      },
+      {
+        title: 'FeatureList',
+        path: '/docs/display/feature-list',
+        component: 'FeatureListDocumentation'
+      },
+      {
+        title: 'Callout',
+        path: '/docs/display/callout',
+        component: 'CalloutDocumentation'
+      },
+      {
+        title: 'Steps',
+        path: '/docs/display/steps',
+        component: 'StepsDocumentation'
+      },
+      {
+        title: 'Timeline',
+        path: '/docs/display/timeline',
+        component: 'TimelineDocumentation'
+      },
+      {
+        title: 'Quote',
+        path: '/docs/display/quote',
+        component: 'QuoteDocumentation'
+      },
+      {
+        title: 'JsonViewer',
+        path: '/docs/display/json-viewer',
+        component: 'JsonViewerDocumentation'
+      },
+      {
+        title: 'Heatmap',
+        path: '/docs/display/heatmap',
+        component: 'HeatmapDocumentation'
+      },
+      {
+        title: 'Lightbox',
+        path: '/docs/display/lightbox',
+        component: 'LightboxDocumentation'
+      },
+      {
         title: 'CodeVisualizer',
         path: '/docs/display/code-visualizer',
         component: 'CodeVisualizerDocumentation'
@@ -199,6 +244,11 @@ const documentationRoutes = {
         title: 'Switch',
         path: '/docs/input/switch',
         component: 'SwitchDocumentation'
+      },
+      {
+        title: 'Rating',
+        path: '/docs/input/rating',
+        component: 'RatingDocumentation'
       },
       {
         title: 'Slider',
@@ -354,6 +404,11 @@ const documentationRoutes = {
         title: 'ShortcutService',
         path: '/docs/services/shortcut-service',
         component: 'ShortcutServiceDocumentation'
+      },
+      {
+        title: 'SkeletonService',
+        path: '/docs/services/skeleton-service',
+        component: 'SkeletonServiceDocumentation'
       },
       {
         title: 'FetchManager',

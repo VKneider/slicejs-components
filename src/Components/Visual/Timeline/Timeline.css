@@ -1,0 +1,376 @@
+/* Timeline — events in time on one line. stacked by default; split and alternate where
+   the container has room. */
+
+slice-timeline {
+  --slice-timeline-color: var(--primary-color, #7c3aed);
+  --slice-timeline-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  --slice-timeline-on-color: var(--primary-color-contrast, #fff);
+  --slice-timeline-dot: 12px;
+  --slice-timeline-icon: 28px;
+  --slice-timeline-rail: var(--slice-timeline-dot);
+  --slice-timeline-gap: 16px;
+  --slice-timeline-space: 26px;
+  --slice-timeline-date-width: 9rem;
+  --slice-timeline-line: 2px;
+
+  display: block;
+  /* A content block takes its row, also inside a flex or grid parent (and a container
+     query needs a definite width). */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: slice-timeline;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-timeline[hidden] {
+  display: none;
+}
+
+slice-timeline[data-size='sm'] {
+  --slice-timeline-dot: 10px;
+  --slice-timeline-icon: 24px;
+  --slice-timeline-gap: 12px;
+  --slice-timeline-space: 18px;
+}
+
+slice-timeline[data-marker='icon'] {
+  --slice-timeline-rail: var(--slice-timeline-icon);
+}
+
+/* Tones: on the host (every marker) or on one event (its marker). */
+slice-timeline[data-tone='neutral'],
+slice-timeline .slice-timeline__item[data-tone='neutral'] {
+  --slice-timeline-color: var(--medium-color, #8a8799);
+  --slice-timeline-ink: var(--font-primary-color, #1d1b29);
+  --slice-timeline-on-color: var(--medium-contrast, #fff);
+}
+slice-timeline .slice-timeline__item[data-tone='accent'] {
+  --slice-timeline-color: var(--primary-color, #7c3aed);
+  --slice-timeline-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  --slice-timeline-on-color: var(--primary-color-contrast, #fff);
+}
+slice-timeline[data-tone='info'],
+slice-timeline .slice-timeline__item[data-tone='info'] {
+  --slice-timeline-color: var(--info-color, #0284c7);
+  --slice-timeline-ink: var(--info-color-readable, color-mix(in srgb, var(--info-color, #0284c7) 64%, #000));
+}
+slice-timeline[data-tone='success'],
+slice-timeline .slice-timeline__item[data-tone='success'] {
+  --slice-timeline-color: var(--success-color, #16a34a);
+  --slice-timeline-ink: var(--success-color-readable, color-mix(in srgb, var(--success-color, #16a34a) 72%, #000));
+  --slice-timeline-on-color: var(--success-contrast, #fff);
+}
+slice-timeline[data-tone='warning'],
+slice-timeline .slice-timeline__item[data-tone='warning'] {
+  --slice-timeline-color: var(--warning-color, #d97706);
+  --slice-timeline-ink: var(--warning-color-readable, color-mix(in srgb, var(--warning-color, #d97706) 66%, #000));
+  --slice-timeline-on-color: var(--warning-contrast, #fff);
+}
+slice-timeline[data-tone='danger'],
+slice-timeline .slice-timeline__item[data-tone='danger'] {
+  --slice-timeline-color: var(--danger-color, #dc2626);
+  --slice-timeline-ink: var(--danger-color-readable, color-mix(in srgb, var(--danger-color, #dc2626) 84%, #000));
+  --slice-timeline-on-color: var(--danger-contrast, #fff);
+}
+
+/* ── Groups ─────────────────────────────────────────────────────── */
+
+slice-timeline .slice-timeline__body {
+  display: grid;
+  gap: 8px;
+}
+
+slice-timeline .slice-timeline__group {
+  display: grid;
+  gap: 14px;
+}
+
+slice-timeline .slice-timeline__group + .slice-timeline__group {
+  margin-top: 18px;
+}
+
+slice-timeline .slice-timeline__group-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+/* ── Events (stacked) ───────────────────────────────────────────── */
+
+slice-timeline .slice-timeline__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+slice-timeline .slice-timeline__item {
+  display: grid;
+  grid-template-columns: var(--slice-timeline-rail) minmax(0, 1fr);
+  grid-template-areas:
+    'rail when'
+    'rail content';
+  column-gap: var(--slice-timeline-gap);
+  margin: 0;
+  min-width: 0;
+}
+
+slice-timeline .slice-timeline__when {
+  grid-area: when;
+  min-width: 0;
+}
+
+slice-timeline .slice-timeline__item:not(.has-date) .slice-timeline__when {
+  display: none;
+}
+
+slice-timeline .slice-timeline__rail {
+  grid-area: rail;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* The marker sits on the first line of the event (its date, or its title). */
+  padding-top: calc((1.45em - var(--slice-timeline-rail)) / 2);
+}
+
+/* The line to the next event: through the space between them. */
+slice-timeline .slice-timeline__item:not(:last-child) .slice-timeline__rail::after {
+  content: '';
+  flex: 1 1 auto;
+  width: var(--slice-timeline-line);
+  min-height: 14px;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--slice-timeline-color) 26%, transparent);
+}
+
+slice-timeline .slice-timeline__item[data-state='upcoming'] .slice-timeline__rail::after,
+slice-timeline .slice-timeline__item:has(+ [data-state='upcoming']) .slice-timeline__rail::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--font-primary-color, #1d1b29) 22%, transparent) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+slice-timeline .slice-timeline__content {
+  grid-area: content;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding-bottom: var(--slice-timeline-space);
+}
+
+slice-timeline .slice-timeline__item:last-child .slice-timeline__content {
+  padding-bottom: 0;
+}
+
+/* ── Markers ────────────────────────────────────────────────────── */
+
+slice-timeline .slice-timeline__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--slice-timeline-dot);
+  height: var(--slice-timeline-dot);
+  border-radius: 999px;
+  border: 2px solid var(--slice-timeline-color);
+  background: var(--primary-background-color, #fff);
+}
+
+slice-timeline[data-variant='filled'] .slice-timeline__marker,
+slice-timeline[data-variant='soft'] .slice-timeline__marker:not(.has-icon) {
+  background: var(--slice-timeline-color);
+}
+
+slice-timeline .slice-timeline__marker.has-icon {
+  width: var(--slice-timeline-icon);
+  height: var(--slice-timeline-icon);
+  border: 0;
+  color: var(--slice-timeline-ink);
+  background: color-mix(in srgb, var(--slice-timeline-color) 15%, var(--primary-background-color, #fff));
+}
+
+slice-timeline[data-marker='icon'] .slice-timeline__marker:not(.has-icon) {
+  /* An event without an icon keeps the line straight: a dot in an icon-sized slot. */
+  margin-block: calc((var(--slice-timeline-icon) - var(--slice-timeline-dot)) / 2);
+}
+
+slice-timeline[data-variant='filled'] .slice-timeline__marker.has-icon {
+  background: var(--slice-timeline-color);
+  color: var(--slice-timeline-on-color);
+}
+
+slice-timeline[data-variant='outlined'] .slice-timeline__marker.has-icon {
+  border: 2px solid var(--slice-timeline-color);
+  background: var(--primary-background-color, #fff);
+}
+
+/* current: a ring around it. upcoming: hollow and quiet. */
+slice-timeline .slice-timeline__item[data-state='current'] .slice-timeline__marker {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--slice-timeline-color) 22%, transparent);
+}
+
+slice-timeline .slice-timeline__item[data-state='upcoming'] .slice-timeline__marker {
+  border: 2px dashed color-mix(in srgb, var(--font-primary-color, #1d1b29) 35%, transparent);
+  background: var(--primary-background-color, #fff);
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+slice-timeline .slice-timeline__item[data-state='upcoming'] :is(.slice-timeline__title, .slice-timeline__text, .slice-timeline__date) {
+  color: var(--font-secondary-color, #5d5a6d);
+}
+
+slice-timeline .slice-timeline__item[data-state='upcoming'] .slice-timeline__title {
+  font-weight: 550;
+}
+
+/* ── Text ───────────────────────────────────────────────────────── */
+
+slice-timeline .slice-timeline__date {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--slice-timeline-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+slice-timeline .slice-timeline__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+slice-timeline[data-size='sm'] .slice-timeline__title {
+  font-size: 0.93rem;
+}
+
+slice-timeline .slice-timeline__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+slice-timeline .slice-timeline__link:hover {
+  color: var(--slice-timeline-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+slice-timeline .slice-timeline__link:focus-visible {
+  outline: 2px solid var(--primary-color, #7c3aed);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+slice-timeline .slice-timeline__badge {
+  display: inline-flex;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.6;
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--slice-timeline-color) 14%, transparent);
+  color: var(--slice-timeline-ink);
+}
+
+slice-timeline .slice-timeline__text {
+  margin: 0;
+  color: var(--font-secondary-color, #5d5a6d);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+slice-timeline[data-size='sm'] .slice-timeline__text {
+  font-size: 0.86rem;
+}
+
+slice-timeline .slice-timeline__extra {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+  min-width: 0;
+}
+
+slice-timeline .slice-timeline__extra > :is(p, ul, ol, pre, blockquote, figure) {
+  margin: 0;
+}
+
+/* ── split and alternate, where there is room ───────────────────── */
+
+@container slice-timeline (min-width: 560px) {
+  /* split: dates in their own column at the start. */
+  slice-timeline[data-layout='split'] .slice-timeline__item {
+    grid-template-columns: var(--slice-timeline-date-width) var(--slice-timeline-rail) minmax(0, 1fr);
+    grid-template-areas: 'when rail content';
+  }
+
+  slice-timeline[data-layout='split'] .slice-timeline__item:not(.has-date) .slice-timeline__when {
+    display: block;
+  }
+
+  slice-timeline[data-layout='split'] .slice-timeline__when {
+    text-align: end;
+  }
+
+  /* alternate: the line in the middle, events on both sides, the date across from them. */
+  slice-timeline[data-layout='alternate'] .slice-timeline__item {
+    grid-template-columns: minmax(0, 1fr) var(--slice-timeline-rail) minmax(0, 1fr);
+    grid-template-areas: 'when rail content';
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__item:not(.has-date) .slice-timeline__when {
+    display: block;
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__when {
+    text-align: end;
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__item:nth-child(even) {
+    grid-template-areas: 'content rail when';
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__item:nth-child(even) .slice-timeline__when {
+    text-align: start;
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__item:nth-child(even) .slice-timeline__content {
+    text-align: end;
+  }
+
+  slice-timeline[data-layout='split'] .slice-timeline__content,
+  slice-timeline[data-layout='alternate'] .slice-timeline__content {
+    padding-bottom: calc(var(--slice-timeline-space) + 4px);
+  }
+
+  slice-timeline[data-layout='split'] .slice-timeline__item:last-child .slice-timeline__content,
+  slice-timeline[data-layout='alternate'] .slice-timeline__item:last-child .slice-timeline__content {
+    padding-bottom: 0;
+  }
+
+  slice-timeline[data-layout='alternate'] .slice-timeline__group-title {
+    text-align: center;
+  }
+}
+
+/* Controls in the content keep their own width (a grid would stretch them). */
+slice-timeline .slice-timeline__extra > :is(slice-button, slice-badge, slice-chip, slice-link, a, button) {
+  justify-self: start;
+}

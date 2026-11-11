@@ -1,44 +1,38 @@
 slice-components-page {
   display: block;
   width: 100%;
-  min-height: 100vh;
   --docs-navbar-height: 72px;
-  --docs-left-sidebar-width: clamp(220px, 17vw, 320px);
-  --docs-right-sidebar-width: clamp(180px, 12vw, 250px);
-  --docs-shell-gap: 0px;
 }
 
-slice-components-page slice-layout {
-  display: block;
-  width: 100%;
-  min-height: 100vh;
-}
-
-slice-components-page slice-multi-route {
-  display: block;
-  position: relative;
-  z-index: 20;
-  margin: calc(var(--docs-navbar-height) + var(--docs-shell-gap)) var(--docs-right-sidebar-width) 0 var(--docs-left-sidebar-width);
-  padding: 12px 16px 24px;
+/* The docs frame is a Layout (sidebar · main · aside) under the site's fixed
+   Navbar. App already pads its content by the bar's height, so the frame only
+   needs the sticky offset and the remaining height. */
+slice-components-page > slice-layout {
+  --slice-layout-sticky-top: var(--docs-navbar-height);
+  --slice-layout-pad: 12px 16px 24px;
+  --slice-layout-surface: var(--primary-background-color);
+  --slice-layout-panel: var(--primary-background-color);
   min-height: calc(100vh - var(--docs-navbar-height));
-  box-sizing: border-box;
+  min-height: calc(100dvh - var(--docs-navbar-height));
 }
 
-@media only screen and (max-width: 1200px) {
-  slice-components-page {
-    --docs-left-sidebar-width: clamp(200px, 19vw, 280px);
-    --docs-right-sidebar-width: clamp(170px, 14vw, 230px);
-  }
-
-  slice-components-page slice-multi-route {
-    margin-right: var(--docs-right-sidebar-width);
-    margin-left: var(--docs-left-sidebar-width);
-  }
+/* The tree and the table of contents scroll inside their own full-height columns. */
+slice-components-page > slice-layout > .slice-layout__body > .slice-layout__sidebar,
+slice-components-page > slice-layout > .slice-layout__body > .slice-layout__aside {
+  height: calc(100dvh - var(--docs-navbar-height));
 }
 
-@media only screen and (max-width: 770px) {
-  slice-components-page slice-multi-route {
-    margin: var(--docs-navbar-height) 0 0 0;
-    padding: 14px 12px 24px;
+slice-components-page > slice-layout > .slice-layout__body > .slice-layout__sidebar {
+  overflow: hidden;
+}
+
+/* On phones the page's table of contents is not shown (it was not before either). */
+slice-components-page > slice-layout[data-collapsed] > .slice-layout__body > .slice-layout__aside {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  slice-components-page > slice-layout {
+    --slice-layout-pad: 14px 12px 24px;
   }
 }

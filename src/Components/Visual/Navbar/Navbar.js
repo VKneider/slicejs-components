@@ -155,6 +155,15 @@ export default class Navbar extends HTMLElement {
          default: null,
          required: false
       },
+      // Extra content for the MOBILE panel only, under the links: a section's own
+      // navigation (a docs tree, account links, filters). A node, a component, or
+      // null. Not shown on wide screens, and never destroyed by the navbar: the
+      // caller owns it and can move it back where it lives on desktop.
+      panelContent: {
+         type: 'any',
+         default: null,
+         required: false
+      },
       // `(open) => void` when the mobile menu opens or closes.
       onMenuToggle: {
          type: 'function',
@@ -175,6 +184,7 @@ export default class Navbar extends HTMLElement {
       this.$menu = this.querySelector('.nav_bar_menu');
       this.$indicator = this.querySelector('.nav_bar_indicator');
       this.$buttonsContainer = this.querySelector('.nav_bar_buttons');
+      this.$panelExtra = this.querySelector('.nav_bar_panel_extra');
       this.$mobileButton = this.querySelector('.mobile_menu_button');
       this.$closeMenu = this.querySelector('.mobile_close_menu');
 
@@ -392,6 +402,17 @@ export default class Navbar extends HTMLElement {
    set texts(value) {
       this._texts = value && typeof value === 'object' ? { ...value } : {};
       this._paintMenuLabel();
+   }
+
+   get panelContent() { return this._panelContent ?? null; }
+   set panelContent(value) {
+      const node = value instanceof Node ? value : null;
+      this._panelContent = node;
+      if (!this.$panelExtra) return;
+      // Detach, never destroy: the caller owns what it put here.
+      for (const child of [...this.$panelExtra.childNodes]) if (child !== node) child.remove();
+      if (node && node.parentNode !== this.$panelExtra) this.$panelExtra.appendChild(node);
+      this.$panelExtra.hidden = !node;
    }
 
    /** Whether the mobile menu is open. */
@@ -656,10 +677,22 @@ export default class Navbar extends HTMLElement {
       const target = li.querySelector('.item') ?? li;
       const wrap = this.$menuWrap.getBoundingClientRect();
       const box = target.getBoundingClientRect();
-      this.$indicator.style.width = `${box.width}px`;
-      this.$indicator.style.height = this._indicator === 'pill' ? `${box.height}px` : '';
-      const y = this._indicator === 'pill' ? box.top - wrap.top : box.bottom - wrap.top + 3;
-      this.$indicator.style.transform = `translate(${box.left - wrap.left}px, ${y}px)`;
+      if (this._indicator === 'pill') {
+         this.$indicator.style.width = `${box.width}px`;
+         this.$indicator.style.height = `${box.height}px`;
+         this.$indicator.style.transform = `translate(${box.left - wrap.left}px, ${box.top - wrap.top}px)`;
+         return;
+      }
+      // underline: as wide as the label (not its padding), on the bar's bottom
+      // edge — a tab marker, not a line floating under the word.
+      const style = getComputedStyle(target);
+      const padLeft = parseFloat(style.paddingLeft) || 0;
+      const padRight = parseFloat(style.paddingRight) || 0;
+      const bar = this.$header.getBoundingClientRect();
+      const height = this.$indicator.offsetHeight || 3;
+      this.$indicator.style.width = `${Math.max(0, box.width - padLeft - padRight)}px`;
+      this.$indicator.style.height = '';
+      this.$indicator.style.transform = `translate(${box.left + padLeft - wrap.left}px, ${bar.bottom - wrap.top - height}px)`;
    }
 
    // ----------------------------------------------------------------- scroll

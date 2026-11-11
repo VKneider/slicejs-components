@@ -297,7 +297,8 @@ slice-radio-group[data-size='lg'] {
 /* plain — no chip at all, for dense rows and settings panels where the
    surrounding surface IS the container. */
 slice-radio-group .slice_radio_group_container.slice_radio_group--plain,
-slice-radio-group .slice_radio_group_container.slice_radio_group--card {
+slice-radio-group .slice_radio_group_container.slice_radio_group--card,
+slice-radio-group .slice_radio_group_container.slice_radio_group--buttons {
   --slice-radio-surface: transparent;
   --slice-radio-surface-border: transparent;
   --slice-radio-surface-border-hover: transparent;
@@ -343,12 +344,108 @@ slice-radio-group .slice_radio_group_container.slice_radio_group--card.slice_rad
   flex: 1 1 180px;
 }
 
+/* buttons — a segmented control: the options joined in one bar, the chosen one
+   filled. Still native radios, so the keyboard is the radio group's: Tab lands
+   on the chosen option, the arrows move and choose. Horizontal is the natural
+   shape; `orientation: 'vertical'` stacks them. No circle: the fill is the mark. */
+slice-radio-group .slice_radio_group_container.slice_radio_group--buttons {
+  --slice-radio-accent: var(--primary-color);
+  --slice-radio-buttons-border: var(--slice-border-raised, color-mix(in srgb, var(--primary-color-shade) 80%, transparent));
+  --slice-radio-buttons-surface: var(--secondary-background-color);
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_group {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 100%;
+  border: 1px solid var(--slice-radio-buttons-border);
+  border-radius: 10px;
+  background: var(--slice-radio-buttons-surface);
+  overflow: hidden;
+}
+
+slice-radio-group .slice_radio_group_container.slice_radio_group--buttons.slice_radio_group--horizontal .slice_radio_group {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  column-gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_mark {
+  display: none;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option {
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5em 1em;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option + .slice_radio_option {
+  border-top: 1px solid var(--slice-radio-buttons-border);
+}
+
+slice-radio-group .slice_radio_group--buttons.slice_radio_group--horizontal .slice_radio_option + .slice_radio_option {
+  border-top: 0;
+  border-inline-start: 1px solid var(--slice-radio-buttons-border);
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_text {
+  align-items: center;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_description {
+  font-size: 0.78em;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option:hover:not(.slice_radio_option--disabled):not(.slice_radio_option--checked) {
+  background: color-mix(in srgb, var(--slice-radio-accent-effective) 8%, transparent);
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option--checked {
+  background: var(--slice-radio-accent-effective);
+  color: var(--primary-color-contrast, #fff);
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option--checked .slice_radio_description {
+  color: inherit;
+  opacity: 0.85;
+}
+
+/* The ring goes on the option, since there is no circle to carry it. Inset, so
+   the bar's overflow does not clip it. */
+slice-radio-group .slice_radio_group--buttons .slice_radio_option:has(.slice_radio_input:focus-visible) {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+
+slice-radio-group .slice_radio_group--buttons .slice_radio_option--checked:has(.slice_radio_input:focus-visible) {
+  outline-color: var(--primary-color-contrast, #fff);
+}
+
+@media (forced-colors: active) {
+  slice-radio-group .slice_radio_group--buttons .slice_radio_option--checked {
+    background: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}
+
 /* ---------------------------------------------------------- reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   slice-radio-group .slice_radio_mark,
   slice-radio-group .slice_radio_mark::after,
-  slice-radio-group .slice_radio_group--card .slice_radio_option {
+  slice-radio-group .slice_radio_group--card .slice_radio_option,
+  slice-radio-group .slice_radio_group--buttons .slice_radio_option {
     transition: none;
   }
 }

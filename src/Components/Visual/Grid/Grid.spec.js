@@ -207,6 +207,79 @@ test.describe('Grid', () => {
       expect(out).toEqual(['good']);
    });
 
+   // ------------------------------------------------------- responsive layout
+
+   const cols = (c) => c.component.evaluate((el) => el.columnCount);
+   const widthTo = (c, px) => c.component.evaluate((el, w) => { el.style.width = `${w}px`; }, px);
+
+   test('columns by breakpoints follow the GRID\'s width', async ({ mount }) => {
+      const c = await mount('Grid', { columns: { 0: 1, 560: 2, 960: 4 } });
+      await widthTo(c, 400);
+      await expect.poll(() => cols(c)).toBe(1);
+      await widthTo(c, 700);
+      await expect.poll(() => cols(c)).toBe(2);
+      await widthTo(c, 1000);
+      await expect.poll(() => cols(c)).toBe(4);
+      await expect(c.component).toHaveAttribute('data-columns', '4');
+      expect(c.pageErrors()).toEqual([]);
+   });
+
+   test('minItemWidth: as many columns as fit', async ({ mount }) => {
+      const c = await mount('Grid', { minItemWidth: 200, gap: 0 });
+      await widthTo(c, 700);
+      await expect.poll(() => cols(c)).toBe(3);
+      await widthTo(c, 300);
+      await expect.poll(() => cols(c)).toBe(1);
+   });
+
+   test('items as { node, colSpan, rowSpan }: spans never exceed the columns shown', async ({ mount }) => {
+      const c = await mount('Grid', { columns: { 0: 1, 600: 4 }, autoRows: '80px' });
+      await c.component.evaluate((el) => {
+         const big = document.createElement('div');
+         big.id = 'big';
+         big.textContent = 'big';
+         const wide = document.createElement('div');
+         wide.id = 'wide';
+         el.items = [{ node: big, colSpan: 2, rowSpan: 2 }, { node: wide, colSpan: 'full' }, document.createElement('div')];
+      });
+      const big = c.locator('#big');
+      await widthTo(c, 800);
+      await expect.poll(() => big.evaluate((n) => n.style.gridColumn)).toBe('span 2');
+      expect(await big.evaluate((n) => n.style.gridRow)).toBe('span 2');
+      expect(await c.locator('#wide').evaluate((n) => n.style.gridColumn)).toBe('1 / -1');
+      await expect(big).toHaveCSS('height', '170px'); // two 80px rows + the 10px gap
+      await widthTo(c, 400);
+      await expect.poll(() => big.evaluate((n) => n.style.gridColumn)).toBe('span 1');
+      // The same node passed plain again loses the spans.
+      await c.component.evaluate((el) => { el.items = [el.querySelector('#big')]; });
+      expect(await big.evaluate((n) => n.style.gridRow)).toBe('');
+   });
+
+   test('areas place items by name, per width', async ({ mount }) => {
+      const c = await mount('Grid', { areas: { 0: ['head', 'main', 'side'], 700: ['head head', 'main side'] } });
+      await c.component.evaluate((el) => {
+         const make = (id) => { const n = document.createElement('div'); n.id = id; n.textContent = id; return n; };
+         el.items = [{ node: make('head'), area: 'head' }, { node: make('main'), area: 'main' }, { node: make('side'), area: 'side' }];
+      });
+      const top = (id) => c.locator(`#${id}`).evaluate((n) => Math.round(n.getBoundingClientRect().top));
+      await widthTo(c, 500);
+      await expect.poll(async () => (await top('side')) > (await top('main'))).toBe(true);
+      await widthTo(c, 900);
+      await expect.poll(async () => (await top('side')) === (await top('main'))).toBe(true);
+      expect(await cols(c)).toBe(2);
+      expect(await c.locator('#head').evaluate((n) => n.style.gridArea)).toBe('head');
+   });
+
+   test('gap as a number, rowGap, align, justify and dense', async ({ mount }) => {
+      const c = await mount('Grid', { gap: 16, rowGap: '4px', align: 'center', justify: 'start', dense: true });
+      const g = c.locator('.grid-container');
+      await expect(g).toHaveCSS('column-gap', '16px');
+      await expect(g).toHaveCSS('row-gap', '4px');
+      await expect(g).toHaveCSS('align-items', 'center');
+      await expect(g).toHaveCSS('justify-items', 'start');
+      await expect(g).toHaveCSS('grid-auto-flow', 'dense');
+   });
+
    test('visual: 3-column grid @visual', async ({ mount }) => {
       const c = await mount('Grid', { columns: 3, gap: '12px' });
       await expect(c.component).toHaveScreenshot('grid-3col.png');

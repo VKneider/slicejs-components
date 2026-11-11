@@ -238,8 +238,22 @@ slice-modal .slice-modal[data-layout="sheet"] .slice-modal__handle {
   touch-action: none;
 }
 
-slice-modal .slice-modal[data-layout="sheet"] .slice-modal__header {
+slice-modal .slice-modal[data-layout="sheet"].is-swipeable .slice-modal__header,
+slice-modal .slice-modal[data-layout="drawer"][data-side="top"].is-swipeable .slice-modal__header,
+slice-modal .slice-modal[data-layout="drawer"][data-side="bottom"].is-swipeable .slice-modal__header {
   touch-action: none;
+}
+
+/* A side drawer is swiped sideways from anywhere: the browser keeps vertical
+   scrolling and leaves horizontal moves to the swipe. */
+slice-modal .slice-modal[data-layout="drawer"][data-side="right"].is-swipeable,
+slice-modal .slice-modal[data-layout="drawer"][data-side="left"].is-swipeable {
+  touch-action: pan-y pinch-zoom;
+}
+slice-modal .slice-modal[data-layout="drawer"][data-side="right"].is-swipeable .slice-modal__header,
+slice-modal .slice-modal[data-layout="drawer"][data-side="left"].is-swipeable .slice-modal__header {
+  cursor: grab;
+  user-select: none;
 }
 
 /* ── Header ───────────────────────────────────────────────────────── */

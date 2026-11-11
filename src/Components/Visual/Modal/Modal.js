@@ -1,4 +1,5 @@
 import { texts } from '../../shared/text/texts.js';
+import { lockScroll } from '../../shared/overlay/scrollLock.js';
 
 // A modal dialog on the native <dialog> element.
 //
@@ -87,6 +88,9 @@ export default class Modal extends HTMLElement {
          allowedValues: ['end', 'start', 'between', 'stretch']
       },
       dismissable: { type: 'boolean', default: true },
+      // Close by dragging toward the edge it came from: a sheet down, a drawer to
+      // its side. Off for drawers whose content scrolls sideways.
+      swipeToClose: { type: 'boolean', default: true },
       closeOnBackdrop: { type: 'boolean', default: true },
       closeOnEscape: { type: 'boolean', default: true },
       closeLabel: { type: 'string', default: 'Close' },
@@ -107,16 +111,6 @@ export default class Modal extends HTMLElement {
       onClose: { type: 'function', default: null }
    };
 
-   // Scroll lock shared by every open modal (see _lockScroll).
-   static _openCount = 0;
-   /** @type {number | null} */
-   static _scrollY = null;
-   /** @type {string | null} */
-   static _originalBodyPosition = null;
-   /** @type {string | null} */
-   static _originalBodyTop = null;
-   /** @type {string | null} */
-   static _originalBodyWidth = null;
 
    constructor(props) {
       super();
@@ -144,6 +138,7 @@ export default class Modal extends HTMLElement {
       this._size = 'md';
       this._layout = 'center';
       this._side = 'right';
+      this._swipeToClose = true;
       this._mobileLayout = '';
       this._breakpoint = 600;
       this._accent = true;
@@ -168,6 +163,7 @@ export default class Modal extends HTMLElement {
       this._onBeforeClose = null;
       this._onClose = null;
       this._scrollLocked = false;
+      this._releaseScroll = /** @type {(() => void) | null} */ (null);
       this._draggable = false;
       this._resizable = false;
       this._dnd = null;
@@ -505,8 +501,7 @@ export default class Modal extends HTMLElement {
       this.$dialog.addEventListener('close', this._handleDialogClose);
       this.$dialog.addEventListener('click', this._handleBackdropClick);
       this.$dialog.addEventListener('pointerdown', this._handleDialogPointerDown);
-      this.$handle.addEventListener('pointerdown', this._handleSwipeStart);
-      this.$header.addEventListener('pointerdown', this._handleSwipeStart);
+      this.$dialog.addEventListener('pointerdown', this._handleSwipeStart);
 
       this._syncCloseLabel();
       // A language change repaints the ✕ name; open/closed is not touched.
@@ -747,7 +742,7 @@ export default class Modal extends HTMLElement {
       d.dataset.layout = layout;
       if (layout === 'drawer') d.dataset.side = this._side;
       else delete d.dataset.side;
-      d.classList.toggle('is-swipeable', layout === 'sheet');
+      d.classList.toggle('is-swipeable', !!this._swipeDirection());
       if (prev && prev !== layout && this._inited) {
          // Drag and resize only make sense for a floating box.
          this._syncDnD();
@@ -812,42 +807,22 @@ export default class Modal extends HTMLElement {
 
    // ── Scroll lock ────────────────────────────────────────────────
 
+   // Shared with every overlay (shared/overlay/scrollLock.js): stacked modals
+   // and a Lightbox over a modal hold one lock, released by the last to close.
    _lockScroll() {
-      // Guard per-instance so the same modal can never increment the shared
-      // counter twice (e.g. showModal() + a stray init path).
+      // Per instance, so the same modal never holds the lock twice
+      // (e.g. showModal() + a stray init path).
       if (this._scrollLocked) return;
       this._scrollLocked = true;
-      Modal._openCount++;
-      if (Modal._openCount === 1) {
-         // position:fixed instead of overflow:hidden, so Chrome does not
-         // propagate overflow to the viewport and reset scrollY to 0.
-         Modal._scrollY = window.scrollY;
-         Modal._originalBodyPosition = document.body.style.position;
-         Modal._originalBodyTop = document.body.style.top;
-         Modal._originalBodyWidth = document.body.style.width;
-         document.body.style.position = 'fixed';
-         document.body.style.top = `-${Modal._scrollY}px`;
-         document.body.style.width = '100%';
-      }
+      this._releaseScroll = lockScroll();
    }
 
    _restoreScroll() {
-      // Idempotent: only the instance that actually locked may release, so it is
-      // safe to call from every close path without double-decrementing.
+      // Idempotent: safe to call from every close path.
       if (!this._scrollLocked) return;
       this._scrollLocked = false;
-      Modal._openCount = Math.max(0, Modal._openCount - 1);
-      if (Modal._openCount === 0) {
-         const scrollY = Modal._scrollY;
-         document.body.style.position = Modal._originalBodyPosition || '';
-         document.body.style.top = Modal._originalBodyTop || '';
-         document.body.style.width = Modal._originalBodyWidth || '';
-         Modal._originalBodyPosition = null;
-         Modal._originalBodyTop = null;
-         Modal._originalBodyWidth = null;
-         Modal._scrollY = null;
-         if (scrollY !== null) window.scrollTo(0, scrollY);
-      }
+      this._releaseScroll?.();
+      this._releaseScroll = null;
    }
 
    // ── Drag & resize (DragDropService integration) ───────────────
@@ -933,21 +908,61 @@ export default class Modal extends HTMLElement {
       s.transform = '';
    }
 
-   // ── Swipe to close (sheet) ─────────────────────────────────────
+   // ── Swipe to close (sheet, drawer) ─────────────────────────────
+
+   get swipeToClose() { return this._swipeToClose !== false; }
+   set swipeToClose(value) {
+      this._swipeToClose = value !== false;
+      this.$dialog?.classList.toggle('is-swipeable', !!this._swipeDirection());
+   }
+
+   /**
+    * Where a swipe closes this modal: the edge it came from. null when it does
+    * not (centred, top, fullscreen, or swipeToClose off).
+    * @returns {{ axis: 'x' | 'y', sign: 1 | -1, anywhere: boolean } | null}
+    */
+   _swipeDirection() {
+      if (this._swipeToClose === false) return null;
+      const layout = this.effectiveLayout;
+      if (layout === 'sheet') return { axis: 'y', sign: 1, anywhere: false };
+      if (layout !== 'drawer') return null;
+      switch (this._side) {
+         case 'left': return { axis: 'x', sign: -1, anywhere: true };
+         case 'top': return { axis: 'y', sign: -1, anywhere: false };
+         case 'bottom': return { axis: 'y', sign: 1, anywhere: false };
+         default: return { axis: 'x', sign: 1, anywhere: true };
+      }
+   }
 
    _handleSwipeStart(event) {
-      if (this.effectiveLayout !== 'sheet' || !this.$dialog.open) return;
+      const dir = this._swipeDirection();
+      if (!dir || !this.$dialog.open) return;
       if (event.button !== undefined && event.button !== 0) return;
-      if (event.target.closest('button, a, input, select, textarea, [role="button"]')) return;
+      if (event.target.closest('button, a, input, select, textarea, [role="button"], [contenteditable="true"]')) return;
+      // Up and down (sheets, top / bottom drawers) compete with scrolling the
+      // content: only from the handle or the header. Sideways (left / right
+      // drawers) anywhere with a finger; with a mouse from the header, so
+      // selecting text in the drawer is not a swipe.
+      const fromBar = !!event.target.closest('.slice-modal__handle, .slice-modal__header');
+      if (!fromBar && (!dir.anywhere || event.pointerType === 'mouse')) return;
+      // From the bar with a mouse: no text selection, and no native drag of a
+      // selection (which would cancel the pointer half-way through).
+      if (fromBar && event.pointerType === 'mouse') event.preventDefault();
+      const at = dir.axis === 'x' ? event.clientX : event.clientY;
       this._swipe = {
          id: event.pointerId,
-         startY: event.clientY,
-         lastY: event.clientY,
+         dir,
+         start: at,
+         startCross: dir.axis === 'x' ? event.clientY : event.clientX,
+         last: at,
          lastT: performance.now(),
          velocity: 0,
-         dy: 0,
+         dist: 0,
+         // A sideways swipe waits until the finger clearly goes sideways: a
+         // vertical move is the content scrolling, and lets go.
+         locked: !dir.anywhere || fromBar,
       };
-      this.$dialog.classList.add('is-swiping');
+      if (this._swipe.locked) this.$dialog.classList.add('is-swiping');
       window.addEventListener('pointermove', this._handleSwipeMove);
       window.addEventListener('pointerup', this._handleSwipeEnd);
       window.addEventListener('pointercancel', this._handleSwipeEnd);
@@ -956,20 +971,34 @@ export default class Modal extends HTMLElement {
    _handleSwipeMove(event) {
       const s = this._swipe;
       if (!s || event.pointerId !== s.id) return;
+      const at = s.dir.axis === 'x' ? event.clientX : event.clientY;
+      const cross = s.dir.axis === 'x' ? event.clientY : event.clientX;
+      const along = (at - s.start) * s.dir.sign;
+      if (!s.locked) {
+         if (Math.abs(cross - s.startCross) > 10 && Math.abs(cross - s.startCross) > Math.abs(along)) {
+            this._endSwipe(false);
+            return;
+         }
+         if (along < 8) return;
+         s.locked = true;
+         this.$dialog.classList.add('is-swiping');
+      }
       const now = performance.now();
-      const dy = Math.max(0, event.clientY - s.startY);
-      s.velocity = (event.clientY - s.lastY) / Math.max(1, now - s.lastT);
-      s.lastY = event.clientY;
+      s.velocity = ((at - s.last) * s.dir.sign) / Math.max(1, now - s.lastT);
+      s.last = at;
       s.lastT = now;
-      s.dy = dy;
-      this.$dialog.style.transform = dy ? `translateY(${dy}px)` : '';
+      s.dist = Math.max(0, along);
+      const offset = s.dist * s.dir.sign;
+      this.$dialog.style.transform = s.dist
+         ? (s.dir.axis === 'x' ? `translateX(${offset}px)` : `translateY(${offset}px)`)
+         : '';
    }
 
    async _handleSwipeEnd(event) {
       const s = this._swipe;
       if (!s || (event && event.pointerId !== s.id)) return;
-      const height = this.$dialog.offsetHeight || 1;
-      const dismiss = event?.type === 'pointerup' && (s.dy > height * 0.3 || (s.dy > 24 && s.velocity > 0.6));
+      const size = (s.dir.axis === 'x' ? this.$dialog.offsetWidth : this.$dialog.offsetHeight) || 1;
+      const dismiss = s.locked && event?.type === 'pointerup' && (s.dist > size * 0.3 || (s.dist > 24 && s.velocity > 0.6));
       this._endSwipe(true);
       if (dismiss && this._dismissable) {
          const closed = await this.requestClose('swipe');
@@ -1088,8 +1117,7 @@ export default class Modal extends HTMLElement {
       this.$dialog.removeEventListener('close', this._handleDialogClose);
       this.$dialog.removeEventListener('click', this._handleBackdropClick);
       this.$dialog.removeEventListener('pointerdown', this._handleDialogPointerDown);
-      this.$handle.removeEventListener('pointerdown', this._handleSwipeStart);
-      this.$header.removeEventListener('pointerdown', this._handleSwipeStart);
+      this.$dialog.removeEventListener('pointerdown', this._handleSwipeStart);
    }
 }
 

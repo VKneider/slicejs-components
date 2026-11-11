@@ -1,0 +1,133 @@
+slice-rating {
+  --slice-rating-size: 1.5rem;
+  --slice-rating-gap: 0.15em;
+  --slice-rating-color: var(--warning-color, #f5a524);
+  --slice-rating-empty: color-mix(in srgb, var(--font-primary-color, #222) 22%, transparent);
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 100%;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color);
+  vertical-align: middle;
+}
+slice-rating[data-size="sm"] { --slice-rating-size: 1.1rem; }
+slice-rating[data-size="lg"] { --slice-rating-size: 2.1rem; }
+slice-rating[data-tone="neutral"] { --slice-rating-color: var(--font-primary-color, #222); }
+slice-rating[data-tone="accent"] { --slice-rating-color: var(--primary-color); }
+slice-rating[data-tone="info"] { --slice-rating-color: var(--info-color); }
+slice-rating[data-tone="success"] { --slice-rating-color: var(--success-color); }
+slice-rating[data-tone="danger"] { --slice-rating-color: var(--danger-color); }
+
+slice-rating [hidden] { display: none !important; }
+
+slice-rating .slice-rating__group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+slice-rating .slice-rating__label {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--font-primary-color);
+}
+slice-rating .slice-rating__row {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+slice-rating .slice-rating__stars,
+slice-rating .slice-rating__readonly {
+  display: inline-flex;
+  gap: var(--slice-rating-gap);
+  line-height: 1;
+}
+slice-rating .slice-rating__star {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: var(--slice-rating-size);
+  line-height: 1;
+  border-radius: 4px;
+}
+slice-rating .slice-rating__glyph,
+slice-rating .slice-rating__fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  text-align: center;
+  user-select: none;
+  pointer-events: none;
+}
+slice-rating .slice-rating__glyph { color: var(--slice-rating-empty); }
+slice-rating .slice-rating__fill {
+  color: var(--slice-rating-color);
+  transition: clip-path 0.12s ease, transform 0.12s ease;
+}
+/* --slice-rating-fill is set per star from JS: 100%, 50% for a half, 60% for 4.6. */
+slice-rating .slice-rating__star .slice-rating__fill { clip-path: inset(0 calc(100% - var(--slice-rating-fill, 0%)) 0 0); }
+slice-rating:dir(rtl) .slice-rating__star .slice-rating__fill { clip-path: inset(0 0 0 calc(100% - var(--slice-rating-fill, 0%))); }
+
+/* The clickable halves: a label over each half of the star, the radio inside it hidden. */
+slice-rating .slice-rating__part {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border-radius: inherit;
+}
+slice-rating .slice-rating__part[data-side="start"] { width: 50%; z-index: 1; }
+slice-rating .slice-rating__part[data-side="end"] { inset-inline-start: 0; }
+slice-rating .slice-rating__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+slice-rating .slice-rating__star:has(.slice-rating__input:focus-visible) {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+slice-rating.is-previewing .slice-rating__star[data-fill="full"] .slice-rating__fill,
+slice-rating.is-previewing .slice-rating__star[data-fill="half"] .slice-rating__fill {
+  transform: scale(1.08);
+}
+
+slice-rating .slice-rating__value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--font-secondary-color, inherit);
+  font-variant-numeric: tabular-nums;
+}
+slice-rating .slice-rating__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+slice-rating.is-disabled .slice-rating__part { cursor: not-allowed; }
+slice-rating.is-disabled .slice-rating__stars { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  slice-rating .slice-rating__fill { transition: none; }
+}
+@media (forced-colors: active) {
+  slice-rating .slice-rating__fill { color: Highlight; }
+  slice-rating .slice-rating__glyph { color: GrayText; }
+}

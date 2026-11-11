@@ -531,6 +531,64 @@
         }
       ]
     },
+    "/docs/display/callout": {
+      "title": "Callout | Slice.js",
+      "description": "A highlighted passage inside content — a note, a tip, a warning before a step, a definition. Tone for the meaning, variant for the loudness; part of what the page says, never a live region.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Callout | Slice.js",
+          "description": "A highlighted passage inside content — a note, a tip, a warning before a step, a definition. Tone for the meaning, variant for the loudness; part of what the page says, never a live region.",
+          "url": "https://components.slicejs.com/docs/display/callout",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "callout",
+              "item": "https://components.slicejs.com/docs/display/callout"
+            }
+          ]
+        }
+      ]
+    },
     "/docs/display/chip": {
       "title": "Chip | Slice.js",
       "description": "Compact label for filters, tags and selections, optionally removable.",
@@ -763,6 +821,122 @@
         }
       ]
     },
+    "/docs/display/feature-list": {
+      "title": "FeatureList | Slice.js",
+      "description": "What something offers, item by item — an icon, a title and a sentence on one grid. Services, benefits, what a plan includes, a course's topics. Information, not a set of cards.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "FeatureList | Slice.js",
+          "description": "What something offers, item by item — an icon, a title and a sentence on one grid. Services, benefits, what a plan includes, a course's topics. Information, not a set of cards.",
+          "url": "https://components.slicejs.com/docs/display/feature-list",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "feature-list",
+              "item": "https://components.slicejs.com/docs/display/feature-list"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/heatmap": {
+      "title": "Heatmap | Slice.js",
+      "description": "How much, where in a grid — activity per day over a year, or any two dimensions such as hour × weekday. Colour steps from the theme, a legend, a tip on hover and focus, and a keyboard grid where every cell has its own text.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Heatmap | Slice.js",
+          "description": "How much, where in a grid — activity per day over a year, or any two dimensions such as hour × weekday. Colour steps from the theme, a legend, a tip on hover and focus, and a keyboard grid where every cell has its own text.",
+          "url": "https://components.slicejs.com/docs/display/heatmap",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "heatmap",
+              "item": "https://components.slicejs.com/docs/display/heatmap"
+            }
+          ]
+        }
+      ]
+    },
     "/docs/display/icon": {
       "title": "Icon | Slice.js",
       "description": "Complete icon reference with all 291 symbols, usage patterns, and style variants.",
@@ -816,6 +990,354 @@
               "position": 4,
               "name": "icon",
               "item": "https://components.slicejs.com/docs/display/icon"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/json-viewer": {
+      "title": "JsonViewer | Slice.js",
+      "description": "A JSON value as a tree you can read — objects and arrays fold open, values coloured by type, search that opens the way to every match, and the path or value of any node one key away.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "JsonViewer | Slice.js",
+          "description": "A JSON value as a tree you can read — objects and arrays fold open, values coloured by type, search that opens the way to every match, and the path or value of any node one key away.",
+          "url": "https://components.slicejs.com/docs/display/json-viewer",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "json-viewer",
+              "item": "https://components.slicejs.com/docs/display/json-viewer"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/lightbox": {
+      "title": "Lightbox | Slice.js",
+      "description": "Photos at full size, one at a time — keyboard, swipe, zoom with pan, thumbnails, captions and preloading — on a native modal dialog. Open it from code or turn an existing gallery of links into one with attach().",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Lightbox | Slice.js",
+          "description": "Photos at full size, one at a time — keyboard, swipe, zoom with pan, thumbnails, captions and preloading — on a native modal dialog. Open it from code or turn an existing gallery of links into one with attach().",
+          "url": "https://components.slicejs.com/docs/display/lightbox",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "lightbox",
+              "item": "https://components.slicejs.com/docs/display/lightbox"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/quote": {
+      "title": "Quote | Slice.js",
+      "description": "What someone said and who said it — testimonials, reviews, a line from an interview. A figure with a blockquote and a caption, an avatar, a star rating and the source; in a grid or one at a time in a carousel.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Quote | Slice.js",
+          "description": "What someone said and who said it — testimonials, reviews, a line from an interview. A figure with a blockquote and a caption, an avatar, a star rating and the source; in a grid or one at a time in a carousel.",
+          "url": "https://components.slicejs.com/docs/display/quote",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "quote",
+              "item": "https://components.slicejs.com/docs/display/quote"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/section-header": {
+      "title": "SectionHeader | Slice.js",
+      "description": "The top of a section — eyebrow, a real heading, a description and actions such as \"View all\" or \"Contact me\". Start or centre aligned, three sizes, linkable with an anchor.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "SectionHeader | Slice.js",
+          "description": "The top of a section — eyebrow, a real heading, a description and actions such as \"View all\" or \"Contact me\". Start or centre aligned, three sizes, linkable with an anchor.",
+          "url": "https://components.slicejs.com/docs/display/section-header",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "section-header",
+              "item": "https://components.slicejs.com/docs/display/section-header"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/steps": {
+      "title": "Steps | Slice.js",
+      "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Steps | Slice.js",
+          "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
+          "url": "https://components.slicejs.com/docs/display/steps",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "steps",
+              "item": "https://components.slicejs.com/docs/display/steps"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/display/timeline": {
+      "title": "Timeline | Slice.js",
+      "description": "Events in time on one line — a career, the history of an order, a changelog, the activity on a record. Dates in the app's language, groups by year, month or day, and done, current and upcoming events.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Timeline | Slice.js",
+          "description": "Events in time on one line — a career, the history of an order, a changelog, the activity on a record. Dates in the app's language, groups by year, month or day, and done, current and upcoming events.",
+          "url": "https://components.slicejs.com/docs/display/timeline",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "timeline",
+              "item": "https://components.slicejs.com/docs/display/timeline"
             }
           ]
         }
@@ -1635,7 +2157,7 @@
     },
     "/docs/input/radio-group": {
       "title": "RadioGroup | Slice.js",
-      "description": "Single-choice control that owns its value — keyboard, forms and card pickers included.",
+      "description": "Single-choice control that owns its value — keyboard, forms, card pickers and a segmented-buttons look included.",
       "robots": {
         "index": true,
         "follow": true
@@ -1649,7 +2171,7 @@
         {
           "@type": "TechArticle",
           "headline": "RadioGroup | Slice.js",
-          "description": "Single-choice control that owns its value — keyboard, forms and card pickers included.",
+          "description": "Single-choice control that owns its value — keyboard, forms, card pickers and a segmented-buttons look included.",
           "url": "https://components.slicejs.com/docs/input/radio-group",
           "author": {
             "@type": "Organization",
@@ -1686,6 +2208,64 @@
               "position": 4,
               "name": "radio-group",
               "item": "https://components.slicejs.com/docs/input/radio-group"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/input/rating": {
+      "title": "Rating | Slice.js",
+      "description": "A score from 1 to 5 (or 10) with stars — in a review form, a survey or a quick \"how was it?\" — and the same stars, read-only, to show an average. Halves, a word per value, and native radios underneath.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "Rating | Slice.js",
+          "description": "A score from 1 to 5 (or 10) with stars — in a review form, a survey or a quick \"how was it?\" — and the same stars, read-only, to show an average. Halves, a word per value, and native radios underneath.",
+          "url": "https://components.slicejs.com/docs/input/rating",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "input",
+              "item": "https://components.slicejs.com/docs/input"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "rating",
+              "item": "https://components.slicejs.com/docs/input/rating"
             }
           ]
         }
@@ -2331,7 +2911,7 @@
     },
     "/docs/layout/grid": {
       "title": "Grid | Slice.js",
-      "description": "Grid component documentation with layout composition scenarios.",
+      "description": "Content in rows and columns — columns by the grid's own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.",
       "robots": {
         "index": true,
         "follow": true
@@ -2345,7 +2925,7 @@
         {
           "@type": "TechArticle",
           "headline": "Grid | Slice.js",
-          "description": "Grid component documentation with layout composition scenarios.",
+          "description": "Content in rows and columns — columns by the grid's own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.",
           "url": "https://components.slicejs.com/docs/layout/grid",
           "author": {
             "@type": "Organization",
@@ -2389,7 +2969,7 @@
     },
     "/docs/layout/layout": {
       "title": "Layout | Slice.js",
-      "description": "Layout container documentation with view swapping scenarios.",
+      "description": "The frame of an app or a site — header, sidebar, main, aside and footer, with landmarks, a skip link, a sticky header and a sidebar that becomes a drawer on narrow screens.",
       "robots": {
         "index": true,
         "follow": true
@@ -2403,7 +2983,7 @@
         {
           "@type": "TechArticle",
           "headline": "Layout | Slice.js",
-          "description": "Layout container documentation with view swapping scenarios.",
+          "description": "The frame of an app or a site — header, sidebar, main, aside and footer, with landmarks, a skip link, a sticky header and a sidebar that becomes a drawer on narrow screens.",
           "url": "https://components.slicejs.com/docs/layout/layout",
           "author": {
             "@type": "Organization",
@@ -3716,6 +4296,64 @@
               "position": 4,
               "name": "shortcut-service",
               "item": "https://components.slicejs.com/docs/services/shortcut-service"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/services/skeleton-service": {
+      "title": "SkeletonService | Slice.js",
+      "description": "The loading state of any component, drawn from the component itself. Its text, images, fields and buttons turn into shimmering blocks of their exact size while data loads — nothing to declare on the component, no skeleton markup to write, and the layout does not move when the data arrives.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "SkeletonService | Slice.js",
+          "description": "The loading state of any component, drawn from the component itself. Its text, images, fields and buttons turn into shimmering blocks of their exact size while data loads — nothing to declare on the component, no skeleton markup to write, and the layout does not move when the data arrives.",
+          "url": "https://components.slicejs.com/docs/services/skeleton-service",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "services",
+              "item": "https://components.slicejs.com/docs/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "skeleton-service",
+              "item": "https://components.slicejs.com/docs/services/skeleton-service"
             }
           ]
         }

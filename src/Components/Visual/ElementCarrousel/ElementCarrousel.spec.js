@@ -1,90 +1,143 @@
 import { test, expect } from '../../../../playwright/harness/sliceFixtures.js';
 
-// ElementCarrousel baseline contract. Derived from ElementCarrousel.js / .html.
-//   - tag: slice-element-carrousel
-//   - host a11y: role="region", aria-roledescription="carousel", tabindex="0"
-//   - prev/next buttons get aria-label
-//   - `elements`: array; non-Node entries render as String(element) in a
-//     <li.slice_carousel_slide> on .slice_carousel_track, with a matching
-//     <button.slice_carousel_indicator> dot per element.
-//   - first slide + first dot get `current-slide`
-//   - next/prev buttons and dot clicks move `current-slide` between dots
-//   - ArrowRight/ArrowLeft keydown on the host triggers next/prev
-//
-// Strings serialize across the page boundary, so the element-rendering and
-// navigation contract is fully exercised (Node entries are also supported by
-// the component but cannot be passed via serialized props).
+// ElementCarrousel contract (the native-scroll rewrite):
+//   - host: role="region", aria-roledescription="carousel", aria-label (`label`
+//     or the built-in "Carousel"); the track is the keyboard target (tabindex 0)
+//   - each element is an <li.slice-element-carrousel__slide> with role="group",
+//     aria-roledescription="slide" and "1 of 3"; slides out of view are inert
+//   - Previous / Next are Buttons, disabled at the ends unless `loop`
+//   - indicators: dots (a Pagination), a "2 / 3" count, or thumbnails
+//   - keyboard: ← → Home End; onChange(index, { previous }) and `slide-change`
+//   - autoplay with a pause button, held while hovered or focused
+//   - slides own their components: dropped ones are destroyed, kept ones are not
 
 const ITEMS = ['One', 'Two', 'Three'];
+const index = (c) => c.component.evaluate((el) => el.index);
+const slides = (c) => c.locator('.slice-element-carrousel__slide');
 
 test.describe('ElementCarrousel', () => {
-   test('smoke: builds and mounts without errors', async ({ mount }) => {
+   test('smoke: one slide per element, strings as text', async ({ mount }) => {
       const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await expect(c.component).toBeVisible();
-      await expect(c.locator('.slice_carousel_track')).toBeAttached();
       expect(c.pageErrors()).toEqual([]);
+      await expect(c.locator('.slice-element-carrousel__track')).toBeAttached();
+      await expect(slides(c)).toHaveCount(3);
+      await expect(slides(c).nth(0)).toHaveText('One');
+      expect(await index(c)).toBe(0);
    });
 
-   test('a11y: host carousel region attributes', async ({ mount }) => {
+   test('a11y: a labelled carousel region of labelled slides', async ({ mount }) => {
       const c = await mount('ElementCarrousel', { elements: ITEMS });
       await expect(c.component).toHaveAttribute('role', 'region');
       await expect(c.component).toHaveAttribute('aria-roledescription', 'carousel');
-      await expect(c.component).toHaveAttribute('tabindex', '0');
+      await expect(c.component).toHaveAttribute('aria-label', 'Carousel');
+      await expect(c.locator('.slice-element-carrousel__track')).toHaveAttribute('tabindex', '0');
+      await expect(slides(c).nth(1)).toHaveAttribute('role', 'group');
+      await expect(slides(c).nth(1)).toHaveAttribute('aria-roledescription', 'slide');
+      await expect(slides(c).nth(1)).toHaveAttribute('aria-label', '2 of 3');
+      await c.component.evaluate((el) => { el.label = 'Featured products'; });
+      await expect(c.component).toHaveAttribute('aria-label', 'Featured products');
    });
 
-   test('a11y: prev/next buttons have aria-labels', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await expect(c.locator('.slice_carousel_prev')).toHaveAttribute('aria-label', 'Previous slide');
-      await expect(c.locator('.slice_carousel_next')).toHaveAttribute('aria-label', 'Next slide');
+   test('slides out of view are inert; perView shows several', async ({ mount }) => {
+      const c = await mount('ElementCarrousel', { elements: ['A', 'B', 'C', 'D'] });
+      await expect.poll(() => slides(c).evaluateAll((s) => s.map((n) => n.inert))).toEqual([false, true, true, true]);
+      await c.component.evaluate((el) => { el.perView = 2; });
+      await expect.poll(() => slides(c).evaluateAll((s) => s.map((n) => n.inert))).toEqual([false, false, true, true]);
+      expect(await c.component.evaluate((el) => el.maxIndex)).toBe(2);
    });
 
-   test('renders one slide and one dot per element', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await expect(c.locator('.slice_carousel_slide')).toHaveCount(3);
-      await expect(c.locator('.slice_carousel_indicator')).toHaveCount(3);
+   test('arrows: Buttons with names; Previous disabled at the start; Next moves and reports', async ({ mount }) => {
+      const c = await mount('ElementCarrousel', { elements: ITEMS }, { spies: ['onChange'] });
+      const prev = c.component.getByRole('button', { name: 'Previous slide' });
+      const next = c.component.getByRole('button', { name: 'Next slide' });
+      await expect(prev).toBeDisabled();
+      await next.click();
+      await expect.poll(() => index(c)).toBe(1);
+      await expect.poll(() => c.events('onChange')).toBe(1);
+      const [[i, meta]] = await c.eventArgs('onChange');
+      expect(i).toBe(1);
+      expect(meta.previous).toBe(0);
+      await expect(c.locator('.slice-element-carrousel__live')).toHaveText('Slide 2 of 3');
+      await next.click();
+      await expect.poll(() => index(c)).toBe(2);
+      await expect(next).toBeDisabled();
    });
 
-   test('renders string elements as slide text content', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await expect(c.locator('.slice_carousel_slide').nth(0)).toHaveText('One');
-      await expect(c.locator('.slice_carousel_slide').nth(2)).toHaveText('Three');
+   test('loop: Previous from the first goes to the last', async ({ mount }) => {
+      const c = await mount('ElementCarrousel', { elements: ITEMS, loop: true });
+      const prev = c.component.getByRole('button', { name: 'Previous slide' });
+      await expect(prev).toBeEnabled();
+      await prev.click();
+      await expect.poll(() => index(c)).toBe(2);
    });
 
-   test('first slide and first dot are current on render', async ({ mount }) => {
+   test('dots: one per position; a dot goes to its slide', async ({ mount }) => {
       const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await expect(c.locator('.slice_carousel_slide').nth(0)).toHaveClass(/current-slide/);
-      await expect(c.locator('.slice_carousel_indicator').nth(0)).toHaveClass(/current-slide/);
+      const dot = c.component.getByRole('button', { name: 'Go to slide 3' });
+      await expect(dot).toBeVisible();
+      await dot.click();
+      await expect.poll(() => index(c)).toBe(2);
    });
 
-   test('next button moves current-slide dot forward', async ({ mount }) => {
+   test('keyboard on the track: → ← End Home', async ({ mount, page }) => {
       const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await c.locator('.slice_carousel_next').click();
-      await expect(c.locator('.slice_carousel_indicator').nth(1)).toHaveClass(/current-slide/);
-      await expect(c.locator('.slice_carousel_indicator').nth(0)).not.toHaveClass(/current-slide/);
+      await c.locator('.slice-element-carrousel__track').focus();
+      await page.keyboard.press('ArrowRight');
+      await expect.poll(() => index(c)).toBe(1);
+      await page.keyboard.press('End');
+      await expect.poll(() => index(c)).toBe(2);
+      await page.keyboard.press('ArrowLeft');
+      await expect.poll(() => index(c)).toBe(1);
+      await page.keyboard.press('Home');
+      await expect.poll(() => index(c)).toBe(0);
    });
 
-   test('prev button from first wraps to the last dot', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await c.locator('.slice_carousel_prev').click();
-      await expect(c.locator('.slice_carousel_indicator').nth(2)).toHaveClass(/current-slide/);
+   test('indicators: a count, or thumbnails with the current one marked', async ({ mount }) => {
+      const c = await mount('ElementCarrousel', { elements: ITEMS, indicators: 'count' });
+      await expect(c.locator('.slice-element-carrousel__count')).toHaveText('1 / 3');
+      await c.component.evaluate((el) => { el.indicators = 'thumbnails'; });
+      const thumbs = c.locator('.slice-element-carrousel__thumb');
+      await expect(thumbs).toHaveCount(3);
+      await expect(thumbs.nth(0)).toHaveAttribute('aria-current', 'true');
+      await thumbs.nth(1).click();
+      await expect.poll(() => index(c)).toBe(1);
+      await expect(thumbs.nth(1)).toHaveAttribute('aria-current', 'true');
+      await expect(thumbs.nth(0)).not.toHaveAttribute('aria-current', /.*/);
    });
 
-   test('clicking a dot moves to that slide', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await c.locator('.slice_carousel_indicator').nth(2).click();
-      await expect(c.locator('.slice_carousel_indicator').nth(2)).toHaveClass(/current-slide/);
+   test('autoplay moves by itself, holds while hovered, and the button pauses it', async ({ mount, page }) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      const c = await mount('ElementCarrousel', { elements: ITEMS, autoplay: 400 });
+      await page.mouse.move(0, 0);
+      await expect.poll(() => index(c), { timeout: 3000 }).toBeGreaterThan(0);
+
+      await c.locator('.slice-element-carrousel__track').hover();
+      expect(await c.component.evaluate((el) => el.playing)).toBe(false);
+      await page.mouse.move(0, 0);
+      await expect.poll(() => c.component.evaluate((el) => el.playing)).toBe(true);
+
+      await c.component.getByRole('button', { name: 'Pause slides' }).click();
+      await page.mouse.move(0, 0);
+      await expect(c.component.getByRole('button', { name: 'Play slides' })).toBeVisible();
+      const at = await index(c);
+      await page.waitForTimeout(900);
+      expect(await index(c)).toBe(at);
    });
 
-   test('ArrowRight keydown advances the carousel', async ({ mount }) => {
-      const c = await mount('ElementCarrousel', { elements: ITEMS });
-      await c.component.focus();
-      await c.component.press('ArrowRight');
-      await expect(c.locator('.slice_carousel_indicator').nth(1)).toHaveClass(/current-slide/);
+   test('built-in texts can be replaced with `texts`', async ({ mount }) => {
+      const c = await mount('ElementCarrousel', {
+         elements: ITEMS,
+         texts: { label: 'Carrusel', slide: '{index} de {total}', next: 'Siguiente' },
+      });
+      await expect(c.component).toHaveAttribute('aria-label', 'Carrusel');
+      await expect(slides(c).nth(0)).toHaveAttribute('aria-label', '1 de 3');
+      await expect(c.component.getByRole('button', { name: 'Siguiente' })).toBeVisible();
    });
 
    test('empty elements renders no slides without errors', async ({ mount }) => {
       const c = await mount('ElementCarrousel', { elements: [] });
-      await expect(c.locator('.slice_carousel_slide')).toHaveCount(0);
+      await expect(slides(c)).toHaveCount(0);
+      await expect(c.component).toHaveClass(/is-empty/);
       expect(c.pageErrors()).toEqual([]);
    });
 

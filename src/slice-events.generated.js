@@ -53,23 +53,33 @@ export default {
       "emitters": [],
       "listeners": [
         {
+          "file": "src/Components/AppComponents/ComponentsPage/ComponentsPage.js",
+          "line": 123,
+          "component": "ComponentsPage"
+        },
+        {
           "file": "src/Components/Visual/BottomNav/BottomNav.js",
           "line": 197,
           "component": "BottomNav"
         },
         {
+          "file": "src/Components/Visual/Layout/Layout.js",
+          "line": 123,
+          "component": "Layout"
+        },
+        {
           "file": "src/Components/Visual/Navbar/Navbar.js",
-          "line": 213,
+          "line": 244,
           "component": "Navbar"
         },
         {
           "file": "src/Components/Visual/SideMenu/SideMenu.js",
-          "line": 127,
+          "line": 142,
           "component": "SideMenu"
         },
         {
           "file": "src/Components/Visual/TreeView/TreeView.js",
-          "line": 274,
+          "line": 306,
           "component": "TreeView"
         }
       ]
@@ -80,7 +90,7 @@ export default {
     "listeners": [
       {
         "file": "src/Components/Visual/ConfirmActionModal/ConfirmActionModal.js",
-        "line": 100,
+        "line": 126,
         "component": "ConfirmActionModal"
       }
     ]

@@ -50,6 +50,12 @@ export default class RadioGroup extends HTMLElement {
          type: 'string',
          default: null
       },
+      // The accessible name when there is no visible label — a `buttons` bar
+      // above a chart, say. Inside a Form, the Form sets it from the field label.
+      ariaLabel: {
+         type: 'string',
+         default: null
+      },
       disabled: {
          type: 'boolean',
          default: false
@@ -72,12 +78,14 @@ export default class RadioGroup extends HTMLElement {
       },
       // Mirrors Checkbox (default/outlined/soft/plain) so a form that mixes the
       // two reads as one family, plus `card`: every option becomes a selectable
-      // card — the plan / shipping-method picker. No `danger`: choosing one of
-      // several options is not a destructive action (§3.3).
+      // card — the plan / shipping-method picker, plus `buttons`: the options
+      // joined in one row of buttons (a segmented control: "Day · Week · Month").
+      // No `danger`: choosing one of several options is not a destructive
+      // action (§3.3).
       variant: {
          type: 'string',
          default: 'default',
-         allowedValues: ['default', 'outlined', 'soft', 'plain', 'card']
+         allowedValues: ['default', 'outlined', 'soft', 'plain', 'card', 'buttons']
       },
       size: {
          type: 'string',
@@ -316,10 +324,27 @@ export default class RadioGroup extends HTMLElement {
       this._label = value === null || value === undefined || value === '' ? null : String(value);
       this.$legend.textContent = this._label || '';
       this.$legend.hidden = !this._label;
+      this._paintName();
+   }
+
+   get ariaLabel() {
+      return this._ariaLabel ?? null;
+   }
+
+   set ariaLabel(value) {
+      this._ariaLabel = value === null || value === undefined || value === '' ? null : String(value);
+      this._paintName();
+   }
+
+   // A visible label wins; the aria-label only names a group without one.
+   _paintName() {
       if (this._label) {
          this.$container.setAttribute('aria-labelledby', this.$legend.id);
+         this.$container.removeAttribute('aria-label');
       } else {
          this.$container.removeAttribute('aria-labelledby');
+         if (this._ariaLabel) this.$container.setAttribute('aria-label', this._ariaLabel);
+         else this.$container.removeAttribute('aria-label');
       }
    }
 

@@ -72,7 +72,7 @@ skipped.
 
 ### Server
 
-`api/index.js` reads `public/og/manifest.json` once at startup (separate from `seo-manifest.json`,
+`api/index.js` reads `public/og/manifest.json` once at startup (separate from `seo.json`,
 which the docs parser owns) and `injectMeta()` replaces `og:image`, `og:image:width/height/type/alt`
 and `twitter:image` with the absolute URL. Routes without an entry (`noindex`, the 404 shell) keep
 the generic banner, now with its real 1893×932 declared in the shell.

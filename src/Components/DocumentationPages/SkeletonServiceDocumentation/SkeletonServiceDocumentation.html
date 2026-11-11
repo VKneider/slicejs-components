@@ -1,0 +1,32 @@
+<div class="documentation-content skeletonservicedocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="skeletonservice">
+     <span class="doc-title-text">SkeletonService</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p>A skeleton promises the shape of what is coming. A generic one (grey bars in a column) promises the wrong shape: the page jumps when the real content arrives.</p>
+<p><code>SkeletonService</code> takes the shape <strong>from the component itself</strong>. It walks what the element renders and marks its leaves — runs of text, images, icons, fields, buttons — and a stylesheet turns each into a block of exactly its own size. The shapes are the layout, so nothing moves when the data is in. No component needs to know the service exists.</p>
+<div class="code-block" data-block-id="doc-block-1"></div>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li><strong>Refreshing data that is already on screen</strong>: a table, a dashboard card, a profile. The old content keeps its place as shapes.</li><li><strong>The first load of a component whose structure you know</strong>: build it with placeholder text and cover it.</li><li><strong>Lists</strong>: <code>repeat</code> shows several rows while the first page loads.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<ul><li><strong>Loads under about 300ms</strong>: a skeleton that flashes is worse than none.</li><li><strong>An action the user started</strong> (saving, sending): a busy <span data-inline-link="0"></span> or a <span data-inline-link="1"></span> indicator says "working on it" better than a dimmed page.</li><li><strong>Progress you can measure</strong> (an upload): a progress bar.</li><li><strong>Nothing to show at all yet</strong> (an empty search): an <span data-inline-link="2"></span>.</li></ul>
+<h2 id="core-behavior">Core Behavior</h2>
+<ul><li><code>cover(element, options)</code> → <code>done()</code>. Marks the leaves, adds <code>aria-busy="true"</code> and <code>inert</code> to the element (no clicks, no focus, no reading of stale text), and a polite status says "Loading…" once. <code>done()</code> puts everything back, including attributes the element already had; calling it twice is harmless.</li><li><code>during(element, work, options)</code> covers until <code>work</code> (a promise, or a function returning one) settles, and returns its result — or throws its error, uncovered.</li><li>Covering an element twice counts: it comes back when every <code>done()</code> has run. <code>uncover(element)</code> forces it; <code>isCovered(element)</code> tells.</li><li><code>options.repeat: n</code> shows <code>n</code> rows while covered by copying the first one (or the first match of <code>options.item</code>, such as <code>'tbody tr'</code>). The copies are plain markup: a component inside the row becomes an empty box of its size, so nothing is built or registered. They are removed by <code>done()</code>.</li><li><code>options.keep</code>: what stays readable because it labels the interface rather than showing data — by default column headers, field labels and legends (<code>'th, thead, label, legend, [data-skeleton-keep]'</code>). Mark your own with <code>data-skeleton-keep</code>; pass <code>''</code> to cover everything.</li><li><code>options.label</code> replaces the announced text (built in: "Loading…" / "Cargando…").</li><li>What becomes a block: images, video, SVG, canvas, fields and buttons as a whole, with their own corners (a round avatar stays round); text as bars <strong>as long as the text itself</strong>, line by line (it is wrapped in an inline span while covered, so a short name in a wide cell is a short bar); an empty box with a background image as one block.</li><li>Destroying the service uncovers everything and removes its status and stylesheet.</li></ul>
+<h2 id="looks">Looks</h2>
+<p>Per element or app-wide: <code>--slice-skeleton-color</code>, <code>--slice-skeleton-shine</code>, <code>--slice-skeleton-radius</code>, <code>--slice-skeleton-speed</code>. With reduced motion the blocks do not shimmer.</p>
+<h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout callout-tip">Cover what you are about to replace, then set the data after <code>during()</code> returns. The skeleton shows the old shapes; the new content lands in the same place.</div>
+<div class="callout callout-tip">For a first load, build the component with placeholder text of a realistic length. The shapes are only as good as the text they are made from.</div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="callout callout-warning">A covered element is <code>inert</code>: nothing inside it can be clicked or focused until <code>done()</code>. Do not cover a form the user is typing in — cover the part that is loading.</div>
+<div class="callout callout-warning">Always call <code>done()</code> (or use <code>during()</code>, which does it even when the work fails). A forgotten cover leaves the element busy and inert.</div>
+</div>
