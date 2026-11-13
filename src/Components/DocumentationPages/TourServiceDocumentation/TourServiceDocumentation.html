@@ -1,0 +1,48 @@
+<div class="documentation-content tourservicedocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="tourservice">
+     <span class="doc-title-text">TourService</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<h2 id="overview">Overview</h2>
+<p><code>TourService</code> explains an existing interface one step at a time. It builds one <code>TourOverlay</code>, highlights the current target, places a card beside it, and owns navigation, focus, scrolling and completion storage. Reuse one singleton for several named tours.</p>
+<div class="code-block" data-block-id="doc-block-1"></div>
+<h3 id="when-to-use-it">When to use it</h3>
+<ul><li>Introduce three to seven controls during onboarding.</li><li>Explain a newly released feature beside its actual control.</li><li>Ask someone to open a menu, then explain the panel they revealed.</li></ul>
+<h3 id="when-not-to-use-it">When not to use it</h3>
+<p>Use <code>Stepper</code> with <code>mode: 'static'</code> for an explanation that stays in the page, or <code>mode: 'interactive'</code> for progress through a task, and <code>ToolTip</code> for a short hint. A tour does not replace clear labels, normal navigation or a form's validation. Multi-page and branching tours are outside v1.</p>
+<h2 id="methods-and-state">Methods and state</h2>
+<div class="table-block" data-block-id="doc-block-2"></div>
+<p>The Next button on the final step becomes Done. Skip skips <strong>one step</strong>; skipping the final step ends with <code>skipped</code>. Close and Escape end with <code>stopped</code>. Missing steps are skipped by default; exhausting them ends with <code>target-missing</code> and does not record completion. Only Done (or <code>next()</code> from the last active step) records completion.</p>
+<h2 id="step-definition">Step definition</h2>
+<div class="table-block" data-block-id="doc-block-3"></div>
+<p>Hooks receive an <code>AbortSignal</code>. Stop/replacement aborts outstanding work; app code should honor the signal when fetching or updating external state. Hook errors/timeouts end with <code>error</code>, log through <code>slice.logger</code> and release the overlay. A <code>waitFor</code> timeout applies the missing-target fallback. Visibility requires a connected element with layout and visible computed visibility. Keep target functions inexpensive and side-effect free.</p>
+<h2 id="start-options">Start options</h2>
+<div class="table-block" data-block-id="doc-block-4"></div>
+<p>Storage failures are logged once and never prevent the tour. A stopped tour starts again from the beginning. One active tour is enforced across service instances; a second live service warns to encourage a singleton.</p>
+<h3 id="events">Events</h3>
+<p><code>slice.events</code> emits <code>tour:start</code> (<code>{ steps, id }</code>), <code>tour:step</code> (<code>{ step, index, total }</code>), and <code>tour:end</code> (<code>{ completed, reason, index }</code>). Standard reasons are <code>completed</code>, <code>skipped</code>, <code>stopped</code>, <code>replaced</code>, <code>route</code>, <code>target-missing</code>, and <code>error</code>.</p>
+<h2 id="live-examples">Live examples</h2>
+<p>Both examples build <code>TourDemo</code>, a self-contained workspace fixture, then create the tour against its internal controls. In a real app, use your own selectors or elements in each step.</p>
+<div class="script-block" data-block-id="doc-block-5"></div>
+<div class="script-block" data-block-id="doc-block-6"></div>
+<p><code>TourDemo</code> exposes <code>targets</code> (its internal controls), <code>toggleFilters(open?)</code>, <code>clearFilters()</code>, <code>exportSummary()</code> and <code>launch()</code>. Both examples request the same singleton (<code>docsTour</code>), so starting one closes the other. The fixture also owns the default tours used by its own tests; the examples replace them through <code>onLaunch</code>.</p>
+<h2 id="async-setup">Async setup</h2>
+<p>Open app-controlled panels in <code>beforeStep</code>, then let <code>waitFor</code> confirm the target is visible. A preparation card is shown while the hook runs. Keep hooks idempotent so Back works too.</p>
+<div class="code-block" data-block-id="doc-block-7"></div>
+<h2 id="accessibility-and-lifecycle">Accessibility and lifecycle</h2>
+<p>Modal mode uses a named dialog card, an inert page, a Tab trap and the shared scroll lock. Interactive mode keeps page controls reachable and announces the step politely without moving focus. Escape always closes; modal ArrowLeft/ArrowRight and PageUp/PageDown navigate, Home/End jump to the first/last step, while input fields keep their editing keys. Native Button controls support Enter and Space. Progress is text. Reduced motion and <code>animate: false</code> remove the card and spotlight motion; scrolling is instant in all modes.</p>
+<p>Targets are remeasured while the tour is visible, including layout shifts and nested scrolling. A removed target is resolved again using the same wait/fallback rules. Content components are owned by the overlay and destroyed on step change or stop: pass fresh content if you replay a step containing components. The overlay's Button/Icon children, tracking frame, timers, listeners, inert state, pending wait and scroll lock are all released on stop or <code>beforeDestroy()</code>. App-owned target components are never destroyed.</p>
+<h3 id="modal-handoff">Modal handoff</h3>
+<p>Do not run a modal tour above an open native modal dialog. End the tour first, open the modal, and put the explanation inside the modal's own content:</p>
+<div class="code-block" data-block-id="doc-block-8"></div>
+<p>Interactive steps can yield to page-owned controls, but coordinating a tour over a modal's top layer is outside v1. The service rejects modal steps while a native modal is open.</p>
+<h2 id="texts-and-translation">Texts and translation</h2>
+<p>Built-in controls use <code>slice.tour.*</code>, with English and Spanish defaults. Labels and progress update when the locale changes. The priority is step <code>texts</code> → start <code>texts</code> → app dictionary → library default. Keys: <code>next</code>, <code>back</code>, <code>skip</code>, <code>done</code>, <code>close</code>, <code>progress</code> (<code>{index}</code>, <code>{total}</code>), <code>preparing</code>, <code>missing</code>. Titles and content belong to the app; supply localized content when starting a tour.</p>
+<h2 id="theming">Theming</h2>
+<p>Set CSS variables on <code>slice-tour-overlay</code> (or its <code>.slice-tour-overlay</code> layer): <code>--slice-tour-dim</code>, <code>--slice-tour-card-bg</code>, <code>--slice-tour-card-fg</code>, <code>--slice-tour-accent</code>, <code>--slice-tour-radius</code>, <code>--slice-tour-card-width</code>, <code>--slice-tour-arrow</code>, <code>--slice-tour-z</code>. Colors fall back to the app's theme tokens; the card stays within the viewport and scrolls for long content. The card enters and glides between steps over <code>duration</code> (300ms by default); <code>prefers-reduced-motion</code> and <code>animate: false</code> remove that motion.</p>
+<h2 id="touroverlay-integration">TourOverlay integration</h2>
+<p>Install/register <code>TourService</code>, <code>TourOverlay</code>, <code>Button</code>, and <code>Icon</code>. TourOverlay is the service's renderer; normally let the service build it. Its <code>view</code> object has <code>step</code>, <code>index</code>, <code>total</code>, <code>preparing</code>, <code>missing</code>, <code>texts</code>, <code>maxCardWidth</code>, and <code>focusTrap</code>. Its handler props are <code>onNext</code>, <code>onPrev</code>, <code>onSkip</code>, <code>onClose</code>. <code>show()</code> connects and opens its manual popover (fixed-position fallback); <code>track(rect)</code> accepts <code>{ left, top, right, bottom, width, height, radius }</code> or <code>null</code> for a centered card. Rect updates do not reannounce content. The service owns modal focus and page inertness.</p>
+</div>

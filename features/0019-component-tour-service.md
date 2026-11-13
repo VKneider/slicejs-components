@@ -2,11 +2,11 @@
 id: "0019"
 title: "Component: TourService"
 repo: "slicejs-components"
-status: planned
+status: blocked
 area: components
 priority: high
 created: 2026-11-09
-updated: 2026-11-10
+updated: 2026-11-12
 target: "next release"
 owners: []
 related:
@@ -29,7 +29,7 @@ scroll and persistence; the app only declares the steps and targets.
 It is a **Service**, not a Visual component: the tour has no content of its own in the page. It
 orchestrates temporary UI over arbitrary elements, which is the same shape as `ToastProvider`.
 
-Status: **proposed**. This file records the direction; it is not approval to implement. See the
+Status: **blocked on browser validation**. TourService and TourOverlay are implemented; the real-browser gate and generated social card are pending. See the
 coverage study in `docs/COMPONENT_COVERAGE.md` for why this gap is ranked first among the
 overlay/orchestration jobs.
 
@@ -130,13 +130,13 @@ steps, and remote step definitions.
 - `TourService.spec.js`: start/next/prev/stop; step card content and progress; target missing
   (skip and center); keyboard; Escape; focus return; `storageKey` persistence; destroy mid-tour;
   reduced motion; `texts` en/es; target inside a scroll container.
-- No Visual component spec unless a `Tour` visual is extracted; the service owns the DOM.
+- `TourOverlay.spec.js` covers its controls, reactive view, safe content and locale changes; the service owns orchestration.
 - Manual check in the docs site: a tour over a real table/card, desktop and mobile.
 
 ## Documentation impact
 
 - `src/markdown/tour-service.md` (Services › Interaction): a three-step product tour, a
-  "don't show again" example, and a comparison with `Steps`/`Stepper`.
+  "don't show again" example, and a comparison with static/interactive `Stepper`.
 - `docs/COMPONENT_COVERAGE.md` row moves from gap to shipped.
 - `WANTED_COMPONENTS.md` row moves to shipped; this feature gets a decision log entry.
 - Skill: `component-selection.md` composition recipe becomes a component row.
@@ -174,3 +174,49 @@ The full design is in [`docs/TOUR-SERVICE-DESIGN.md`](../docs/TOUR-SERVICE-DESIG
 - 2026-11-10 — Design approved: `TourService` + `TourOverlay`, one singleton, `modal` and
   `interactive` modes, `beforeStep`/`anchor`/`waitFor`, split tours over modals, no `ProgressBar`
   dependency. Status moved to `planned`; implementation is still pending.
+
+- 2026-11-12 — Implemented TourService + TourOverlay, registered both, added the Markdown guide,
+  three runnable app scenarios, generated route/SEO/catalog entries, 8 node tests and 12 browser tests.
+  start() resolves on end; the overlay owns its popover. Modal uses native dialog focus management,
+  so the tour has a local trap rather than extracting nonexistent Modal trap code. Instant scrolling
+  avoids a smooth-scroll race and satisfies reduced motion; completion uses localStorage directly.
+- 2026-11-12 — Validation: 176 node tests pass; Markdown lint/generation, teardown and icon-name
+  checks pass; production build passes. Browser validation is blocked in this environment:
+  Playwright's browser download failed, and system Chromium cannot create its process socket
+  (Operation not permitted). The new OG card cannot be captured, so og:check / test:gate remain
+  blocked. Status is blocked, not done; the wanted-component row stays open.
+
+## Remaining release validation
+
+On a machine where Playwright Chromium runs:
+
+```bash
+pnpm exec playwright install chromium
+pnpm exec playwright test TourService TourOverlay --project=components --workers=2
+pnpm run og:generate -- --only=/docs/services/tour-service
+pnpm run test:gate
+```
+
+Review the live desktop/mobile scenarios, commit the generated OG card, and only then mark this
+feature done and move TourService to the shipped list. The developer skill is in the separate docs
+repository; its component-selection/catalog update is still a release follow-up there.
+
+- 2026-11-12 — Added TourDemo under DemoComponents: a responsive Launchpad workspace with
+  Button, Icon, Badge, Avatar, Card, Grid, Input and Select; functioning search/status filters and a
+  summary action. The docs now have exactly two script scenarios, each a single slice.build:
+  overview (modal) and interactive filtering/export. Both share the singleton service and use
+  instance-local targets. Screenshots remain blocked: desktop Chromium opens, but cannot reach
+  the isolated dev server, and organization policy blocks file:// previews.
+
+- 2026-11-12 — Follow-up: TourDemo now includes a ProgressBar in each project card, and the guide
+  references the unified Stepper modes. Standalone Steps was removed by explicit user decision.
+- 2026-11-13 — Review fixes: TourDemo filters hide the card instead of the whole Grid; the route
+  listener defers `stop()` out of EventManager's dispatch loop; the TourOverlay translation spec
+  intercepts the config before mount. The docs now show the `TourService` creation and steps against
+  `TourDemo.targets` through `onLaunch`, with a docs regression test. Motion now glides the card and
+  spotlight between steps with a driver.js-style stage transition, configurable via
+  `animate`/`duration`.
+  Verified here: 182 node tests, 18 targeted browser tests, `og:check` and production build. Full
+  `test:gate` and the complete browser suite remain pending.
+  The original tour remains blocked on the real-browser/OG gate; its state is not upgraded by
+  successful logic/DOM-adapter/build checks on the new components.

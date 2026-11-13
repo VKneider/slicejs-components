@@ -167,6 +167,14 @@
       "bytes": 56229,
       "kind": "demo"
     },
+    "/docs/display/progress-bar": {
+      "path": "/og/docs-display-progress-bar-1c3b0c2098.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 41488,
+      "kind": "demo"
+    },
     "/docs/display/quote": {
       "path": "/og/docs-display-quote-75795e91b2.png",
       "width": 1200,
@@ -183,12 +191,12 @@
       "bytes": 49394,
       "kind": "demo"
     },
-    "/docs/display/steps": {
-      "path": "/og/docs-display-steps-08ee4ffdac.png",
+    "/docs/display/stepper": {
+      "path": "/og/docs-display-stepper-ff9b8cb414.png",
       "width": 1200,
       "height": 630,
       "type": "image/png",
-      "bytes": 54828,
+      "bytes": 65342,
       "kind": "demo"
     },
     "/docs/display/timeline": {
@@ -637,6 +645,14 @@
       "height": 630,
       "type": "image/png",
       "bytes": 25879,
+      "kind": "demo"
+    },
+    "/docs/services/tour-service": {
+      "path": "/og/docs-services-tour-service-7f78cdbc1a.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 49698,
       "kind": "demo"
     },
     "/docs/services/unsaved-changes-guard": {

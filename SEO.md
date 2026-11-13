@@ -334,3 +334,9 @@ tests/docs-tables.spec.js                           @server: table columns survi
 - `parser/index.js` runs on every `docs:generate` and can reorder `src/Components/components.js` and
   rewrite some generated files with different line endings. Check `git diff` before committing and
   drop pure-formatting churn.
+
+### Retiring a documentation route
+
+After docs:generate, use `pnpm run og:generate -- --prune` to remove social-card entries/files for
+retired routes without starting a browser. This does not create images for new routes; generate
+those with a real browser before og:check/test:gate.

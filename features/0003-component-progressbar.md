@@ -2,12 +2,12 @@
 id: "0003"
 title: "Component: ProgressBar"
 repo: "slicejs-components"
-status: proposed
+status: blocked
 area: components
 priority: medium
 created: 2026-10-28
-updated: 2026-10-28
-target: "TBD"
+updated: 2026-11-12
+target: "next release"
 owners: []
 related:
   - "src/Components/Visual/Loading/Loading.js"
@@ -21,7 +21,7 @@ related:
 
 ## Summary
 
-A determinate progress bar for work whose completion is known: an upload, an import, a quota, a multi-step job. It shows how far along the work is with `value`, `max` and a visible or screen-reader-only label.
+Implemented; browser/OG validation pending. A determinate progress bar for work whose completion is known: an upload, an import, a quota, a multi-step job. It shows how far along the work is with `value`, `max` and a visible or screen-reader-only label.
 
 ## Problem / motivation
 
@@ -29,7 +29,7 @@ A determinate progress bar for work whose completion is known: an upload, an imp
 
 The result is inconsistent visuals and inaccessible progress. A percentage text next to an unlabeled bar is not enough: screen readers need the value on the progress element, and it must update without stealing focus.
 
-## Proposed direction
+## Direction (implemented)
 
 ```js
 const progress = await slice.build('ProgressBar', {
@@ -38,7 +38,7 @@ const progress = await slice.build('ProgressBar', {
   label: 'Uploading invoice.pdf',
   showValue: true,     // draws "42%" next to the bar
   size: 'md',          // 'sm' | 'md' | 'lg'
-  tone: 'info'         // 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+  tone: 'info'         // 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger'
 });
 progress.value = 67;   // reactive; aria-valuenow follows
 ```
@@ -104,10 +104,34 @@ Composition to document:
 
 ## Open questions
 
-- [ ] Should `indeterminate` exist at all, or should the docs strictly point to `Loading`?
-- [ ] Does `showValue` belong in the component, or should consumers compose a `Badge`/text next to it?
-- [ ] Should the fill transition animate by default, and for how long?
+- [x] Indeterminate is included for a track whose total is temporarily unknown; generic busy UI still uses Loading.
+- [x] showValue belongs in the component; format(value, max) also supplies aria-valuetext.
+- [x] Determinate fill transitions for 200ms only when reduced motion is not requested; the unknown-total fill is stationary for reduced motion.
 
 ## Decision log
 
 - 2026-10-28 - Created as `proposed` from `WANTED_COMPONENTS.md`.
+
+- 2026-11-12 — Implemented ProgressBar with value/max normalization, retained assigned value,
+  label/showLabel/showValue, formatter/ariaValueText, locale and en/es defaults, sizes/tones,
+  optional indeterminate state and reduced motion. Added 2 node tests and 4 browser cases;
+  Markdown examples cover a batch import, quota, unknown total and compact semantic tones.
+- 2026-11-12 — Integrated ProgressBar into TourDemo project cards and the Stepper task example.
+  Registry, generated docs/types/catalog included. Repo node tests (182), real-runtime DOM-adapter
+  checks, Markdown generation, type generation and production build pass. Browser/OG validation
+  is blocked by the environment, so status is blocked rather than done.
+
+## Release blocker
+
+Playwright Chromium cannot launch here (process socket permission). The real-browser specs and
+new OG card are pending. On a browser-enabled machine, run:
+
+```bash
+pnpm exec playwright test ProgressBar Stepper --project=components
+pnpm run og:generate -- --only=/docs/display/progress-bar,/docs/display/stepper,/docs/services/tour-service
+pnpm run test:gate
+```
+
+Only after these gates and a manual narrow/light/dark check pass should this feature become done
+and move to the shipped index. Existing social cards for changed docs examples may also need a
+full regeneration before release.

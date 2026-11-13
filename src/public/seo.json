@@ -539,7 +539,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -829,7 +829,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -887,7 +887,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1003,7 +1003,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1061,7 +1061,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1111,6 +1111,64 @@
         }
       ]
     },
+    "/docs/display/progress-bar": {
+      "title": "ProgressBar | Slice.js",
+      "description": "Accessible progress for uploads, imports and quotas, with reactive value/max, formatted output and an optional indeterminate state.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "ProgressBar | Slice.js",
+          "description": "Accessible progress for uploads, imports and quotas, with reactive value/max, formatted output and an optional indeterminate state.",
+          "url": "https://components.slicejs.com/docs/display/progress-bar",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "display",
+              "item": "https://components.slicejs.com/docs/display"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "progress-bar",
+              "item": "https://components.slicejs.com/docs/display/progress-bar"
+            }
+          ]
+        }
+      ]
+    },
     "/docs/display/quote": {
       "title": "Quote | Slice.js",
       "description": "What someone said and who said it — testimonials, reviews, a line from an interview. A figure with a blockquote and a caption, an avatar, a star rating and the source; in a grid or one at a time in a carousel.",
@@ -1119,7 +1177,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1177,7 +1235,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1227,9 +1285,9 @@
         }
       ]
     },
-    "/docs/display/steps": {
-      "title": "Steps | Slice.js",
-      "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
+    "/docs/display/stepper": {
+      "title": "Stepper | Slice.js",
+      "description": "One ordered-process component for static instructions and interactive task navigation, with keyed content, current/completed/error states, linear gating and keyboard support.",
       "robots": {
         "index": true,
         "follow": true
@@ -1242,9 +1300,9 @@
       "jsonLd": [
         {
           "@type": "TechArticle",
-          "headline": "Steps | Slice.js",
-          "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
-          "url": "https://components.slicejs.com/docs/display/steps",
+          "headline": "Stepper | Slice.js",
+          "description": "One ordered-process component for static instructions and interactive task navigation, with keyed content, current/completed/error states, linear gating and keyboard support.",
+          "url": "https://components.slicejs.com/docs/display/stepper",
           "author": {
             "@type": "Organization",
             "name": "vkneider.dev"
@@ -1278,8 +1336,8 @@
             {
               "@type": "ListItem",
               "position": 4,
-              "name": "steps",
-              "item": "https://components.slicejs.com/docs/display/steps"
+              "name": "stepper",
+              "item": "https://components.slicejs.com/docs/display/stepper"
             }
           ]
         }
@@ -1293,7 +1351,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1525,7 +1583,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -2163,7 +2221,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-10-21",
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -2221,7 +2279,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -2917,7 +2975,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-05-31",
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -2975,7 +3033,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-05-31",
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -3265,7 +3323,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -4309,7 +4367,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-10",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -4528,6 +4586,64 @@
               "position": 4,
               "name": "tooltip-provider",
               "item": "https://components.slicejs.com/docs/services/tooltip-provider"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/services/tour-service": {
+      "title": "TourService | Slice.js",
+      "description": "Guide people through existing UI with a spotlight, anchored step cards, interactive steps, async targets, accessible focus and remembered completion.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "TourService | Slice.js",
+          "description": "Guide people through existing UI with a spotlight, anchored step cards, interactive steps, async targets, accessible focus and remembered completion.",
+          "url": "https://components.slicejs.com/docs/services/tour-service",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "services",
+              "item": "https://components.slicejs.com/docs/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "tour-service",
+              "item": "https://components.slicejs.com/docs/services/tour-service"
             }
           ]
         }

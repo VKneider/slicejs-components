@@ -165,15 +165,15 @@ const docsIndex = [
     tags: ['callout', 'note', 'tip', 'admonition', 'warning', 'content', 'display']
   },
   {
-    title: 'Steps',
-    route: '/docs/display/steps',
-    description: 'How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.',
+    title: 'Stepper',
+    route: '/docs/display/stepper',
+    description: 'One ordered-process component for static instructions and interactive task navigation, with keyed content, current/completed/error states, linear gating and keyboard support.',
     section: 'Display',
     group: 'Content',
     order: 43,
-    navLabel: 'Steps',
-    component: 'StepsDocumentation',
-    tags: ['steps', 'process', 'how it works', 'onboarding', 'timeline', 'ordered list', 'content', 'display']
+    navLabel: 'Stepper',
+    component: 'StepperDocumentation',
+    tags: ['stepper', 'steps', 'process', 'wizard', 'onboarding', 'ordered list', 'navigation']
   },
   {
     title: 'Timeline',
@@ -240,6 +240,17 @@ const docsIndex = [
     navLabel: 'ConfirmActionModal',
     component: 'ConfirmActionModalDocumentation',
     tags: ['modal', 'confirm', 'alert', 'prompt', 'danger', 'confirmation', 'dialog', 'events']
+  },
+  {
+    title: 'ProgressBar',
+    route: '/docs/display/progress-bar',
+    description: 'Accessible progress for uploads, imports and quotas, with reactive value/max, formatted output and an optional indeterminate state.',
+    section: 'Display',
+    group: 'Feedback',
+    order: 44,
+    navLabel: 'ProgressBar',
+    component: 'ProgressBarDocumentation',
+    tags: ['progress', 'progressbar', 'upload', 'quota', 'import', 'loading', 'feedback']
   },
   {
     title: 'ToolTip',
@@ -691,6 +702,17 @@ const docsIndex = [
     navLabel: 'ToastProvider',
     component: 'ToastProviderDocumentation',
     tags: ['toast', 'provider', 'service', 'notification']
+  },
+  {
+    title: 'TourService',
+    route: '/docs/services/tour-service',
+    description: 'Guide people through existing UI with a spotlight, anchored step cards, interactive steps, async targets, accessible focus and remembered completion.',
+    section: 'Services',
+    group: 'Interaction',
+    order: 38,
+    navLabel: 'TourService',
+    component: 'TourServiceDocumentation',
+    tags: ['tour', 'onboarding', 'spotlight', 'walkthrough', 'guide', 'interactive', 'overlay', 'service']
   },
   {
     title: 'DragDropService',

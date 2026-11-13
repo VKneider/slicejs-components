@@ -205,6 +205,10 @@
       "component": "MarkdownParserRulesDocumentation"
     },
     {
+      "filePath": "src/markdown/progress-bar.md",
+      "component": "ProgressBarDocumentation"
+    },
+    {
       "filePath": "src/markdown/query-service.md",
       "component": "QueryServiceDocumentation"
     },
@@ -253,8 +257,8 @@
       "component": "SliderDocumentation"
     },
     {
-      "filePath": "src/markdown/steps.md",
-      "component": "StepsDocumentation"
+      "filePath": "src/markdown/stepper.md",
+      "component": "StepperDocumentation"
     },
     {
       "filePath": "src/markdown/storage-service.md",
@@ -303,6 +307,10 @@
     {
       "filePath": "src/markdown/tooltip.md",
       "component": "ToolTipDocumentation"
+    },
+    {
+      "filePath": "src/markdown/tour-service.md",
+      "component": "TourServiceDocumentation"
     },
     {
       "filePath": "src/markdown/treeview.md",

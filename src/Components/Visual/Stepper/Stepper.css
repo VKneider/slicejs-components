@@ -1,0 +1,260 @@
+/* Stepper — a process, in order. Vertical by default; horizontal only where there is room
+   (the container decides, so it also works inside a narrow column on a wide screen). */
+
+slice-stepper {
+  --slice-stepper-color: var(--primary-color, #7c3aed);
+  --slice-stepper-ink: var(--primary-color-readable, color-mix(in srgb, var(--primary-color, #7c3aed) 88%, #000));
+  --slice-stepper-on-color: var(--primary-color-contrast, #fff);
+  --slice-stepper-marker: 32px;
+  --slice-stepper-gap: 16px;
+  --slice-stepper-space: 28px;
+  --slice-stepper-line: 2px;
+
+  display: block;
+  /* A content block takes its row, also inside a flex or grid parent (and a container
+     query needs a definite width). */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: slice-stepper;
+  font-family: var(--font-family, inherit);
+  color: var(--font-primary-color, #1d1b29);
+}
+
+slice-stepper[hidden] {
+  display: none;
+}
+
+slice-stepper[data-size='sm'] {
+  --slice-stepper-marker: 26px;
+  --slice-stepper-gap: 12px;
+  --slice-stepper-space: 20px;
+}
+
+slice-stepper[data-tone='neutral'] {
+  --slice-stepper-color: var(--medium-color, #8a8799);
+  --slice-stepper-ink: var(--font-primary-color, #1d1b29);
+  --slice-stepper-on-color: var(--medium-contrast, #fff);
+}
+slice-stepper[data-tone='info'] {
+  --slice-stepper-color: var(--info-color, #0284c7);
+  --slice-stepper-ink: var(--info-color-readable, color-mix(in srgb, var(--info-color, #0284c7) 64%, #000));
+}
+slice-stepper[data-tone='success'] {
+  --slice-stepper-color: var(--success-color, #16a34a);
+  --slice-stepper-ink: var(--success-color-readable, color-mix(in srgb, var(--success-color, #16a34a) 72%, #000));
+  --slice-stepper-on-color: var(--success-contrast, #fff);
+}
+slice-stepper[data-tone='warning'] {
+  --slice-stepper-color: var(--warning-color, #d97706);
+  --slice-stepper-ink: var(--warning-color-readable, color-mix(in srgb, var(--warning-color, #d97706) 66%, #000));
+  --slice-stepper-on-color: var(--warning-contrast, #fff);
+}
+slice-stepper[data-tone='danger'] {
+  --slice-stepper-color: var(--danger-color, #dc2626);
+  --slice-stepper-ink: var(--danger-color-readable, color-mix(in srgb, var(--danger-color, #dc2626) 84%, #000));
+  --slice-stepper-on-color: var(--danger-contrast, #fff);
+}
+
+/* ── The list (vertical) ────────────────────────────────────────── */
+
+slice-stepper .slice-stepper__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+slice-stepper .slice-stepper__item {
+  margin: 0;
+  display: grid;
+  grid-template-columns: var(--slice-stepper-marker) minmax(0, 1fr);
+  column-gap: var(--slice-stepper-gap);
+  min-width: 0;
+}
+
+slice-stepper .slice-stepper__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The line to the next step. */
+slice-stepper.has-connector .slice-stepper__item:not(:last-child) .slice-stepper__rail::after {
+  content: '';
+  flex: 1 1 auto;
+  width: var(--slice-stepper-line);
+  min-height: 12px;
+  margin-block: 6px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--slice-stepper-color) 28%, transparent);
+}
+
+slice-stepper .slice-stepper__body {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding-bottom: var(--slice-stepper-space);
+  /* The title's first line sits on the marker's centre. */
+  padding-top: calc((var(--slice-stepper-marker) - 1.4em) / 2);
+}
+
+slice-stepper .slice-stepper__item:last-child .slice-stepper__body {
+  padding-bottom: 0;
+}
+
+/* ── Markers ────────────────────────────────────────────────────── */
+
+slice-stepper .slice-stepper__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--slice-stepper-marker);
+  height: var(--slice-stepper-marker);
+  border-radius: 999px;
+  font-size: calc(var(--slice-stepper-marker) * 0.42);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+slice-stepper[data-variant='soft'] .slice-stepper__marker {
+  background: color-mix(in srgb, var(--slice-stepper-color) 14%, var(--primary-background-color, #fff));
+  color: var(--slice-stepper-ink);
+}
+
+slice-stepper[data-variant='filled'] .slice-stepper__marker {
+  background: var(--slice-stepper-color);
+  color: var(--slice-stepper-on-color);
+}
+
+slice-stepper[data-variant='outlined'] .slice-stepper__marker {
+  background: var(--primary-background-color, #fff);
+  border: 2px solid var(--slice-stepper-color);
+  color: var(--slice-stepper-ink);
+}
+
+/* dot: a small mark on the title's line, no number. */
+slice-stepper[data-marker='dot'] {
+  --slice-stepper-marker: 14px;
+}
+
+slice-stepper[data-marker='dot'] .slice-stepper__body {
+  padding-top: 0;
+}
+
+slice-stepper[data-marker='dot'] .slice-stepper__rail {
+  padding-top: calc((1.4em - var(--slice-stepper-marker)) / 2);
+}
+
+slice-stepper[data-marker='dot'] .slice-stepper__marker {
+  border: 3px solid var(--slice-stepper-color);
+  background: var(--primary-background-color, #fff);
+}
+
+slice-stepper[data-marker='dot'][data-variant='filled'] .slice-stepper__marker {
+  background: var(--slice-stepper-color);
+}
+
+/* ── Text ───────────────────────────────────────────────────────── */
+
+slice-stepper .slice-stepper__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+slice-stepper[data-marker='dot'] .slice-stepper__title {
+  font-size: 0.98rem;
+}
+
+slice-stepper .slice-stepper__text {
+  margin: 0;
+  color: var(--font-secondary-color, #5d5a6d);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+slice-stepper[data-size='sm'] .slice-stepper__title {
+  font-size: 0.93rem;
+}
+
+slice-stepper[data-size='sm'] .slice-stepper__text {
+  font-size: 0.86rem;
+}
+
+slice-stepper .slice-stepper__content {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+  min-width: 0;
+}
+
+/* ── Horizontal, where there is room ────────────────────────────── */
+
+@container slice-stepper (min-width: 600px) {
+  slice-stepper[data-orientation='horizontal'] .slice-stepper__list {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    column-gap: 0;
+  }
+
+  slice-stepper[data-orientation='horizontal'] .slice-stepper__item {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    row-gap: 14px;
+  }
+
+  slice-stepper[data-orientation='horizontal'] .slice-stepper__rail {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  slice-stepper[data-orientation='horizontal'].has-connector .slice-stepper__item:not(:last-child) .slice-stepper__rail::after {
+    width: auto;
+    height: var(--slice-stepper-line);
+    min-height: 0;
+    margin-block: 0;
+    margin-inline: 10px;
+  }
+
+  slice-stepper[data-orientation='horizontal'][data-marker='dot'] .slice-stepper__rail {
+    padding-top: 0;
+  }
+
+  slice-stepper[data-orientation='horizontal'] .slice-stepper__body {
+    padding: 0 var(--slice-stepper-gap) 0 0;
+  }
+
+  slice-stepper[data-orientation='horizontal'] .slice-stepper__item:last-child .slice-stepper__body {
+    padding-right: 0;
+  }
+}
+
+/* The content box spaces its children with `gap`; page margins would double it. */
+slice-stepper .slice-stepper__content > :is(p, ul, ol, pre, blockquote, figure) {
+  margin: 0;
+}
+
+/* Controls in the content keep their own width (a grid would stretch them). */
+slice-stepper .slice-stepper__content > :is(slice-button, slice-badge, slice-chip, slice-link, a, button) {
+  justify-self: start;
+}
+
+/* Interactive state uses the same content layout as static instructions. */
+slice-stepper .slice-stepper__trigger { padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: inherit; line-height: inherit; text-align: start; cursor: pointer; }
+slice-stepper .slice-stepper__trigger:focus-visible { outline: 2px solid var(--slice-stepper-color); outline-offset: 5px; border-radius: 3px; }
+slice-stepper .slice-stepper__trigger:disabled { color: var(--font-secondary-color); cursor: default; }
+slice-stepper[data-mode='interactive'] .slice-stepper__item[data-status='current'] .slice-stepper__marker { background: var(--slice-stepper-color); color: var(--slice-stepper-on-color); outline: 3px solid color-mix(in srgb, var(--slice-stepper-color) 20%, transparent); outline-offset: 3px; }
+slice-stepper .slice-stepper__item[data-status='done'] .slice-stepper__marker { background: var(--success-color); color: var(--success-contrast, white); }
+slice-stepper .slice-stepper__item[data-status='error'] .slice-stepper__marker { background: var(--danger-color); color: var(--danger-contrast, white); }
+slice-stepper .slice-stepper__item.is-disabled { opacity: .55; }
+slice-stepper .slice-stepper__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

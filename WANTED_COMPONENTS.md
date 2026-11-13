@@ -17,16 +17,23 @@ duplicate work, leave a note on the tracking issue.
 
 ## Open wanted components
 
-| Component | What | Size | Priority | Feature |
-| --- | --- | --- | --- | --- |
-| **ProgressBar** | Determinate progress with `value`/`max`, label and tone | S | medium | [`0003`](./features/0003-component-progressbar.md) |
-| **Stepper** | Ordered steps with done/current/error, linear gating | M | medium | [`0005`](./features/0005-component-stepper.md) |
-| **TourService** | Spotlight, step card, focus and persistence for onboarding tours (driver.js-style, headless) | L | high | [`0019`](./features/0019-component-tour-service.md) |
-| **Virtualized list** | Windowed list for thousands of rows, fixed height first | L | low | [`0006`](./features/0006-component-virtualized-list.md) |
+| Component | What | Size | Priority | State | Feature |
+| --- | --- | --- | --- | --- | --- |
+| **ProgressBar** | Determinate progress with `value`/`max`, label and tone | S | medium | blocked: browser/OG validation | [`0003`](./features/0003-component-progressbar.md) |
+| **Stepper** | One static/interactive ordered process; done/current/error and linear gating | M | medium | blocked: browser/OG validation | [`0005`](./features/0005-component-stepper.md) |
+| **TourService** | Spotlight, step card, focus and persistence for onboarding tours (driver.js-style, headless) | L | high | blocked: browser/OG validation | [`0019`](./features/0019-component-tour-service.md) |
+| **Virtualized list** | Windowed list for thousands of rows, fixed height first | L | low | proposed | [`0006`](./features/0006-component-virtualized-list.md) |
 
-`TourService` is **planned**: the approved design (one Service + one `TourOverlay`, modal and
-interactive modes, `beforeStep`/`anchor`/`waitFor`) lives in
-[`docs/TOUR-SERVICE-DESIGN.md`](./docs/TOUR-SERVICE-DESIGN.md). It is not implemented.
+`TourService` is **implemented, blocked on browser validation**: one Service + one `TourOverlay`,
+modal and interactive modes, `beforeStep`/`anchor`/`waitFor`. The design is in
+[`docs/TOUR-SERVICE-DESIGN.md`](./docs/TOUR-SERVICE-DESIGN.md); the implementation guide is
+[`src/markdown/tour-service.md`](./src/markdown/tour-service.md). Browser tests and the new OG card
+must be verified before moving it to shipped.
+
+ProgressBar and Stepper are also implemented, with docs, registry/types, unit tests and browser
+specs. Their remaining blocker is the real-browser/OG gate. Stepper is the only process component:
+Steps was merged and removed without an alias, explicitly requested by the user (feature 0010).
+VirtualList remains proposed; it was not part of this implementation cycle.
 
 ## How a wanted component becomes a component
 
@@ -45,7 +52,7 @@ keyboard, virtual menu), Modal, Toast/ToastProvider, ToolTip/ToolTipProvider, Ta
 Loading, Switch, Checkbox, RadioGroup, Input (with `help`/`error`/`validate()`), Textarea, Slider,
 DatePicker, Card, Grid, EmptyState, Badge, Chip, Alert, Avatar/AvatarGroup, FileUpload,
 [Callout](./features/0008-component-callout.md), [FeatureList](./features/0009-component-feature-list.md),
-[Steps](./features/0010-component-steps.md), [SectionHeader](./features/0011-component-section-header.md),
+[SectionHeader](./features/0011-component-section-header.md),
 [Timeline](./features/0012-component-timeline.md), [Quote](./features/0013-component-quote.md),
 [JsonViewer](./features/0014-component-json-viewer.md), [Heatmap](./features/0015-component-heatmap.md),
 [Rating](./features/0016-component-rating.md),
@@ -66,3 +73,8 @@ component exists and the work is a defect or a tooling change.
   `src/markdown/<component>.md` doc with live scenarios.
 - Reuses existing components where it makes sense instead of reinventing them.
 - Updates this index and the feature decision log in the same PR.
+
+## Retired components
+
+- **Steps** — merged into Stepper's static mode, with interactive mode in the same component.
+  Removed without compatibility by explicit user decision; see feature [0010](./features/0010-component-steps.md).

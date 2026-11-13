@@ -24,9 +24,10 @@ const routes = [
   { path: '/docs/display/icon', component: 'App', metadata: { title: "Icon | Slice.js" } },
   { path: '/docs/display/json-viewer', component: 'App', metadata: { title: "JsonViewer | Slice.js" } },
   { path: '/docs/display/lightbox', component: 'App', metadata: { title: "Lightbox | Slice.js" } },
+  { path: '/docs/display/progress-bar', component: 'App', metadata: { title: "ProgressBar | Slice.js" } },
   { path: '/docs/display/quote', component: 'App', metadata: { title: "Quote | Slice.js" } },
   { path: '/docs/display/section-header', component: 'App', metadata: { title: "SectionHeader | Slice.js" } },
-  { path: '/docs/display/steps', component: 'App', metadata: { title: "Steps | Slice.js" } },
+  { path: '/docs/display/stepper', component: 'App', metadata: { title: "Stepper | Slice.js" } },
   { path: '/docs/display/timeline', component: 'App', metadata: { title: "Timeline | Slice.js" } },
   { path: '/docs/display/tooltip', component: 'App', metadata: { title: "ToolTip | Slice.js" } },
   { path: '/docs/feedback/alert', component: 'App', metadata: { title: "Alert | Slice.js" } },
@@ -83,6 +84,7 @@ const routes = [
   { path: '/docs/services/storage-service', component: 'App', metadata: { title: "StorageService | Slice.js" } },
   { path: '/docs/services/toast-provider', component: 'App', metadata: { title: "ToastProvider | Slice.js" } },
   { path: '/docs/services/tooltip-provider', component: 'App', metadata: { title: "ToolTipProvider | Slice.js" } },
+  { path: '/docs/services/tour-service', component: 'App', metadata: { title: "TourService | Slice.js" } },
   { path: '/docs/services/unsaved-changes-guard', component: 'App', metadata: { title: "UnsavedChangesGuard | Slice.js" } },
   { path: '/404', component: 'NotFound', metadata: { title: "Not found | Slice.js" } }
 ];

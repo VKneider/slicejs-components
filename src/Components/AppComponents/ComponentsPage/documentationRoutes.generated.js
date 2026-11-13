@@ -108,9 +108,9 @@ const documentationRoutes = {
         component: 'CalloutDocumentation'
       },
       {
-        title: 'Steps',
-        path: '/docs/display/steps',
-        component: 'StepsDocumentation'
+        title: 'Stepper',
+        path: '/docs/display/stepper',
+        component: 'StepperDocumentation'
       },
       {
         title: 'Timeline',
@@ -146,6 +146,11 @@ const documentationRoutes = {
         title: 'ConfirmActionModal',
         path: '/docs/display/confirm-action-modal',
         component: 'ConfirmActionModalDocumentation'
+      },
+      {
+        title: 'ProgressBar',
+        path: '/docs/display/progress-bar',
+        component: 'ProgressBarDocumentation'
       },
       {
         title: 'ToolTip',
@@ -389,6 +394,11 @@ const documentationRoutes = {
         title: 'DomService',
         path: '/docs/services/dom-service',
         component: 'DomServiceDocumentation'
+      },
+      {
+        title: 'TourService',
+        path: '/docs/services/tour-service',
+        component: 'TourServiceDocumentation'
       },
       {
         title: 'DragDropService',

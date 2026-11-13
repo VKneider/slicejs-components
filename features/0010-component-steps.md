@@ -1,78 +1,59 @@
 ---
 id: "0010"
-title: "Component: Steps"
+title: "Component: Steps (merged into Stepper)"
 repo: "slicejs-components"
-status: done
+status: rejected
 area: components
 priority: medium
 created: 2026-11-08
-updated: 2026-11-08
-target: "next release"
+updated: 2026-11-12
+target: "merged into 0005"
 owners: []
 related:
-  - "src/Components/Visual/Steps/Steps.js"
-  - "src/markdown/steps.md"
   - "features/0005-component-stepper.md"
+  - "src/Components/Visual/Stepper/Stepper.js"
+  - "src/markdown/stepper.md"
 ---
-# Component: Steps
+
+# Steps — retired as a separate component
 
 ## Summary
 
-`Steps` shows how something is done, in order — "How it works", "How to enrol", "Getting your certificate": a marker (number, icon or dot), a title, a sentence and any content (a command, a link, an image).
+The standalone Steps component has been merged into Stepper (feature 0005). Its static ordered
+instructions are Stepper's default mode. This file preserves the decision history; it is not an
+open request to rebuild Steps.
 
 ## Problem / motivation
 
-Every landing and course page has a numbered process, drawn by hand: circles, a line between them, a layout that breaks on mobile, and numbers that a screen reader does not hear as an order.
+Steps and Stepper shared markers, connectors, content and responsive layout. Two names forced
+consumers to choose between largely identical surfaces. One component with two explicit modes
+covers static explanations and interactive task navigation.
 
-## Proposed direction
+## Final direction
 
-```js
-await slice.build('Steps', {
-  orientation: 'horizontal',
-  items: [
-    { title: 'Create your account', text: 'With your university email.' },
-    { title: 'Choose a course', text: 'Pick from the open sections.' },
-    { title: 'Pay and start', text: 'Your access is ready the same day.' },
-  ],
-});
-```
-
-- `items`: `{ title, text, icon, content, id }`.
-- `orientation`: `vertical` (default) · `horizontal`, which goes back to vertical when **its container** is under 600px (container query, so it also works in a narrow column).
-- `marker`: `number` (default) · `icon` (a step without icon keeps its number) · `dot`. `start`: the first number.
-- `variant`: `soft | filled | outlined` (the marker). `tone`, `size`, `connector`, `headingLevel` (default 3).
-
-### Accessibility
-
-An `<ol>` (with `start`), so order and count are announced; markers and the line are `aria-hidden`; titles are headings.
-
-## Relationship with Stepper (0005)
-
-`Steps` only shows a process. When the steps are screens of a task the user is going through (done, current, next; Back and Continue), that is the `Stepper`. A future Stepper can reuse Steps' markup and CSS for its indicator.
+Use `slice.build('Stepper', { mode: 'static', items })` for the original display-only job, or
+`mode: 'interactive'` for current/completed/error states and navigation.
 
 ## Alternatives considered
 
-| Alternative | Why not |
-| --- | --- |
-| A `Stepper` with `static: true` | Stepper's model (status, gating, navigation) is irrelevant here and would be half disabled. |
-| `FeatureList` with numbers | No order semantics, no connector. |
+- Keep two independent components: rejected by the user in favor of a single Stepper.
+- Keep a Steps alias/compatibility wrapper: explicitly declined; the user confirmed no consumers.
 
-## Scope
+## Scope and compatibility
 
-In: the above. Out: statuses (Stepper), timelines with dates (Timeline).
+Removed Steps source, its tests (migrated to Stepper), Markdown, generated docs, route, registry
+entry, declaration and generated social card. No alias, redirect or compatibility layer remains.
+This is an explicit user-authorized API removal despite the repository's general alias policy.
 
-## Compatibility and risk
+## Validation and documentation
 
-New component. The host takes `width: 100%` because a container query needs a definite width (a flex parent would collapse it).
-
-## Validation
-
-`Steps.spec.js`: render, `start` in markers and `<ol>`, icon/dot markers, horizontal vs narrow container, connector rules, fallbacks, heading level, cleanup of icons and content.
-
-## Documentation impact
-
-`src/markdown/steps.md` (Display › Content), with "Steps or Stepper?".
+Static cases are now in Stepper.spec.js; the canonical guide is src/markdown/stepper.md.
+Stepper's implementation/release validation is tracked only in feature 0005. This feature uses
+rejected to mean the standalone component was retired; its useful behavior is retained by Stepper.
 
 ## Decision log
 
-- 2026-11-08 — Built as display-only; Stepper stays a separate, stateful component.
+- 2026-11-08 — Built as a separate static Steps component; Stepper was still a separate proposal.
+- 2026-11-12 — User requested fusion into one Stepper, then explicitly declined compatibility
+  because nobody uses Steps. Merged the implementation, migrated docs/tests, removed the old
+  component/route and changed this feature to rejected (superseded by 0005).

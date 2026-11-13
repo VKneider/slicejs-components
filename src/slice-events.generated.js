@@ -50,7 +50,23 @@ export default {
     },
     "router:change": {
       "payload": null,
-      "emitters": [],
+      "emitters": [
+        {
+          "file": "src/Components/Service/TourService/TourService.spec.js",
+          "line": 158,
+          "component": null
+        },
+        {
+          "file": "src/Components/Service/TourService/TourService.spec.js",
+          "line": 162,
+          "component": null
+        },
+        {
+          "file": "src/Components/Service/TourService/TourService.test.js",
+          "line": 133,
+          "component": null
+        }
+      ],
       "listeners": [
         {
           "file": "src/Components/AppComponents/ComponentsPage/ComponentsPage.js",

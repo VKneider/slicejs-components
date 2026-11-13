@@ -50,6 +50,7 @@ const components = {
   "Navbar": "Visual",
   "NotFound": "Visual",
   "Pagination": "Visual",
+  "ProgressBar": "Visual",
   "PropsTable": "Visual",
   "Quote": "Visual",
   "RadioGroup": "Visual",
@@ -59,7 +60,7 @@ const components = {
   "Select": "Visual",
   "SideMenu": "Visual",
   "Slider": "Visual",
-  "Steps": "Visual",
+  "Stepper": "Visual",
   "Switch": "Visual",
   "Table": "Visual",
   "Tabs": "Visual",
@@ -69,6 +70,7 @@ const components = {
   "Timeline": "Visual",
   "Toast": "Visual",
   "ToolTip": "Visual",
+  "TourOverlay": "Visual",
   "TreeItem": "Visual",
   "TreeView": "Visual",
   "UpdateProbe": "Visual",
@@ -88,6 +90,7 @@ const components = {
   "StorageService": "Service",
   "ToastProvider": "Service",
   "ToolTipProvider": "Service",
+  "TourService": "Service",
   "UnsavedChangesGuard": "Service",
   "AlertDocumentation": "DocumentationPages",
   "AvatarDocumentation": "DocumentationPages",
@@ -141,6 +144,7 @@ const components = {
   "NavbarDocumentation": "DocumentationPages",
   "NotFoundDocumentation": "DocumentationPages",
   "PaginationDocumentation": "DocumentationPages",
+  "ProgressBarDocumentation": "DocumentationPages",
   "QueryServiceDocumentation": "DocumentationPages",
   "QuoteDocumentation": "DocumentationPages",
   "RadioGroupDocumentation": "DocumentationPages",
@@ -153,7 +157,7 @@ const components = {
   "SideMenuDocumentation": "DocumentationPages",
   "SkeletonServiceDocumentation": "DocumentationPages",
   "SliderDocumentation": "DocumentationPages",
-  "StepsDocumentation": "DocumentationPages",
+  "StepperDocumentation": "DocumentationPages",
   "StorageServiceDocumentation": "DocumentationPages",
   "SwitchDocumentation": "DocumentationPages",
   "TableDocumentation": "DocumentationPages",
@@ -166,6 +170,7 @@ const components = {
   "ToastProviderDocumentation": "DocumentationPages",
   "ToolTipDocumentation": "DocumentationPages",
   "ToolTipProviderDocumentation": "DocumentationPages",
+  "TourServiceDocumentation": "DocumentationPages",
   "TreeViewDocumentation": "DocumentationPages",
   "UnsavedChangesGuardDocumentation": "DocumentationPages",
   "DemoButton": "DemoComponents",
@@ -179,7 +184,8 @@ const components = {
   "GsapShowcase": "DemoComponents",
   "ThreeAimTrainer": "DemoComponents",
   "ThreeGalaxy": "DemoComponents",
-  "ThreeShowcase": "DemoComponents"
+  "ThreeShowcase": "DemoComponents",
+  "TourDemo": "DemoComponents"
 };
 
 export default components;

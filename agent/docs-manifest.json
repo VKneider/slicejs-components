@@ -1073,6 +1073,28 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/parser-rules.md"
     },
     {
+      "id": "progress-bar",
+      "title": "ProgressBar",
+      "kind": "Visual",
+      "component": "ProgressBar",
+      "sourcePath": "src/markdown/progress-bar.md",
+      "route": "/docs/display/progress-bar",
+      "section": "Display",
+      "group": "Feedback",
+      "order": 44,
+      "description": "Accessible progress for uploads, imports and quotas, with reactive value/max, formatted output and an optional indeterminate state.",
+      "tags": [
+        "progress",
+        "progressbar",
+        "upload",
+        "quota",
+        "import",
+        "loading",
+        "feedback"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/progress-bar.md"
+    },
+    {
       "id": "query-service",
       "title": "QueryService",
       "kind": "Service",
@@ -1340,27 +1362,26 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/slider.md"
     },
     {
-      "id": "steps",
-      "title": "Steps",
+      "id": "stepper",
+      "title": "Stepper",
       "kind": "Visual",
-      "component": "Steps",
-      "sourcePath": "src/markdown/steps.md",
-      "route": "/docs/display/steps",
+      "component": "Stepper",
+      "sourcePath": "src/markdown/stepper.md",
+      "route": "/docs/display/stepper",
       "section": "Display",
       "group": "Content",
       "order": 43,
-      "description": "How something is done, in order — numbered (or icon, or dot) markers joined by a line, each with a title, a sentence and any content. Vertical, or horizontal where its container has room.",
+      "description": "One ordered-process component for static instructions and interactive task navigation, with keyed content, current/completed/error states, linear gating and keyboard support.",
       "tags": [
+        "stepper",
         "steps",
         "process",
-        "how it works",
+        "wizard",
         "onboarding",
-        "timeline",
         "ordered list",
-        "content",
-        "display"
+        "navigation"
       ],
-      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/steps.md"
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/stepper.md"
     },
     {
       "id": "storage-service",
@@ -1616,6 +1637,29 @@
         "data-attributes"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/tooltip-provider.md"
+    },
+    {
+      "id": "tour-service",
+      "title": "TourService",
+      "kind": "Service",
+      "component": "TourService",
+      "sourcePath": "src/markdown/tour-service.md",
+      "route": "/docs/services/tour-service",
+      "section": "Services",
+      "group": "Interaction",
+      "order": 38,
+      "description": "Guide people through existing UI with a spotlight, anchored step cards, interactive steps, async targets, accessible focus and remembered completion.",
+      "tags": [
+        "tour",
+        "onboarding",
+        "spotlight",
+        "walkthrough",
+        "guide",
+        "interactive",
+        "overlay",
+        "service"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/tour-service.md"
     },
     {
       "id": "treeview",

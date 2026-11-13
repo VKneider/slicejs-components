@@ -1,0 +1,30 @@
+slice-progress-bar {
+   display: block; width: 100%; min-width: 0;
+   --slice-progress-bar-color: var(--primary-color, #7c3aed);
+   --slice-progress-bar-track: color-mix(in srgb, var(--slice-progress-bar-color) 14%, transparent);
+   --slice-progress-bar-fill: var(--slice-progress-bar-color);
+   --slice-progress-bar-radius: 999px;
+   --slice-progress-bar-height: 8px;
+   color: var(--font-primary-color); font-family: var(--font-family, inherit);
+}
+slice-progress-bar[hidden] { display: none; }
+slice-progress-bar[data-size='sm'] { --slice-progress-bar-height: 4px; }
+slice-progress-bar[data-size='lg'] { --slice-progress-bar-height: 12px; }
+slice-progress-bar[data-tone='neutral'] { --slice-progress-bar-color: var(--medium-color); }
+slice-progress-bar[data-tone='info'] { --slice-progress-bar-color: var(--info-color, var(--secondary-color)); }
+slice-progress-bar[data-tone='success'] { --slice-progress-bar-color: var(--success-color); }
+slice-progress-bar[data-tone='warning'] { --slice-progress-bar-color: var(--warning-color); }
+slice-progress-bar[data-tone='danger'] { --slice-progress-bar-color: var(--danger-color); }
+slice-progress-bar .slice-progress-bar__header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin-bottom: 8px; font-size: .85rem; }
+slice-progress-bar .slice-progress-bar__value { color: var(--font-secondary-color); font-variant-numeric: tabular-nums; }
+slice-progress-bar .slice-progress-bar__value[hidden] { display: none; }
+slice-progress-bar .slice-progress-bar__track { height: var(--slice-progress-bar-height); overflow: hidden; background: var(--slice-progress-bar-track); border-radius: var(--slice-progress-bar-radius); }
+slice-progress-bar .slice-progress-bar__fill { display: block; height: 100%; width: 100%; background: var(--slice-progress-bar-fill); border-radius: inherit; transform-origin: left center; }
+slice-progress-bar:dir(rtl) .slice-progress-bar__fill { transform-origin: right center; }
+slice-progress-bar[data-indeterminate='true'] .slice-progress-bar__fill { width: 40%; transform: none !important; }
+slice-progress-bar .is-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (prefers-reduced-motion: no-preference) {
+   slice-progress-bar .slice-progress-bar__fill { transition: transform .2s ease; }
+   slice-progress-bar[data-indeterminate='true'] .slice-progress-bar__fill { animation: slice-progress-bar-working 1.5s ease-in-out infinite; }
+}
+@keyframes slice-progress-bar-working { from { translate: -100% 0; } to { translate: 350% 0; } }

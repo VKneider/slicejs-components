@@ -107,3 +107,26 @@ test('Select: the empty state and the clear label follow the locale', async ({ m
    await expect(c.locator('.slice_select_clear')).toHaveAttribute('aria-label', 'Borrar selección');
    expect(c.pageErrors()).toEqual([]);
 });
+
+test('ProgressBar: unknown-total labels follow the locale; instance texts win', async ({ mount, page }) => {
+   const c = await mount('ProgressBar', { indeterminate: true, showValue: true });
+   await expect(c.component.getByRole('progressbar')).toHaveAttribute('aria-label', 'Progress');
+   await switchTo(page, 'es');
+   await expect(c.component.getByRole('progressbar')).toHaveAttribute('aria-label', 'Progreso');
+   await expect(c.locator('.slice-progress-bar__value')).toHaveText('En proceso…');
+   await c.component.evaluate(el => { el.texts = { label: 'Importación', working: 'Preparando archivos' }; });
+   await switchTo(page, 'en');
+   await expect(c.component.getByRole('progressbar')).toHaveAttribute('aria-label', 'Importación');
+   await expect(c.locator('.slice-progress-bar__value')).toHaveText('Preparando archivos');
+   expect(c.pageErrors()).toEqual([]);
+});
+
+test('Stepper: list name and step announcement follow the locale without changing active', async ({ mount, page }) => {
+   const c = await mount('Stepper', { mode: 'interactive', items: [{ id: 'a', title: 'Contact' }, { id: 'b', title: 'Review' }] });
+   await expect(c.locator('ol')).toHaveAttribute('aria-label', 'Process steps');
+   await switchTo(page, 'es');
+   await expect(c.locator('ol')).toHaveAttribute('aria-label', 'Pasos del proceso');
+   await expect(c.component.getByRole('status')).toHaveText('Paso 1 de 2: Contact');
+   await expect(c.locator('[aria-current="step"]')).toHaveAttribute('data-id', 'a');
+   expect(c.pageErrors()).toEqual([]);
+});

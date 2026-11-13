@@ -5,6 +5,7 @@
 //   pnpm run og:generate -- --only=/docs/input/button
 //   pnpm run og:generate -- --base-url=http://localhost:3001
 //   pnpm run og:check                    # validate the committed manifest only
+//   pnpm run og:generate -- --prune       # remove retired routes/cards, no browser
 //
 // What it does, per route: open the real page against a real server, wait for
 // the `:::script` demo the docs parser renders into `.demobox-preview`, capture
@@ -68,6 +69,7 @@ const value = (name) => {
 
 const CHECK = flag('check');
 const ONLY = value('only');
+const PRUNE = flag('prune');
 const BASE_URL = value('base-url');
 const CONCURRENCY = Number(value('concurrency')) || 4;
 
@@ -221,6 +223,23 @@ const runCheck = () => {
   }
 
   log(`OG images OK: ${routes.length} routes, ${files.length} files, ${kb(budget)} total.`);
+};
+
+// Retiring a docs component must not leave its old social-card route advertised.
+// This only removes stale generated output; new cards still require a real capture.
+const pruneRetiredCards = () => {
+  const seo = readJson(SEO_MANIFEST);
+  const manifest = readJson(OG_MANIFEST);
+  const routes = new Set(indexableRoutes(seo).map(item => item.route));
+  const previous = manifest.images || {};
+  manifest.images = Object.fromEntries(Object.entries(previous).filter(([route]) => routes.has(route)));
+  writeIfChanged(OG_MANIFEST, manifest);
+  const referenced = new Set(Object.values(manifest.images).map(entry => path.basename(entry.path)));
+  let removed = 0;
+  for (const name of fs.readdirSync(OG_DIR).filter(isImageFile)) {
+    if (!referenced.has(name)) { fs.unlinkSync(path.join(OG_DIR, name)); removed++; }
+  }
+  log(`OG: pruned ${Object.keys(previous).length - Object.keys(manifest.images).length} retired route(s), ${removed} orphan image(s).`);
 };
 
 // ── server ─────────────────────────────────────────────────────────────────
@@ -592,6 +611,8 @@ const generate = async () => {
 
 if (CHECK) {
   runCheck();
+} else if (PRUNE) {
+  pruneRetiredCards();
 } else {
   generate().catch((error) => {
     console.error(error.message || error);

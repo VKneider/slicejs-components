@@ -25,7 +25,7 @@ Dates are written in the app's language (through `slice.translator`, or `locale`
 - **Activity on a record**: "Ana changed the status · 3 hours ago", grouped by day.
 
 ### When not to use it
-- **A process without dates** (how to enrol, how it works): [Steps](/docs/display/steps).
+- **A process without dates** (how to enrol, how it works): [Stepper](/docs/display/stepper).
 - **Records you search, sort or select**: [DataList](/docs/data/datalist) or [Table](/docs/data/table).
 - **A task the user goes through screen by screen**: a Stepper.
 

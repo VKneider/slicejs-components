@@ -6,7 +6,7 @@
 //   destroyNodes(nodes)     destroy the components in nodes that are going away
 //   heading(level, cls)     an <h2>…<h6> (an out-of-range level falls back to `fallback`)
 //
-// Used by Callout, FeatureList, Steps, SectionHeader and Timeline.
+// Used by Callout, FeatureList, Stepper, SectionHeader, Timeline and TourOverlay.
 
 /**
  * The Icon name in an `icon` prop.

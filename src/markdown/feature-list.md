@@ -27,7 +27,7 @@ It is information, not cards: by default the items have no surface, no border an
 ### When not to use it
 - **Things you open, compare or select, with images or actions each**: a grid of [Card](/docs/layout/card).
 - **Records with search, sort or selection**: [DataList](/docs/data/datalist).
-- **A process in order**: [Steps](/docs/display/steps).
+- **A process in order**: [Stepper](/docs/display/stepper).
 - **Key and value pairs** (Email: …, Plan: …): [DescriptionList](/docs/data/description-list).
 
 ## Core Behavior

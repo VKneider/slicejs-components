@@ -20,7 +20,7 @@ The title is a real heading (`h2` by default), so the page keeps an outline that
 
 ### When to use it
 - **Each section of a landing or a portfolio**: services, projects, testimonials, pricing.
-- **Above a list or a grid** that needs a title and a "View all" link: a [FeatureList](/docs/display/feature-list), [Steps](/docs/display/steps), a grid of [Card](/docs/layout/card)s.
+- **Above a list or a grid** that needs a title and a "View all" link: a [FeatureList](/docs/display/feature-list), [Stepper](/docs/display/stepper), a grid of [Card](/docs/layout/card)s.
 - **The first section of a page** (`size: 'lg'`, `headingLevel: 1`) when the page has no other title.
 
 ### When not to use it
@@ -127,7 +127,7 @@ return box;
 
 ## Best Practices
 :::tip
-One `h1` per page. Sections use `h2` (the default); the items inside them — a FeatureList, Steps — use `h3`.
+One `h1` per page. Sections use `h2` (the default); the items inside them — a FeatureList, Stepper — use `h3`.
 :::
 
 :::tip

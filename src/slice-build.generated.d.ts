@@ -1068,6 +1068,26 @@ export interface PlaygroundProps {
   [key: string]: unknown;
 }
 
+export interface ProgressBarProps {
+  [key: string]: unknown;
+  ariaValueText?: string;
+  format?: (...args: unknown[]) => unknown;
+  indeterminate?: boolean;
+  label?: string;
+  locale?: string;
+  max?: number;
+  showLabel?: boolean;
+  showValue?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  texts?: Record<string, unknown>;
+  tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
+  value?: number;
+}
+
+export interface ProgressBarDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface PropsTableProps {
   [key: string]: unknown;
   props?: unknown[];
@@ -1281,21 +1301,28 @@ export interface SliderDocumentationProps {
   [key: string]: unknown;
 }
 
-export interface StepsProps {
+export interface StepperProps {
   [key: string]: unknown;
+  active?: string;
   ariaLabel?: string;
+  clickable?: boolean;
   connector?: boolean;
+  disabled?: boolean;
   headingLevel?: number;
   items?: unknown[];
+  linear?: boolean;
   marker?: 'number' | 'icon' | 'dot';
+  mode?: 'static' | 'interactive';
+  onChange?: (...args: unknown[]) => unknown;
   orientation?: 'vertical' | 'horizontal';
   size?: 'sm' | 'md';
   start?: number;
+  texts?: Record<string, unknown>;
   tone?: 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
   variant?: 'soft' | 'filled' | 'outlined';
 }
 
-export interface StepsDocumentationProps {
+export interface StepperDocumentationProps {
   [key: string]: unknown;
 }
 
@@ -1570,6 +1597,28 @@ export interface ToolTipProviderDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface TourDemoProps {
+  [key: string]: unknown;
+  tour?: 'overview' | 'interactive';
+}
+
+export interface TourOverlayProps {
+  [key: string]: unknown;
+  onClose?: (...args: unknown[]) => unknown;
+  onNext?: (...args: unknown[]) => unknown;
+  onPrev?: (...args: unknown[]) => unknown;
+  onSkip?: (...args: unknown[]) => unknown;
+  view?: Record<string, unknown>;
+}
+
+export interface TourServiceProps {
+  [key: string]: unknown;
+}
+
+export interface TourServiceDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface TreeItemProps {
   [key: string]: unknown;
   items?: unknown[];
@@ -1752,6 +1801,8 @@ export interface SliceComponentPropsMap {
   Pagination: PaginationProps;
   PaginationDocumentation: PaginationDocumentationProps;
   Playground: PlaygroundProps;
+  ProgressBar: ProgressBarProps;
+  ProgressBarDocumentation: ProgressBarDocumentationProps;
   PropsTable: PropsTableProps;
   QueryService: QueryServiceProps;
   QueryServiceDocumentation: QueryServiceDocumentationProps;
@@ -1777,8 +1828,8 @@ export interface SliceComponentPropsMap {
   SkeletonServiceDocumentation: SkeletonServiceDocumentationProps;
   Slider: SliderProps;
   SliderDocumentation: SliderDocumentationProps;
-  Steps: StepsProps;
-  StepsDocumentation: StepsDocumentationProps;
+  Stepper: StepperProps;
+  StepperDocumentation: StepperDocumentationProps;
   StorageService: StorageServiceProps;
   StorageServiceDocumentation: StorageServiceDocumentationProps;
   Switch: SwitchProps;
@@ -1808,6 +1859,10 @@ export interface SliceComponentPropsMap {
   ToolTipDocumentation: ToolTipDocumentationProps;
   ToolTipProvider: ToolTipProviderProps;
   ToolTipProviderDocumentation: ToolTipProviderDocumentationProps;
+  TourDemo: TourDemoProps;
+  TourOverlay: TourOverlayProps;
+  TourService: TourServiceProps;
+  TourServiceDocumentation: TourServiceDocumentationProps;
   TreeItem: TreeItemProps;
   TreeView: TreeViewProps;
   TreeViewDocumentation: TreeViewDocumentationProps;

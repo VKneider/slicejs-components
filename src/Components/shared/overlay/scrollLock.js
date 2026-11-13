@@ -1,4 +1,4 @@
-// One page-scroll lock shared by every overlay (Modal, Lightbox…), so stacked
+// One page-scroll lock shared by every overlay (Modal, Lightbox, TourService…), so stacked
 // layers do not fight over it: the page is locked while at least one holder
 // holds it, and comes back to the same scroll position when the last lets go.
 //

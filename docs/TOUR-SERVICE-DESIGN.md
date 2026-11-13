@@ -1,6 +1,6 @@
 # TourService — design
 
-**Status:** planned (design approved; not implemented).
+**Status:** implemented; browser validation and social-card capture pending (see feature 0019).
 **Feature:** [`features/0019-component-tour-service.md`](../features/0019-component-tour-service.md).
 **Coverage study:** [`docs/COMPONENT_COVERAGE.md`](./COMPONENT_COVERAGE.md).
 
@@ -133,6 +133,8 @@ menu). When `waitFor` resolves, the card moves to `target`.
   lockScroll: true,                // modal steps only
   scrollIntoView: true,
   spotlight: true,
+  animate: true,                   // glide the card/spotlight between steps
+  duration: 300,                   // ms; 0 snaps
   maxCardWidth: 360,
 }
 ```
@@ -492,8 +494,7 @@ Integration:
   generic "click this selector" command.
 - **`waitFor` waits, it does not open.** `anchor` holds the card while the user acts.
 - **No tours over modals in v1.** Split the flow or use the controlled-modal advanced path.
-- **Progress is text/dots, not `ProgressBar`.** The tour does not depend on a component that is not
-  shipped yet.
+- **Progress is text/dots, not `ProgressBar`.** The tour does not depend on a component that is required by the tour.
 - **Reuse `Button`, `Icon`, `lockScroll`, `toNodes`, `texts`.** New code is the overlay/card, the
   spotlight and the service.
 - **Extract the focus trap only if needed.** If the tour needs the same trap as Modal, extract it to
@@ -512,3 +513,20 @@ Integration:
   consistency; it costs a few child components and must be destroyed with the overlay.
 - Should `interactive` be per step or per tour? Per step, with the service restoring the previous
   mode; a per-tour option can force all steps interactive later.
+
+## 18. Implementation notes (2026-11-12)
+
+- TourOverlay owns its manual popover and its Button/Icon children. TourService owns the single
+  active run, cancellation, the inert page, focus, scroll lock, target tracking and persistence.
+- Modal already delegates its trap to native dialog; there is no shared JS trap to extract.
+- Scrolling is instant for all users, including reduced motion. This avoids measuring mid-animation.
+- A step change transitions the card's actual left/top and the spotlight geometry over `duration`,
+  inspired by driver.js's stage movement (`animate`, `duration`). The card never recomputes its
+  placement around the old rect, which removed the two-position flash on Next. Continuous tracking
+  stays immediate; only a resolved step transition animates. Reduced motion and `animate: false`
+  snap.
+- MutationObserver wakes target waits; a bounded timer also handles async predicates and geometry
+  changes. Visible-tab rAF tracking covers layout movement; it is cancelled on stop/hidden tabs.
+- Completion uses localStorage directly with a guarded fallback when storage is unavailable.
+- The implementation is not marked shipped until the real-browser tests, manual visual checks,
+  OG capture and test:gate pass in an environment that can launch Chromium.

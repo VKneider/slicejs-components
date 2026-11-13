@@ -73,8 +73,8 @@ Legend: ✅ component · 🧩 composition · ⛔ gap · ➖ not a component.
 | Popover with arbitrary content | `DropDown` / `Modal` `layout: 'top'` | 🧩 | A generic anchored `Popover` is a gap, but many cases are menus or dialogs. |
 | Tooltip / toggle tip | `ToolTip` + `ToolTipProvider` | ✅ | One provider, warm-up, top layer. |
 | Command palette / command menu | `Modal` `layout: 'top'` + `Input` + `DataList`/`TreeView` | 🧩 | Keyboard model, async commands and empty states are the work; candidate for a component. |
-| Wizard / stepper | `Steps` + state; `Form` steps | 🧩 | Static process is `Steps`. A *stateful* Stepper (current, done, blocked, gating) is still a wanted component. |
-| Tour / coachmark / onboarding spotlight | none | ⛔ | No mainstream standard either; driver.js/Shepherd are standalone. `TourService` is planned; see [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
+| Wizard / stepper | `Stepper` static/interactive; `Form` steps | 🧩 | Implemented: current/done/error, gating and keyboard. Browser validation pending; Steps was merged without an alias. |
+| Tour / coachmark / onboarding spotlight | none | ⛔ | No mainstream standard either; driver.js/Shepherd are standalone. `TourService` is implemented, awaiting browser validation; see [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
 
 ### Inputs and forms
 
@@ -133,8 +133,8 @@ Legend: ✅ component · 🧩 composition · ⛔ gap · ➖ not a component.
 | 404 / not found | `NotFound` | ✅ | |
 | Persistent notification center | `Toast` + `DataList`/`Modal` | 🧩 | Transient is covered; a persistent inbox is product-specific. |
 | Global banner | `Alert` | 🧩 | Pin an `Alert` at the top; no separate component needed yet. |
-| Onboarding checklist | `FeatureList`/`Steps` + storage | 🧩 | Product-specific. |
-| Tour spotlight | none | ⛔ | `TourService` planned; design in [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
+| Onboarding checklist | `FeatureList`/`Stepper` + storage | 🧩 | Product-specific. |
+| Tour spotlight | none | ⛔ | `TourService` implemented, awaiting browser validation; design in [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
 
 ### Services and utilities
 
@@ -196,9 +196,9 @@ Priority is "reuse × frequency × a11y/behavior risk × fit", not "how many lib
 
 | Rank | Gap | Why it matters | Shape | Cost | Recommendation |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **ProgressBar** | Every upload, import, onboarding and long task; native `<progress>` is ugly and inflexible. | Visual | S | Build (already wanted, 0003). |
-| 2 | **Stepper** | Checkout, onboarding, setup, multi-step forms. `Steps` shows a process; it has no current/blocked state or navigation. | Visual | M | Build (already wanted, 0005). |
-| 3 | **TourService** | Onboarding, feature discovery, release tours. No good native primitive; driver.js/Shepherd are separate. | Service + one overlay Visual | L | Design approved; implementation pending. See [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
+| 1 | **ProgressBar** | Every upload, import, onboarding and long task; native `<progress>` is ugly and inflexible. | Visual | S | Implemented; browser/OG validation pending (0003). |
+| 2 | **Stepper** | One static/interactive process component for explanations, checkout and setup; Steps was merged. | Visual | M | Implemented; browser/OG validation pending (0005). |
+| 3 | **TourService** | Onboarding, feature discovery, release tours. No good native primitive; driver.js/Shepherd are separate. | Service + one overlay Visual | L | Implemented; browser validation pending. See [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
 | 4 | **CommandPalette** | Apps with many actions/routes; ⌘K is a user expectation. Keyboard, async search and empty states are the hard part. | Visual/composition | M | Build as a component (Modal `top` + Input + list) or a documented recipe first. |
 | 5 | **SplitPane / Resizable** | Dashboards, IDEs, side-by-side review. Layout has no drag handle. | Visual | M | Build if a product needs it; pointer + keyboard model is real work. |
 | 6 | **Gallery** | Product/portfolio galleries need carousel + full-screen + captions + alt. | Composition | S-M | Try `ElementCarrousel` + `Lightbox` first; build a facade only if it repeats. |
@@ -207,13 +207,13 @@ Priority is "reuse × frequency × a11y/behavior risk × fit", not "how many lib
 | 9 | **OTP / PIN, NumberInput, TimePicker, TransferList, Stat, Result** | Common but smaller; each has a workaround. | Visual | S-M | Pick from evidence, not parity. |
 | 10 | **Charts, maps, video, rich text, calendar/scheduler, kanban** | Big products of their own. | External / app | — | Do not build; document the integration. |
 
-## 5. `TourService` — planned design
+## 5. `TourService` — implemented, awaiting browser validation
 
 **Why a Service, not a Visual component:** a tour has no markup of its own in the page's content. It
 orchestrates a spotlight, a step card, focus, scroll and persistence across arbitrary targets. That
 is the same shape as `ToastProvider` (a Service that owns transient UI), not a Card-like component.
 
-**API sketch (proposal, not final):**
+**API overview (full guide: `src/markdown/tour-service.md`):**
 
 ```js
 const tour = await slice.build('TourService', { singleton: true, sliceId: 'tour' });
@@ -232,7 +232,7 @@ tour.start([
 - `target`: a selector, an `Element`, or a function returning one. If it is missing, the step either
   skips (default) or shows a centred card (`fallback: 'center'`).
 - Step props: `title`, `content`, `placement` (`top`, `bottom`, `left`, `right`, `auto`), `padding`,
-  `spotlight`, `disableBeacon`, `beforeStep`, `afterStep`, `waitFor` (async target).
+  `spotlight`, `interactive`, `anchor`, `beforeStep`, `afterStep`, `waitFor` (async target).
 - Controls: Next / Back / Skip / Done, progress ("2 of 5"), keyboard (Escape, arrows, Enter), focus
   trap in the step card, focus return to the opener.
 - Overlay: dimmed page with a spotlight cutout; recompute on scroll/resize; `prefers-reduced-motion`.
@@ -248,7 +248,7 @@ not), and the hand-rolled versions are usually inaccessible. A Slice service can
 
 ## 6. Recommended sequence
 
-1. **ProgressBar** and **Stepper** — already wanted, low ambiguity, high reuse.
+1. **ProgressBar** and **Stepper** — implemented; complete browser/OG validation before shipping.
 2. **TourService** — the user-facing idea with the strongest "Slice shape" and no clear standard.
 3. **CommandPalette** and **SplitPane** — high value in app shells and dashboards; require design
    work (keyboard, focus, pointer).
@@ -262,8 +262,8 @@ watermarks, QR codes. Use an external library and wrap it in `Card`/`Modal` if n
 
 - The selection rules distilled from this study live in the skill:
   `repos/slice.js_docs/skill/slice-js-developer/references/component-selection.md`.
-- `TourService` is captured as a **planned** feature in
+- `TourService` is implemented but **blocked on browser validation** in
   [`features/0019-component-tour-service.md`](../features/0019-component-tour-service.md), with the
-  approved design in [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). It is not implemented.
+  approved design in [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). The real-browser gate and new OG card remain pending.
 - Revisit this table when a library adds a component that maps to a job users actually ask for, not
   when a release note adds a name.
