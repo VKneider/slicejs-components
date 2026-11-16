@@ -36,4 +36,27 @@ test.describe('App shell', () => {
       await expect(page.locator('slice-theme-creator .theme-creator__title')).toHaveText('Theme Creator');
       expect(errors).toEqual([]);
    });
+
+   test('the home hero includes the GitHub CTA', async ({ page }) => {
+      await page.goto('/');
+      await page.waitForFunction(() => !!window.slice?.router, null, { timeout: 30_000 });
+
+      const cta = page.locator('slice-visual-library-home .cta-buttons');
+      await expect(cta).toBeVisible();
+      await expect(cta.locator('slice-button')).toHaveCount(3);
+      await expect(cta.getByText('GitHub', { exact: true })).toBeVisible();
+
+      await page.evaluate(() => {
+         window.__sliceOpenedUrls = [];
+         window.open = (url) => {
+            window.__sliceOpenedUrls.push(String(url));
+            return null;
+         };
+      });
+      await cta.getByText('GitHub', { exact: true }).click();
+
+      expect(await page.evaluate(() => window.__sliceOpenedUrls)).toContain(
+         'https://github.com/VKneider/slicejs-components'
+      );
+   });
 });

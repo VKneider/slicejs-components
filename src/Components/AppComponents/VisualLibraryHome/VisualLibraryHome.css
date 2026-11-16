@@ -115,6 +115,7 @@ slice-visual-library-home {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
   margin-top: 2rem;
 }
 

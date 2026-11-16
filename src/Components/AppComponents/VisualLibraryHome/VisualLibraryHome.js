@@ -45,8 +45,21 @@ export default class VisualLibraryHome extends HTMLElement {
          }
       });
 
+      const githubButton = await slice.build("Button", {
+         value: "GitHub",
+         variant: "outlined",
+         icon: { name: "github", size: "18" },
+         ariaLabel: "Slice.js Components on GitHub",
+         onClick: () => window.open(
+            "https://github.com/VKneider/slicejs-components",
+            "_blank",
+            "noopener,noreferrer"
+         )
+      });
+
       this.querySelector(".cta-buttons").appendChild(browseButton);
       this.querySelector(".cta-buttons").appendChild(docsButton);
+      this.querySelector(".cta-buttons").appendChild(githubButton);
 
       // Crear secciones
       await this.createFeatures();
