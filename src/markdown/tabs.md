@@ -348,3 +348,15 @@ The built-in texts are `slice.tabs.*` keys with English and Spanish defaults, re
 component keeps its English text when the translator is off.
 `ariaLabel` and `texts` still win over the dictionary.
 Keys: `label`.
+
+## Moving live tabs between groups
+
+`source.moveTab(id, targetTabs, index, { activate: true })` transfers the same entry, tab button,
+panel wrapper, mounted content and pending lazy work. Omitted index appends; within one group it
+reorders. It returns false for a missing tab, invalid/cyclic target or duplicate ID in another
+group. A disabled entry can be transferred programmatically but cannot be activated. It does not invoke close handlers. Ownership is reparented, so destroying the source after
+transfer leaves the moved content alive. Factories are not restarted.
+
+Use [DockLayout](/docs/layout/dock-layout) to coordinate draggable groups and split targets. Direct
+Tabs transfers are useful when an application already owns the surrounding distribution. Replacing
+`items` still means normal reconciliation and destruction; use `moveTab` for ownership transfer.

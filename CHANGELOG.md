@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- DockLayout: dockable workspaces composed of Tabs and SplitPane, preserving live panel instances,
+  with pointer/keyboard moves, four-edge splits, close veto, empty-group pruning and JSON restore.
+- Tabs.moveTab and SplitPane.releasePanels transfer content ownership without destroying it.
+- SplitPane: resizable horizontal/vertical workspaces, multiple live panels, percentage bounds,
+  collapse/restore, pointer capture, keyboard resizing, RTL and en/es accessible labels.
+- Grid `layout: 'masonry'`: natural-height cards, shortest-column packing, responsive/automatic
+  columns, column spans and automatic relayout when content changes.
+- Live documentation examples and allocation/packing tests. Browser validation and the new
+  SplitPane OG card remain pending in the current environment.
+
+### Fixed
+
+- Grid now destroys nested Slice components inside removed plain DOM wrappers.
+
 ## [2.0.0] - 2026-10-26
 
 ### Changed

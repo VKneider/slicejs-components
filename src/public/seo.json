@@ -829,7 +829,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-11-10",
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1119,7 +1119,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1235,7 +1235,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-11-10",
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1293,7 +1293,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -1351,7 +1351,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-11-10",
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -2909,6 +2909,64 @@
         }
       ]
     },
+    "/docs/layout/dock-layout": {
+      "title": "DockLayout | Slice.js",
+      "description": "Dockable workspaces composed of Tabs and SplitPane. Move live tabs, create splits, resize panels and restore a serializable distribution.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": "2026-11-17",
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "DockLayout | Slice.js",
+          "description": "Dockable workspaces composed of Tabs and SplitPane. Move live tabs, create splits, resize panels and restore a serializable distribution.",
+          "url": "https://components.slicejs.com/docs/layout/dock-layout",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "layout",
+              "item": "https://components.slicejs.com/docs/layout"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "dock-layout",
+              "item": "https://components.slicejs.com/docs/layout/dock-layout"
+            }
+          ]
+        }
+      ]
+    },
     "/docs/layout/element-carrousel": {
       "title": "ElementCarrousel | Slice.js",
       "description": "A row of slides that moves one position at a time. Swipe, drag, arrows, the keyboard, dots, a count or thumbnails, several slides per view with a peek, loop, and autoplay that pauses itself.",
@@ -2975,7 +3033,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-11-10",
+        "lastmod": "2026-11-17",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -3078,6 +3136,64 @@
               "position": 4,
               "name": "layout",
               "item": "https://components.slicejs.com/docs/layout/layout"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/layout/split-pane": {
+      "title": "SplitPane | Slice.js",
+      "description": "Resizable workspaces with multiple panels, percentage limits, collapse and restore, pointer and keyboard controls.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": "2026-11-17",
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "SplitPane | Slice.js",
+          "description": "Resizable workspaces with multiple panels, percentage limits, collapse and restore, pointer and keyboard controls.",
+          "url": "https://components.slicejs.com/docs/layout/split-pane",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "layout",
+              "item": "https://components.slicejs.com/docs/layout"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "split-pane",
+              "item": "https://components.slicejs.com/docs/layout/split-pane"
             }
           ]
         }
@@ -3497,7 +3613,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-10-29",
+        "lastmod": "2026-11-17",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -4599,7 +4715,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": null,
+        "lastmod": "2026-11-13",
         "priority": "0.7",
         "changefreq": "monthly"
       },

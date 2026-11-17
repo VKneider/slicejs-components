@@ -81,6 +81,10 @@
       "component": "DetailsDocumentation"
     },
     {
+      "filePath": "src/markdown/dock-layout.md",
+      "component": "DockLayoutDocumentation"
+    },
+    {
       "filePath": "src/markdown/dom-service.md",
       "component": "DomServiceDocumentation"
     },
@@ -255,6 +259,10 @@
     {
       "filePath": "src/markdown/slider.md",
       "component": "SliderDocumentation"
+    },
+    {
+      "filePath": "src/markdown/split-pane.md",
+      "component": "SplitPaneDocumentation"
     },
     {
       "filePath": "src/markdown/stepper.md",

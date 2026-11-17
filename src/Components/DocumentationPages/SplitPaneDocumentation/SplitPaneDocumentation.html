@@ -1,0 +1,33 @@
+<div class="documentation-content splitpanedocumentation">
+
+ <div class="doc-title-bar">
+   <h1 id="splitpane">
+     <span class="doc-title-text">SplitPane</span>
+   </h1>
+   <span class="copy-md-slot" data-copy-md></span>
+ </div>
+<p><code>SplitPane</code> shares space between two or more live panels. Drag a separator, focus it and use the keyboard, or restore a saved <code>sizes</code> array. The content stays mounted while sizes change; collapsed content is hidden and inert.</p>
+<p>Use it for an explorer and editor, side-by-side review, or a dashboard with a resizable inspector. Use <span data-inline-link="0"></span> for the application frame and navigation, <span data-inline-link="1"></span> for responsive cards, and <span data-inline-link="2"></span> when only one view should be visible. SplitPane does not turn into a mobile drawer automatically.</p>
+<h2 id="contract">Contract</h2>
+<div class="table-block" data-block-id="doc-block-1"></div>
+<p><code>minSize</code> and <code>maxSize</code> are percentages of panel space, excluding the separators; defaults are <code>0</code> and <code>100</code>. Panels scroll when their content does not fit. Infeasible minima are scaled down proportionally; infeasible maxima are expanded to fill the space. <code>data-constrained="true"</code> exposes this situation. Keep constraints feasible in your application for predictable limits.</p>
+<p>The host fills its parent. <strong>Give a vertical pane or full workspace a definite height</strong>, for example <code>pane.style.height = '420px'</code>. A horizontal pane without a parent height can grow from its content, but fixed-height workspaces are easier to use.</p>
+<h3 id="methods-and-ownership">Methods and ownership</h3>
+<ul><li><code>resize(separatorIndex, percent)</code> changes the panel before that separator and its neighbor. Other panels keep their sizes. Returns whether anything changed.</li><li><code>collapse(idOrIndex)</code>, <code>expand(idOrIndex)</code>, <code>toggle(idOrIndex)</code> return whether the action succeeded. Only <code>collapsible</code> panels can collapse; the last expanded panel stays open. Expand restores its remembered size within current bounds.</li><li>Assigning <code>panels</code> reconciles by ID and preserves content nodes still present. Removed content is destroyed, including Slice components inside plain DOM wrappers. Nodes passed to the pane belong to it; do not share one live node across panels.</li><li>Programmatic <code>panels</code>, <code>sizes</code> and other prop assignments do not call <code>onChange</code>. Methods do.</li></ul>
+<h2 id="explorer-editor-and-inspector">Explorer, editor and inspector</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<h2 id="vertical-review-and-nested-panes">Vertical review and nested panes</h2>
+<p>A panel can contain another SplitPane. Each separator handles only its own pane; nested keyboard/pointer events do not resize the parent.</p>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<h2 id="saving-a-distribution">Saving a distribution</h2>
+<p>Persistence stays in the app: choose a versioned key, validate stored input, and restore collapsed IDs before sizes. <code>onChange</code> fires during dragging, so debounce expensive persistence. This example saves only on an explicit button.</p>
+<div class="script-block" data-block-id="doc-block-4"></div>
+<h2 id="keyboard-and-accessibility">Keyboard and accessibility</h2>
+<div class="table-block" data-block-id="doc-block-5"></div>
+<p>Separators announce their controlled panel, current percentage and effective limits. Pointer capture continues a drag outside the handle; pointer cancellation restores the starting distribution. Collapsed content cannot receive focus. If both adjacent panels are collapsible, use the API or a visible Button to toggle the following panel separately.</p>
+<h2 id="styling">Styling</h2>
+<p>Use the host to set dimensions. <code>--slice-split-pane-handle-size</code> defaults to <code>12px</code>; <code>--slice-split-pane-accent</code> and <code>--slice-split-pane-border</code> follow theme tokens. Keep the handle large enough to grab. No motion is required. Tiny panels scroll; this component does not replace responsive navigation or a mobile-specific product layout.</p>
+<h2 id="transferring-panel-ownership">Transferring panel ownership</h2>
+<p><code>releasePanels()</code> returns the current descriptors with their actual content nodes and empties the pane <strong>without destroying that content</strong>. Adopt the returned descriptors in another SplitPane or destroy the released nodes explicitly. Destroying the old pane after adoption does not destroy those components. This is used by <span data-inline-link="3"></span> when changing a split tree; normal <code>panels = ...</code> replacement keeps its existing destroy-on-removal behavior.</p>
+<div class="component-block" data-block-id="doc-block-6"></div>
+</div>

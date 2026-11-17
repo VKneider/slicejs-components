@@ -285,3 +285,49 @@ test.describe('Grid', () => {
       await expect(c.component).toHaveScreenshot('grid-3col.png');
    });
 });
+
+test.describe('Grid masonry', () => {
+   const fill = async c => c.component.evaluate(el => {
+      el.style.width = '420px';
+      el.items = [100, 40, 70, 50].map((height, i) => { const node = document.createElement('button'); node.type = 'button'; node.textContent = `Item ${i}`; node.style.cssText = `height:${height}px;margin:0;padding:0;border:0`; return node; });
+   });
+   test('shortest column packing keeps source/tab order and reacts to height changes', async ({ mount }) => {
+      const c = await mount('Grid', { layout: 'masonry', columns: 2, gap: 10, rowGap: 8 });
+      await fill(c);
+      await expect(c.locator('.grid-container')).toHaveCSS('height', '158px');
+      expect(await c.component.evaluate(el => [...el.$grid.children].map(n => [n.style.left, n.style.top]))).toEqual([['0px', '0px'], ['215px', '0px'], ['215px', '48px'], ['0px', '108px']]);
+      await c.component.evaluate(el => { el.items[1].style.height = '140px'; });
+      await expect(c.locator('.grid-container')).toHaveCSS('height', '198px');
+      expect(await c.component.evaluate(el => [...el.$grid.children].map(n => n.textContent))).toEqual(['Item 0', 'Item 1', 'Item 2', 'Item 3']);
+      expect(c.pageErrors()).toEqual([]);
+   });
+   test('container breakpoints, automatic columns, spans and layout switching restore styles', async ({ mount }) => {
+      const c = await mount('Grid', { layout: 'masonry', columns: { 0: 1, 400: 2 }, gap: 10 });
+      await fill(c);
+      await expect(c.component).toHaveAttribute('data-columns', '2');
+      await c.component.evaluate(el => { el.items = [{ node: el.items[0], colSpan: 'full' }, ...el.items.slice(1)]; });
+      await expect(c.locator('.grid-item').first()).toHaveCSS('width', '420px');
+      await c.component.evaluate(el => { el.style.width = '260px'; });
+      await expect(c.component).toHaveAttribute('data-columns', '1');
+      await c.component.evaluate(el => { el.style.width = '650px'; el.minItemWidth = 200; });
+      await expect(c.component).toHaveAttribute('data-columns', '3');
+      await c.component.evaluate(el => { el.layout = 'grid'; });
+      await expect(c.locator('.grid-item').first()).toHaveCSS('position', 'static');
+      expect(await c.component.evaluate(el => el.$grid.style.height)).toBe('');
+   });
+   test('hidden reveal, replacement, clear and teardown release masonry resources', async ({ mount }) => {
+      const c = await mount('Grid', { layout: 'masonry', columns: 2 });
+      await fill(c);
+      await expect(c.locator('.grid-item').first()).toHaveCSS('position', 'absolute');
+      await c.component.evaluate(el => { el.hidden = true; el.items[0].style.height = '180px'; });
+      await c.component.evaluate(el => { el.hidden = false; });
+      await expect(c.locator('.grid-container')).toHaveCSS('height', '180px');
+      const result = await c.component.evaluate(el => {
+         const node = el.items[0]; el.items = [node]; const stable = el.items[0] === node;
+         el.clear(); const restored = node.style.position === '';
+         slice.controller.destroyComponent(el);
+         return { stable, restored, pending: el._packingFrame, retained: el._masonryStyles.size };
+      });
+      expect(result).toEqual({ stable: true, restored: true, pending: 0, retained: 0 });
+   });
+});

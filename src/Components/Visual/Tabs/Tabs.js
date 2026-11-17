@@ -20,6 +20,8 @@
 // tab survives an `items` update is kept, so re-setting items never throws
 // away what someone was working on.
 
+import { destroyNodes } from '../../shared/content/nodes.js';
+import { captureView, reparentNodes } from '../../shared/content/ownership.js';
 import { texts } from '../../shared/text/texts.js';
 
 const _sliceDeprecated = new Set();
@@ -300,6 +302,38 @@ export default class Tabs extends HTMLElement {
     return true;
   }
 
+  /** Transfer the same entry, panel, icon and lazy task. No factories are restarted. */
+  moveTab(id, target, index, { activate = true } = {}) {
+    const entry = this._tabs.get(id);
+    if (!entry || !(target instanceof Tabs) || !target._inited || (target !== this && target._tabs.has(id))) return false;
+    if (entry.panel?.contains(target) || (entry.source instanceof Element && entry.source.contains(target))) return false;
+    const parentScroll = this._activeTab === id ? [this.$panels.scrollLeft, this.$panels.scrollTop] : null;
+    const restore = captureView([entry.button, entry.panel].filter(Boolean));
+    if (target !== this) {
+      this._tabs.delete(id);
+      this._items = this._items.filter(item => item.id !== id);
+      target._tabs.set(id, entry);
+      entry.owner = target;
+      entry.button.id = `${target._uid}-tab-${id}`;
+      if (entry.panel) {
+        entry.panel.id = `${target._uid}-panel-${id}`;
+        entry.panel.setAttribute('aria-labelledby', entry.button.id);
+        entry.button.setAttribute('aria-controls', entry.panel.id);
+      }
+      reparentNodes([entry.button, entry.panel].filter(Boolean), target);
+      this.renderTabs();
+    }
+    const list = target._items.filter(item => item.id !== id);
+    const at = Number.isInteger(index) ? Math.max(0, Math.min(index, list.length)) : list.length;
+    list.splice(at, 0, entry.item);
+    target._items = list;
+    target.renderTabs();
+    if (activate) target.activeTab = id;
+    restore();
+    if (activate && parentScroll) { target.$panels.scrollLeft = parentScroll[0]; target.$panels.scrollTop = parentScroll[1]; }
+    return true;
+  }
+
   /** Set or clear (null) a tab's badge without re-rendering. */
   setBadge(id, value) {
     const entry = this._tabs.get(id);
@@ -343,6 +377,7 @@ export default class Tabs extends HTMLElement {
     }
 
     this._order = valid.map((it) => it.id);
+    let preceding = this.$indicator;
     for (const item of valid) {
       let entry = this._tabs.get(item.id);
       if (!entry) {
@@ -351,12 +386,17 @@ export default class Tabs extends HTMLElement {
       }
       entry.item = item;
       this._paintButton(entry);
-      this.$list.appendChild(entry.button);   // re-appending keeps the order
+      if (preceding.nextSibling !== entry.button) this.$list.insertBefore(entry.button, preceding.nextSibling);
+      preceding = entry.button;
       if (item.panel !== undefined && !entry.panel) this._buildPanel(entry);
     }
+    let panelIndex = 0;
     for (const id of this._order) {
       const panel = this._tabs.get(id).panel;
-      if (panel) this.$panels.appendChild(panel);
+      if (panel) {
+        if (this.$panels.children[panelIndex] !== panel) this.$panels.insertBefore(panel, this.$panels.children[panelIndex] || null);
+        panelIndex++;
+      }
     }
 
     // Which tab is active: the URL, then what was remembered, then the
@@ -499,13 +539,17 @@ export default class Tabs extends HTMLElement {
       entry.panel.classList.remove('is-loading');
       entry.panel.removeAttribute('aria-busy');
     }
-    if (content instanceof Node) entry.panel.appendChild(content);
+    if (content instanceof Node) {
+      entry.panel.appendChild(content);
+      reparentNodes([content], entry.owner || this);
+    }
     else if (content !== undefined && content !== null) entry.panel.textContent = String(content);
   }
 
   _disposePanel(entry) {
     if (!entry.panel) return;
     entry.token += 1;
+    if (!entry.rendered && entry.source instanceof Node) destroyNodes([entry.source]);
     slice.controller.destroyByContainer(entry.panel);
     entry.panel.remove();
     entry.panel = null;

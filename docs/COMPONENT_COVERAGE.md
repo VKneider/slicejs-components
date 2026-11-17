@@ -42,7 +42,8 @@ Legend: ✅ component · 🧩 composition · ⛔ gap · ➖ not a component.
 | Job | Slice answer | Status | Notes |
 | --- | --- | --- | --- |
 | App shell with bar, sidebar, main, aside, footer | `Layout` + `Navbar` / `SideMenu` | ✅ | Landmarks, skip link, drawer collapse, sticky header. |
-| Responsive rows/columns, spans, named areas | `Grid` | ✅ | Breakpoints measured on the container, not the window. |
+| Responsive rows/columns, spans, named areas | `Grid` | ✅ | Breakpoints measured on the container, not the window. Masonry mode implemented; browser validation pending (0021). |
+| Resizable workspaces | `SplitPane` | ✅ | Implemented: multiple panels, constraints, collapse, pointer/keyboard and RTL; browser/OG validation pending (0020). |
 | Simple flex/stack/center/container | CSS | ➖ | Do not wrap every flexbox in a component. |
 | Accordion / collapsible section | `Details` | ✅ | Native `summary`/`details` behavior and styling. |
 | Resizable split panes (IDE/dashboard) | pointer events + `Layout` | ⛔ | `Splitter` is common in Chakra/Ant/shadcn; no Slice answer. |
@@ -200,7 +201,7 @@ Priority is "reuse × frequency × a11y/behavior risk × fit", not "how many lib
 | 2 | **Stepper** | One static/interactive process component for explanations, checkout and setup; Steps was merged. | Visual | M | Implemented; browser/OG validation pending (0005). |
 | 3 | **TourService** | Onboarding, feature discovery, release tours. No good native primitive; driver.js/Shepherd are separate. | Service + one overlay Visual | L | Implemented; browser validation pending. See [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). |
 | 4 | **CommandPalette** | Apps with many actions/routes; ⌘K is a user expectation. Keyboard, async search and empty states are the hard part. | Visual/composition | M | Build as a component (Modal `top` + Input + list) or a documented recipe first. |
-| 5 | **SplitPane / Resizable** | Dashboards, IDEs, side-by-side review. Layout has no drag handle. | Visual | M | Build if a product needs it; pointer + keyboard model is real work. |
+| 5 | **SplitPane / Resizable** | Dashboards, IDEs, side-by-side review. Layout has no drag handle. | Visual | M | Implemented by user request; browser/OG validation pending (0020). |
 | 6 | **Gallery** | Product/portfolio galleries need carousel + full-screen + captions + alt. | Composition | S-M | Try `ElementCarrousel` + `Lightbox` first; build a facade only if it repeats. |
 | 7 | **Popover / ContextMenu** | Arbitrary anchored content and right-click menus. `DropDown` is a menu, not a general popover. | Visual | M | Build a shared `Popover` primitive; `ContextMenu` can follow. |
 | 8 | **AI chat surface** | AI assistants are growing; streaming, tools, citations and approval are not covered. | Composition | L | Watch; start with `Chat`/`PromptInput` only when a product needs it. |
@@ -267,3 +268,19 @@ watermarks, QR codes. Use an external library and wrap it in `Card`/`Modal` if n
   approved design in [`TOUR-SERVICE-DESIGN.md`](./TOUR-SERVICE-DESIGN.md). The real-browser gate and new OG card remain pending.
 - Revisit this table when a library adds a component that maps to a job users actually ask for, not
   when a release note adds a name.
+
+## 2026-11-16 implementation cycle
+
+The user selected SplitPane and masonry inside Grid. Both have authored Markdown, runnable examples,
+registry/types/catalog output, logic tests and browser specs. Chromium could not be installed here,
+so their features remain blocked on browser validation (and the new SplitPane OG capture).
+Masonry is a Grid mode, not a second component. TransferList remains a possible future component;
+CommandPalette was not selected. Existing DropDown supports custom anchored content, so a separate
+Popover is not a priority for this cycle.
+
+## Dockable workspaces — 2026-11-16
+
+DockLayout composes Tabs and SplitPane for live tab transfers, reorder, four-edge splits, empty-group
+pruning and JSON export/restore. Feature [0022](../features/0022-component-dock-layout.md) records
+validation and release blockers. This user-approved cycle includes the ownership transfer APIs;
+floating windows and cross-workspace dragging remain out of scope.

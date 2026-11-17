@@ -415,6 +415,14 @@
       "bytes": 41217,
       "kind": "demo"
     },
+    "/docs/layout/dock-layout": {
+      "path": "/og/docs-layout-dock-layout-13c2557aeb.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 51274,
+      "kind": "demo"
+    },
     "/docs/layout/element-carrousel": {
       "path": "/og/docs-layout-element-carrousel-0eac593322.png",
       "width": 1200,
@@ -437,6 +445,14 @@
       "height": 630,
       "type": "image/png",
       "bytes": 19291,
+      "kind": "demo"
+    },
+    "/docs/layout/split-pane": {
+      "path": "/og/docs-layout-split-pane-322f1a6f78.png",
+      "width": 1200,
+      "height": 630,
+      "type": "image/png",
+      "bytes": 54315,
       "kind": "demo"
     },
     "/docs/navigation/bottom-nav": {

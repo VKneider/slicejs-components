@@ -22,6 +22,9 @@ duplicate work, leave a note on the tracking issue.
 | **ProgressBar** | Determinate progress with `value`/`max`, label and tone | S | medium | blocked: browser/OG validation | [`0003`](./features/0003-component-progressbar.md) |
 | **Stepper** | One static/interactive ordered process; done/current/error and linear gating | M | medium | blocked: browser/OG validation | [`0005`](./features/0005-component-stepper.md) |
 | **TourService** | Spotlight, step card, focus and persistence for onboarding tours (driver.js-style, headless) | L | high | blocked: browser/OG validation | [`0019`](./features/0019-component-tour-service.md) |
+| **DockLayout** | Move live tabs between groups, split at edges and restore a JSON distribution | L | medium | blocked: browser/OG validation | [`0022`](./features/0022-component-dock-layout.md) |
+| **SplitPane** | Resizable/collapsible workspaces; pointer, keyboard, RTL and nested panels | M | medium | blocked: browser/OG validation | [`0020`](./features/0020-component-split-pane.md) |
+| **Grid masonry** | Shortest-column packing as a Grid mode; responsive columns and natural heights | M | medium | blocked: browser validation | [`0021`](./features/0021-grid-masonry.md) |
 | **Virtualized list** | Windowed list for thousands of rows, fixed height first | L | low | proposed | [`0006`](./features/0006-component-virtualized-list.md) |
 
 `TourService` is **implemented, blocked on browser validation**: one Service + one `TourOverlay`,
@@ -34,6 +37,10 @@ ProgressBar and Stepper are also implemented, with docs, registry/types, unit te
 specs. Their remaining blocker is the real-browser/OG gate. Stepper is the only process component:
 Steps was merged and removed without an alias, explicitly requested by the user (feature 0010).
 VirtualList remains proposed; it was not part of this implementation cycle.
+
+DockLayout, SplitPane and Grid's masonry mode are implemented with live examples and tests. Validation in this
+environment is blocked by Playwright's truncated Chromium download; the new DockLayout and
+SplitPane OG cards remain to be generated. TransferList is deferred; no implementation was started.
 
 ## How a wanted component becomes a component
 

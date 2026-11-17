@@ -23,3 +23,8 @@ slice-grid .grid-container {
 slice-grid .grid-container > .grid-item {
   min-width: 0;
 }
+
+/* Absolute placement keeps the source DOM/focus order intact. */
+slice-grid[hidden] { display: none; }
+slice-grid[data-layout='masonry'] > .grid-container { position: relative; }
+slice-grid[data-layout='masonry'] > .grid-container > .grid-item { min-width: 0; }

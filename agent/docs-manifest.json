@@ -420,6 +420,29 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/details.md"
     },
     {
+      "id": "dock-layout",
+      "title": "DockLayout",
+      "kind": "Visual",
+      "component": "DockLayout",
+      "sourcePath": "src/markdown/dock-layout.md",
+      "route": "/docs/layout/dock-layout",
+      "section": "Layout",
+      "group": "Containers",
+      "order": 25,
+      "description": "Dockable workspaces composed of Tabs and SplitPane. Move live tabs, create splits, resize panels and restore a serializable distribution.",
+      "tags": [
+        "dock",
+        "docking",
+        "workspace",
+        "tabs",
+        "splitpane",
+        "panels",
+        "drag",
+        "editor"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/dock-layout.md"
+    },
+    {
       "id": "dom-service",
       "title": "DomService",
       "kind": "Service",
@@ -622,6 +645,7 @@
       "order": 22,
       "description": "Content in rows and columns — columns by the grid's own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.",
       "tags": [
+        "masonry",
         "grid",
         "layout",
         "responsive",
@@ -1360,6 +1384,28 @@
         "number"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/slider.md"
+    },
+    {
+      "id": "split-pane",
+      "title": "SplitPane",
+      "kind": "Visual",
+      "component": "SplitPane",
+      "sourcePath": "src/markdown/split-pane.md",
+      "route": "/docs/layout/split-pane",
+      "section": "Layout",
+      "group": "Containers",
+      "order": 24,
+      "description": "Resizable workspaces with multiple panels, percentage limits, collapse and restore, pointer and keyboard controls.",
+      "tags": [
+        "splitpane",
+        "splitter",
+        "resizable",
+        "panels",
+        "workspace",
+        "editor",
+        "layout"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/split-pane.md"
     },
     {
       "id": "stepper",

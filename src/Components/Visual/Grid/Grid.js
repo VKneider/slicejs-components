@@ -26,11 +26,15 @@
 
 /** @typedef {{ node: Element, colSpan?: number | 'full', rowSpan?: number, area?: string }} GridItem */
 
+import { destroyNodes } from '../../shared/content/nodes.js';
+import { packMasonry } from './parts/masonry.js';
+
 const ALIGN = ['stretch', 'start', 'center', 'end'];
 
 export default class Grid extends HTMLElement {
 
    static props = {
+      layout: { type: 'string', default: 'grid', allowedValues: ['grid', 'masonry'] },
       // A number, or breakpoints by the grid's width: { 0: 1, 600: 2, 960: 4 }.
       columns: { type: 'any', default: 1, required: false },
       rows: { type: 'number', default: 1, required: false },
@@ -68,26 +72,34 @@ export default class Grid extends HTMLElement {
       this._styled = new WeakSet();
       this._observer = /** @type {ResizeObserver | null} */ (null);
       this._frame = 0;
+      this._packingFrame = 0;
+      this._itemObserver = null;
+      this._masonryStyles = new Map();
+      this._alive = true;
 
       slice.controller.setComponentProps(this, props);
-      this._apply();
    }
 
    init() {
+      this._schedulePacking();
       if (typeof ResizeObserver === 'undefined') return;
+      this._itemObserver = new ResizeObserver(() => this._schedulePacking());
       this._observer = new ResizeObserver((entries) => {
-         const width = Math.round(entries[0]?.contentRect.width ?? 0);
-         if (width === this._width) return;
+         const width = entries[0]?.contentRect.width ?? 0;
+         if (Math.abs(width - this._width) < .1) return;
          this._width = width;
-         // Next frame: changing the layout inside the observer's callback would
-         // resize what it observes and loop.
          cancelAnimationFrame(this._frame);
          this._frame = requestAnimationFrame(() => this._apply());
       });
       this._observer.observe(this);
+      this._observeItems();
    }
 
    beforeDestroy() {
+      this._alive = false;
+      this._itemObserver?.disconnect();
+      cancelAnimationFrame(this._packingFrame);
+      this._restoreMasonry();
       this._observer?.disconnect();
       this._observer = null;
       cancelAnimationFrame(this._frame);
@@ -97,6 +109,15 @@ export default class Grid extends HTMLElement {
    }
 
    // ── Props ──────────────────────────────────────────────────────
+
+   get layout() { return this._layout; }
+   set layout(value) {
+      this._layout = value === 'masonry' ? 'masonry' : 'grid';
+      this.dataset.layout = this._layout;
+      if (this._layout !== 'masonry') this._restoreMasonry();
+      this._apply();
+      this._observeItems();
+   }
 
    get columns() { return this._columns; }
    set columns(value) { this._columns = value; this._apply(); }
@@ -151,6 +172,8 @@ export default class Grid extends HTMLElement {
       this._items = Array.isArray(values) ? values : [];
       this._reconcileNodes(this._items);
       this._placeItems();
+      this._observeItems();
+      this._schedulePacking();
    }
 
    get items() {
@@ -168,6 +191,8 @@ export default class Grid extends HTMLElement {
       this.$grid.appendChild(node);
       this._items = [...(this._items || []), item];
       this._placeItems();
+      this._observeItems();
+      this._schedulePacking();
    }
 
    /** Convenience for `setItem` over a list. Appends — use `items` to replace. */
@@ -185,6 +210,8 @@ export default class Grid extends HTMLElement {
    clear() {
       this._removeChildren();
       this._items = [];
+      this._observeItems();
+      this._schedulePacking();
    }
 
    // ── Layout ─────────────────────────────────────────────────────
@@ -252,9 +279,21 @@ export default class Grid extends HTMLElement {
       style.alignItems = this._align && this._align !== 'stretch' ? this._align : '';
       style.justifyItems = this._justify && this._justify !== 'stretch' ? this._justify : '';
 
-      this._shownColumns = this._countColumns(count, areaRows);
+      if (this._layout === 'masonry') {
+         // Equal-width columns share Grid's existing responsive/auto column rules.
+         // Named areas, raw templates and explicit row sizing belong to regular grid.
+         style.gridTemplateAreas = 'none';
+         style.gridTemplateRows = 'none';
+         style.gridAutoRows = 'auto';
+         style.gridAutoFlow = '';
+         style.gridTemplateColumns = minWidth
+            ? `repeat(auto-fill, minmax(min(${minWidth}, 100%), 1fr))`
+            : `repeat(${count}, minmax(0, 1fr))`;
+      }
+      this._shownColumns = this._layout === 'masonry' && !minWidth ? count : this._countColumns(count, areaRows);
       this.dataset.columns = String(this._shownColumns);
       this._placeItems();
+      this._schedulePacking();
    }
 
    /** @param {number} count @param {string[]} areaRows */
@@ -278,7 +317,7 @@ export default class Grid extends HTMLElement {
 
    /** Spans and areas, on the item nodes. A span never asks for more columns than shown. */
    _placeItems() {
-      if (!Array.isArray(this._items)) return;
+      if (!Array.isArray(this._items) || this._layout === 'masonry') return;
       const columns = this._shownColumns || 1;
       for (const item of this._items) {
          const node = this._nodeOf(item);
@@ -305,6 +344,76 @@ export default class Grid extends HTMLElement {
       }
    }
 
+   _observeItems() {
+      this._itemObserver?.disconnect();
+      if (this._layout !== 'masonry') return;
+      for (const node of this.$grid.children) this._itemObserver?.observe(node, { box: 'border-box' });
+   }
+
+   _schedulePacking() {
+      if (!this._alive || this._layout !== 'masonry' || this._packingFrame) return;
+      this._packingFrame = requestAnimationFrame(() => {
+         this._packingFrame = 0;
+         if (this._alive && this._layout === 'masonry') this._pack();
+      });
+   }
+
+   _pack() {
+      if (!this.isConnected) return; // ResizeObserver schedules again on reveal/mount.
+      const computed = getComputedStyle(this.$grid);
+      const width = this.$grid.clientWidth;
+      if (!width) return;
+      const gap = Math.max(0, parseFloat(computed.columnGap) || 0);
+      const rowGap = Math.max(0, parseFloat(computed.rowGap) || 0);
+      const tracks = computed.gridTemplateColumns.split(/\s+/).filter(v => /^([\d.]+)px$/.test(v));
+      const columns = this._minItemWidth ? Math.max(1, tracks.length) : Math.max(1, Math.round(Number(this._atWidth(this._columns)) || 1));
+      this._shownColumns = columns;
+      this.dataset.columns = String(columns);
+      const columnWidth = Math.max(0, (width - gap * (columns - 1)) / columns);
+      const entries = (this._items || []).map(item => ({ item, node: this._nodeOf(item) })).filter(e => e.node?.parentElement === this.$grid);
+      const visible = entries.filter(e => getComputedStyle(e.node).display !== 'none');
+      const margins = visible.map(({ node }) => {
+         const style = getComputedStyle(node);
+         return ['marginLeft', 'marginRight', 'marginTop', 'marginBottom'].map(k => parseFloat(style[k]) || 0);
+      });
+      // Width writes first, then all height reads, then all position writes.
+      visible.forEach(({ item, node }, i) => {
+         if (!this._masonryStyles.has(node)) this._masonryStyles.set(node, Object.fromEntries(['position', 'left', 'top', 'width', 'box-sizing', 'grid-area', 'grid-column', 'grid-row'].map(k => [k, [node.style.getPropertyValue(k), node.style.getPropertyPriority(k)]])));
+         const span = item.colSpan === 'full' ? columns : Math.max(1, Math.min(columns, Math.round(Number(item.colSpan)) || 1));
+         const [left, right] = margins[i];
+         node.style.position = 'absolute';
+         node.style.boxSizing = 'border-box';
+         node.style.gridArea = 'auto';
+         node.style.gridColumn = 'auto';
+         node.style.gridRow = 'auto';
+         node.style.width = `${Math.max(0, span * columnWidth + (span - 1) * gap - left - right)}px`;
+      });
+      const packed = packMasonry(visible.map(({ item, node }, i) => ({ span: item.colSpan, height: node.offsetHeight + margins[i][2] + margins[i][3] })), columns, columnWidth, gap, rowGap);
+      const rtl = computed.direction === 'rtl';
+      packed.positions.forEach((pos, i) => {
+         const node = visible[i].node;
+         node.style.left = `${rtl ? width - pos.x - pos.width : pos.x}px`;
+         node.style.top = `${pos.y}px`;
+      });
+      this.$grid.style.height = `${Math.max(0, packed.height)}px`;
+   }
+
+   _restoreNode(node) {
+      const original = this._masonryStyles.get(node);
+      if (!original) return;
+      for (const [key, [value, priority]] of Object.entries(original)) {
+         if (value) node.style.setProperty(key, value, priority);
+         else node.style.removeProperty(key);
+      }
+      this._masonryStyles.delete(node);
+   }
+   _restoreMasonry() {
+      for (const node of this._masonryStyles.keys()) this._restoreNode(node);
+      if (this.$grid) this.$grid.style.height = '';
+      cancelAnimationFrame(this._packingFrame);
+      this._packingFrame = 0;
+   }
+
    _reconcileNodes(entries) {
       const wanted = [];
       for (const entry of entries) {
@@ -319,9 +428,8 @@ export default class Grid extends HTMLElement {
       // beforeDestroy runs; innerHTML = '' would leave it registered forever.
       for (const child of Array.from(this.$grid.children)) {
          if (keep.has(child)) continue;
-         const sliceId = child.getAttribute?.('slice-id');
-         if (sliceId) slice.controller.destroyComponent(sliceId);
-         else child.remove();
+         this._restoreNode(child);
+         destroyNodes([child]);
       }
 
       wanted.forEach((node, i) => {
@@ -337,9 +445,8 @@ export default class Grid extends HTMLElement {
    _removeChildren() {
       if (!this.$grid) return;
       for (const child of Array.from(this.$grid.children)) {
-         const sliceId = child.getAttribute?.('slice-id');
-         if (sliceId) slice.controller.destroyComponent(sliceId);
-         else child.remove();
+         this._restoreNode(child);
+         destroyNodes([child]);
       }
    }
 }

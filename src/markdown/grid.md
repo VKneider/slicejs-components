@@ -8,7 +8,7 @@ order: 22
 description: Content in rows and columns — columns by the grid's own width, automatic columns, items that span, and named areas. For dashboards, galleries, bento sections and page regions.
 component: GridDocumentation
 generate: true
-tags: [grid, layout, responsive, columns, areas, bento, gallery, dashboard]
+tags: [masonry, grid, layout, responsive, columns, areas, bento, gallery, dashboard]
 ---
 
 # Grid
@@ -35,6 +35,7 @@ What makes it more than `display: grid`:
 - **Two or three things in a row** that should just wrap: a flex row in your own CSS is enough.
 
 ## Core Behavior
+- `layout`: `'grid'` (default) or `'masonry'` for variable-height cards packed into the shortest column.
 - `columns`: a number (default `1`), or breakpoints by the grid's width — `{ 0: 1, 560: 2, 960: 4 }` means 1 column, 2 from 560px, 4 from 960px.
 - `minItemWidth`: automatic columns (`220` or `'14rem'`). Wins over `columns`.
 - `items`: live DOM nodes or components, or `{ node, colSpan, rowSpan, area }`. `colSpan` is a number or `'full'` (the whole row). Assigning `items` **replaces** the content: nodes still present are moved, not rebuilt; components that leave are destroyed.
@@ -160,6 +161,50 @@ const box = document.createElement('div');
 box.style.cssText = 'width:100%';
 box.append(bar, grid);
 return box;
+:::
+
+## Masonry collections
+
+Use `layout: 'masonry'` for resource boards, portfolios or galleries with different card heights. It shares `columns` (including container breakpoints), `minItemWidth`, `gap`, `rowGap`, `items` and the append/clear methods with regular Grid. `colSpan` and `'full'` span contiguous columns. Heights remain natural; late images, fonts and expanded content trigger a new layout through ResizeObserver.
+
+Masonry uses equal-width columns. `areas`, `rowSpan`, `rows`, `columnTemplate`, `rowTemplate`, `autoRows`, `dense`, `align` and `justify` apply only in regular grid mode; their values are kept for switching back. The DOM and keyboard order stay in the input order, even though the visual placement follows the shortest column. Use ordinary grid or a list for sequential content. Avoid percentage heights on cards: masonry measures their natural height.
+
+:::script label="A resource board with natural-height cards" expected="An uneven collection of resource cards fills the shortest column. Change the column count or switch to normal grid without rebuilding the cards."
+const resources = [
+  ['Design system checklist', 'Keep spacing, focus states and naming consistent across the interface.', 'Guide'],
+  ['Release notes', 'SplitPane and masonry are ready for review. Try resizing a panel, switching layouts and expanding card content. Verify the experience with keyboard navigation as well as a pointer.', 'Engineering'],
+  ['Team workspace', 'One place for notes, decisions and useful links.', 'Product'],
+  ['Accessible interactions', 'Every resize separator has a label and keyboard controls. Keep the DOM in a meaningful reading order.', 'Accessibility'],
+  ['Today’s idea', 'What if the project inspector remembered its size?', 'Note'],
+  ['Review questions', 'Does it fit inside a sidebar? Does the focused control stay visible? Does the layout respond to new content?', 'Checklist']
+];
+const cards = [];
+for (const [title, text, category] of resources) {
+  cards.push(await slice.build('Card', {
+    title, text, subtitle: category, variant: 'outlined',
+    content: await slice.build('Details', { title: 'More context', content: 'This extra content changes the height. Masonry rearranges the following cards automatically.' })
+  }));
+}
+const grid = await slice.build('Grid', { layout: 'masonry', columns: { 0: 1, 420: 2, 680: 3 }, gap: 14, rowGap: 18, items: cards });
+const bar = document.createElement('div'); bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px';
+bar.append(
+  await slice.build('Button', { value: 'Masonry', size: 'sm', onClick: () => { grid.layout = 'masonry'; } }),
+  await slice.build('Button', { value: 'Regular grid', size: 'sm', variant: 'outlined', onClick: () => { grid.layout = 'grid'; } }),
+  await slice.build('Button', { value: 'Two columns', size: 'sm', variant: 'ghost', onClick: () => { grid.columns = { 0: 1, 420: 2 }; } })
+);
+const box = document.createElement('div'); box.style.width = '100%'; box.append(bar, grid); return box;
+:::
+
+:::script label="Automatic masonry columns and a featured card" expected="A featured full-width card followed by variable-height project cards. Columns fit the available container with a 190px minimum."
+const featured = await slice.build('Card', { title: 'Workspace collection', subtitle: 'Featured', text: 'A full-width introduction before the projects. Cards below keep their own natural height.', variant: 'filled' });
+const cards = [];
+for (const [title, description] of [
+  ['Sensor dashboard', 'Live readings, recent activity and a resizable details panel.'],
+  ['Course planner', 'A teaching workspace with thirteen weeks, grouped assessments and notes for each class. Every subject has its own pace and resources.'],
+  ['Portfolio', 'Selected work and the story behind each project.'],
+  ['Component explorer', 'Live examples, API tables, keyboard guidance and implementation notes for reusable Slice components.']
+]) cards.push(await slice.build('Card', { title, text: description, variant: 'outlined' }));
+return await slice.build('Grid', { layout: 'masonry', minItemWidth: 190, gap: 12, items: [{ node: featured, colSpan: 'full' }, ...cards] });
 :::
 
 ## Best Practices

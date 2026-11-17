@@ -558,7 +558,18 @@ const docsIndex = [
     order: 22,
     navLabel: 'Grid',
     component: 'GridDocumentation',
-    tags: ['grid', 'layout', 'responsive', 'columns', 'areas', 'bento', 'gallery', 'dashboard']
+    tags: ['masonry', 'grid', 'layout', 'responsive', 'columns', 'areas', 'bento', 'gallery', 'dashboard']
+  },
+  {
+    title: 'SplitPane',
+    route: '/docs/layout/split-pane',
+    description: 'Resizable workspaces with multiple panels, percentage limits, collapse and restore, pointer and keyboard controls.',
+    section: 'Layout',
+    group: 'Containers',
+    order: 24,
+    navLabel: 'SplitPane',
+    component: 'SplitPaneDocumentation',
+    tags: ['splitpane', 'splitter', 'resizable', 'panels', 'workspace', 'editor', 'layout']
   },
   {
     title: 'ElementCarrousel',
@@ -570,6 +581,17 @@ const docsIndex = [
     navLabel: 'Carrousel',
     component: 'ElementCarrouselDocumentation',
     tags: ['carrousel', 'carousel', 'slider', 'gallery', 'layout', 'navigation']
+  },
+  {
+    title: 'DockLayout',
+    route: '/docs/layout/dock-layout',
+    description: 'Dockable workspaces composed of Tabs and SplitPane. Move live tabs, create splits, resize panels and restore a serializable distribution.',
+    section: 'Layout',
+    group: 'Containers',
+    order: 25,
+    navLabel: 'DockLayout',
+    component: 'DockLayoutDocumentation',
+    tags: ['dock', 'docking', 'workspace', 'tabs', 'splitpane', 'panels', 'drag', 'editor']
   },
   {
     title: 'Navbar',

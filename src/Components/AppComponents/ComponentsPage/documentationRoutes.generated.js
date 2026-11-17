@@ -307,9 +307,19 @@ const documentationRoutes = {
         component: 'GridDocumentation'
       },
       {
+        title: 'SplitPane',
+        path: '/docs/layout/split-pane',
+        component: 'SplitPaneDocumentation'
+      },
+      {
         title: 'Carrousel',
         path: '/docs/layout/element-carrousel',
         component: 'ElementCarrouselDocumentation'
+      },
+      {
+        title: 'DockLayout',
+        path: '/docs/layout/dock-layout',
+        component: 'DockLayoutDocumentation'
       },
     ]
   },

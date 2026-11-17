@@ -90,7 +90,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/display/feature-list</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -120,6 +120,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/display/progress-bar</loc>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -131,18 +132,19 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/display/section-header</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/display/stepper</loc>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/display/timeline</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -303,6 +305,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://components.slicejs.com/docs/layout/dock-layout</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://components.slicejs.com/docs/layout/element-carrousel</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -310,13 +318,19 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/layout/grid</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/layout/layout</loc>
     <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/layout/split-pane</loc>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -364,7 +378,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/navigation/tabs</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -478,6 +492,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/services/tour-service</loc>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

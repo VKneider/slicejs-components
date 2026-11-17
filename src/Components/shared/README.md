@@ -23,12 +23,13 @@ when something here starts drawing its own interface, it becomes a component
 | `data/paths.js` | `getter`, `read`: a value by key, path (`'owner.name'`) or function. `readPath`, `writePath`: a path in a store's state, written without changing the original. | DataList, DescriptionList, Table |
 | `data/dates.js` | `toDate`, `relativeTime` ("3 hours ago"), `fullDate`. | DataList, DescriptionList, inlineControl, Timeline, Heatmap |
 | `data/collection.js` | `insertItem`, `patchItem`, `removeItems`, `restoreItems`, `revertItem`: changes to an array that return a new one (for add / update / remove with rollback and undo). | DataList, Table |
-| `text/texts.js` | `texts(namespace, defaults)` / `registerTexts`: a component's built-in texts as the translator's lowest-priority layer, with the English default when it is off. | NotFound, TourOverlay (and the components that adopt it) |
+| `text/texts.js` | `texts(namespace, defaults)` / `registerTexts`: a component's built-in texts as the translator's lowest-priority layer, with the English default when it is off. | NotFound, TourOverlay, SplitPane, DockLayout (and the components that adopt it) |
 | `editing/inlineControl.js` | Which control edits a value in place (Input, Textarea, Select, DatePicker), its props, and how to read its value back. The meaning of `edit: { … }`. | DescriptionList, Table |
 | `validation/fieldRules.js` | The validation rules and messages of the text fields, and when an error may show. | Input, Textarea, DatePicker, FileUpload |
 | `tooltip/tooltipCore.js` | The tooltip engine: the bubble, where it goes, when it shows. | ToolTip, ToolTipProvider |
 | `color/hex.js` | Hex colour helpers (parse, convert, a readable text colour on a fill). | ColorPicker, ThemeCreator |
-| `content/nodes.js` | `iconName`, `toNodes` (a `content` prop → nodes; text is never markup), `destroyNodes`, `heading` / `headingLevel`: the pieces of a block that shows information. | Callout, FeatureList, Stepper, SectionHeader, Timeline, TourOverlay |
+| `content/nodes.js` | `iconName`, `toNodes` (a `content` prop → nodes; text is never markup), `destroyNodes`, `heading` / `headingLevel`: the pieces of a block that shows information. | Callout, FeatureList, Stepper, SectionHeader, Timeline, TourOverlay, SplitPane, Grid, Tabs, DockLayout |
+| `content/ownership.js` | `reparentNodes`, `captureView`: Controller 4.x ownership transfer and focus/selection/scroll restoration for live DOM moves. | Tabs, SplitPane, DockLayout |
 | `navigation/links.js` | `setLink`, `followLink`, `isInternalHref`: a real `<a href>` (through `slice.href()`) whose plain click on an app path goes through the router instead of reloading. | FeatureList, SectionHeader, Timeline, Quote |
 | `overlay/scrollLock.js` | `lockScroll()` → release: one page-scroll lock shared by every overlay, held while any of them is open and restored to the same position when the last closes. | Modal, Lightbox, TourService |
 | `props.js` | `SIZE_VALUES`, `applySize`, `applyClassName`: the `size` and `className` every control has. | Button, Input, Textarea, Checkbox, ColorPicker, FileUpload, Card, Details, Pagination, Loading, SideMenu |

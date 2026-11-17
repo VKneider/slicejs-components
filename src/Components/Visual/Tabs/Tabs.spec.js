@@ -346,3 +346,37 @@ test.describe('Tabs — behaviour', () => {
       expect(alive).toEqual([]);
    });
 });
+test('Tabs transfers the actual entry and lazy task; destroying the source does not destroy moved children',async({mount})=>{
+ const c=await mount('Tabs');
+ const result=await c.component.evaluate(async source=>{
+   let resolve;let calls=0;const pending=new Promise(r=>resolve=r);
+   source.items=[{id:'lazy',label:'Lazy',panel:()=>{calls++;return pending;}}];
+   const target=await slice.build('Tabs',{items:[]});source.parentElement.append(target);
+   const panel=source.getPanel('lazy');source.moveTab('lazy',target);slice.controller.destroyComponent(source);
+   const child=await slice.build('Button',{value:'Loaded once'});resolve(child);await new Promise(r=>setTimeout(r,0));
+   const output={same:target.getPanel('lazy')===panel,calls,child:target.getPanel('lazy').contains(child),owned:child.parentComponent===target};
+   slice.controller.destroyComponent(target);return {...output,clean:!slice.controller.activeComponents.has(child.sliceId)};
+ });
+ expect(result).toEqual({same:true,calls:1,child:true,owned:true,clean:true});
+});
+
+test('Tabs moveTab reorders without changing panel identity and rejects duplicate targets',async({mount})=>{
+ const c=await mount('Tabs',{items:[{id:'a',label:'A',panel:'A'},{id:'b',label:'B',panel:'B'}]});
+ expect(await c.component.evaluate(async source=>{
+   const panel=source.getPanel('a');source.moveTab('a',source,1);
+   const target=await slice.build('Tabs',{items:[{id:'a',label:'Duplicate',panel:'Other'}]});
+   const rejected=!source.moveTab('a',target);slice.controller.destroyComponent(target);
+   return {same:source.getPanel('a')===panel,order:source.items.map(i=>i.id),rejected};
+ })).toEqual({same:true,order:['b','a'],rejected:true});
+});
+
+test('Tabs destroys never-selected wrapped components and rejects transfer into its own content',async({mount})=>{
+ const c=await mount('Tabs');
+ expect(await c.component.evaluate(async source=>{
+   const child=await slice.build('Button',{value:'Never mounted'});const wrapper=document.createElement('div');wrapper.append(child);
+   const nested=await slice.build('Tabs',{items:[]});
+   source.items=[{id:'a',label:'A',panel:nested},{id:'b',label:'B',panel:wrapper}];
+   const rejected=!source.moveTab('a',nested);source.removeTab('b');
+   return {rejected,clean:!slice.controller.activeComponents.has(child.sliceId),retained:source.getPanel('a').contains(nested)};
+ })).toEqual({rejected:true,clean:true,retained:true});
+});

@@ -496,6 +496,25 @@ export interface DetailsDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface DockLayoutProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  closable?: boolean;
+  disabled?: boolean;
+  draggable?: boolean;
+  items?: { badge?: unknown; closable?: boolean; disabled?: boolean; icon?: string; id: string; label?: string; panel?: unknown; }[];
+  layout?: Record<string, unknown>;
+  minPanelSize?: number;
+  onBeforeClose?: (...args: unknown[]) => unknown;
+  onChange?: (...args: unknown[]) => unknown;
+  onClose?: (...args: unknown[]) => unknown;
+  texts?: Record<string, unknown>;
+}
+
+export interface DockLayoutDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface DocumentationLibraryHomeProps {
   [key: string]: unknown;
 }
@@ -689,6 +708,7 @@ export interface GridProps {
   gap?: unknown;
   items?: unknown[];
   justify?: 'stretch' | 'start' | 'center' | 'end';
+  layout?: 'grid' | 'masonry';
   minItemWidth?: unknown;
   rowGap?: unknown;
   rows?: number;
@@ -1301,6 +1321,21 @@ export interface SliderDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface SplitPaneProps {
+  [key: string]: unknown;
+  disabled?: boolean;
+  keyboardStep?: number;
+  onChange?: (...args: unknown[]) => unknown;
+  orientation?: 'horizontal' | 'vertical';
+  panels?: { collapsed?: boolean; collapsible?: boolean; content?: unknown; id?: string; label?: string; maxSize?: number; minSize?: number; }[];
+  sizes?: number[];
+  texts?: Record<string, unknown>;
+}
+
+export interface SplitPaneDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface StepperProps {
   [key: string]: unknown;
   active?: string;
@@ -1599,6 +1634,7 @@ export interface ToolTipProviderDocumentationProps {
 
 export interface TourDemoProps {
   [key: string]: unknown;
+  onLaunch?: (...args: unknown[]) => unknown;
   tour?: 'overview' | 'interactive';
 }
 
@@ -1734,6 +1770,8 @@ export interface SliceComponentPropsMap {
   DescriptionListDocumentation: DescriptionListDocumentationProps;
   Details: DetailsProps;
   DetailsDocumentation: DetailsDocumentationProps;
+  DockLayout: DockLayoutProps;
+  DockLayoutDocumentation: DockLayoutDocumentationProps;
   DocumentationLibraryHome: DocumentationLibraryHomeProps;
   DomService: DomServiceProps;
   DomServiceDocumentation: DomServiceDocumentationProps;
@@ -1828,6 +1866,8 @@ export interface SliceComponentPropsMap {
   SkeletonServiceDocumentation: SkeletonServiceDocumentationProps;
   Slider: SliderProps;
   SliderDocumentation: SliderDocumentationProps;
+  SplitPane: SplitPaneProps;
+  SplitPaneDocumentation: SplitPaneDocumentationProps;
   Stepper: StepperProps;
   StepperDocumentation: StepperDocumentationProps;
   StorageService: StorageServiceProps;

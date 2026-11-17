@@ -1,0 +1,36 @@
+slice-dock-layout {
+  display: block; position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0;
+  color: var(--font-primary-color); background: var(--primary-background-color);
+  --slice-dock-layout-border: var(--slice-border, color-mix(in srgb, var(--font-primary-color) 18%, transparent));
+  --slice-dock-layout-accent: var(--primary-color);
+  --slice-dock-layout-tab-touch-action: manipulation;
+  --slice-dock-layout-radius: var(--border-radius-slice, 10px);
+}
+slice-dock-layout[hidden] { display: none; }
+slice-dock-layout > .slice-dock-layout__workspace { width: 100%; height: 100%; min-width: 0; min-height: 0; }
+slice-dock-layout .slice-dock-layout__group {
+  display: flex; flex-direction: column; height: 100%; min-width: 0; min-height: 0; overflow: hidden;
+  border: 1px solid var(--slice-dock-layout-border); border-radius: var(--slice-dock-layout-radius); box-sizing: border-box;
+}
+slice-dock-layout .slice-dock-layout__toolbar { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; padding: 6px 8px; background: var(--secondary-background-color); }
+slice-dock-layout .slice-dock-layout__title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .78rem; color: var(--font-secondary-color); }
+slice-dock-layout .slice-dock-layout__destination { min-width: 0; max-width: 150px; flex: 0 1 auto; }
+slice-dock-layout .slice-dock-layout__destination,
+slice-dock-layout .slice-dock-layout__move { font: inherit; font-size: .75rem; color: inherit; background: var(--primary-background-color); border: 1px solid var(--slice-dock-layout-border); border-radius: 5px; padding: 5px; }
+slice-dock-layout .slice-dock-layout__move { cursor: pointer; }
+slice-dock-layout .slice-dock-layout__move:disabled { cursor: default; opacity: .5; }
+slice-dock-layout .slice-dock-layout__destination:focus-visible,
+slice-dock-layout .slice-dock-layout__move:focus-visible { outline: 2px solid var(--slice-dock-layout-accent); outline-offset: 1px; }
+slice-dock-layout .slice-dock-layout__group > slice-tabs { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+slice-dock-layout .slice-dock-layout__group > slice-tabs > .slice_tabs { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+slice-dock-layout .slice-dock-layout__group > slice-tabs > .slice_tabs > .slice_tabs_bar { flex: 0 0 auto; }
+slice-dock-layout .slice-dock-layout__group > slice-tabs > .slice_tabs > .slice_tabs_panels { flex: 1; min-height: 0; overflow: auto; }
+slice-dock-layout[data-draggable='true'] { --slice-dock-layout-tab-touch-action: none; }
+slice-dock-layout .slice-dock-layout__group > slice-tabs .slice_tab_button { touch-action: var(--slice-dock-layout-tab-touch-action); }
+slice-dock-layout .slice-dock-layout__empty { padding: 20px; color: var(--font-secondary-color); font-size: .9rem; }
+slice-dock-layout .slice-dock-layout__empty[hidden] { display: none; }
+slice-dock-layout > .slice-dock-layout__preview { position: absolute; z-index: 5; pointer-events: none; border: 2px solid var(--slice-dock-layout-accent); background: color-mix(in srgb, var(--slice-dock-layout-accent) 15%, transparent); box-sizing: border-box; border-radius: 6px; }
+slice-dock-layout > .slice-dock-layout__ghost { position: absolute; z-index: 6; pointer-events: none; max-width: 200px; padding: 7px 12px; border-radius: 6px; color: var(--primary-color-contrast); background: var(--slice-dock-layout-accent); font-size: .85rem; }
+slice-dock-layout > .slice-dock-layout__preview[hidden],
+slice-dock-layout > .slice-dock-layout__ghost[hidden] { display: none; }
+slice-dock-layout > .slice-dock-layout__status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

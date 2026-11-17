@@ -6,7 +6,7 @@ status: done
 area: components
 priority: medium
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-16
 target: "next release"
 owners: []
 related:
@@ -52,3 +52,5 @@ await slice.build('Layout', { header, sidebar, main, aside, footer, stickyHeader
 ## Decision log
 
 - 2026-11-09 — Breakpoints on the component's own width (ResizeObserver), not media queries, so the same grid works in a page, a sidebar and a modal.
+
+- 2026-11-16 — Follow-up: masonry is implemented as a Grid layout mode in feature [0021](./0021-grid-masonry.md). The original regular-grid contract remains unchanged.
