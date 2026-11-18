@@ -33,7 +33,7 @@ Catalog `group` values render as uppercase section headings with a rule, so long
 
 ## Role permissions
 
-:::script label="Assign a project editor's permissions" expected="Grouped permissions with explanations, a locked audit permission, a sensitive-access badge and one unavailable catalog key. Toggle Compact to compare densities. Assign or remove permissions individually or with checked-visible bulk actions."
+:::script label="Assign a project editor's permissions" expected="Grouped permissions with explanations, a locked audit permission, a sensitive-access badge and one unavailable catalog key. Assign or remove permissions individually or with checked-visible bulk actions."
 const sensitive = await slice.build('Badge', { label: 'Sensitive access', tone: 'warning', variant: 'soft' });
 const catalog = [
   { value: 'projects.read', label: 'Read projects', description: 'View projects, milestones and published reports.', group: 'Projects' },
@@ -53,13 +53,38 @@ const transfer = await slice.build('TransferList', {
   onChange: value => { summary.label = `${value.length} assigned keys`; }
 });
 const save = await slice.build('Button', { value: 'Save role', size: 'sm', onClick: () => { output.textContent = JSON.stringify({ role: 'project-editor', permissions: transfer.value }, null, 2); } });
-const density = await slice.build('Button', { value: 'Compact', size: 'sm', variant: 'ghost', onClick: () => {
-  transfer.variant = transfer.variant === 'compact' ? 'default' : 'compact';
-  density.value = transfer.variant === 'compact' ? 'Default density' : 'Compact';
-} });
-const bar = document.createElement('div'); bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
-bar.append(save, density);
-const box = document.createElement('div'); box.style.cssText = 'display:grid;gap:14px;width:100%'; box.append(role, transfer, bar, output); return box;
+const box = document.createElement('div'); box.style.cssText = 'display:grid;gap:14px;width:100%'; box.append(role, transfer, save, output); return box;
+:::
+
+## Default and compact densities
+
+The same catalog and controls in both variants. `compact` keeps every feature but reduces the header, row, footer and list height, which is what you want inside settings panels, sidebars and dense admin tables.
+
+:::script label="Default and compact, one after the other" expected="Two full-width TransferLists over the same four-item catalog. Default uses roomier rows and a 340px list; Compact uses 4px rows and a 260px list. Both keep the Available and Assigned panels side by side, so the height difference is obvious."
+const catalog = [
+  { value: 'view', label: 'View reports', description: 'Read dashboards, exports and saved views.', group: 'Reports' },
+  { value: 'edit', label: 'Edit reports', description: 'Change filters, columns and layout.', group: 'Reports' },
+  { value: 'invite', label: 'Invite viewers', description: 'Add people to this workspace.', group: 'Team' },
+  { value: 'audit', label: 'Audit history', description: 'Required by the organization policy.', group: 'Security', locked: true }
+];
+const makePanel = async (variant) => {
+  const list = await slice.build('TransferList', {
+    items: catalog, value: ['view', 'audit'], variant,
+    ariaLabel: variant === 'compact' ? 'Compact assignment' : 'Default assignment'
+  });
+  const panel = document.createElement('section');
+  panel.style.cssText = 'display:grid;gap:8px;width:100%';
+  const title = document.createElement('strong'); title.textContent = variant === 'compact' ? 'Compact' : 'Default';
+  const note = document.createElement('span');
+  note.style.cssText = 'font-size:.78rem;color:var(--font-secondary-color)';
+  note.textContent = variant === 'compact' ? 'variant="compact" - 260px list, 4px rows' : 'variant="default" - 340px list, 8px rows';
+  panel.append(title, note, list);
+  return panel;
+};
+const stack = document.createElement('div');
+stack.style.cssText = 'display:grid;gap:20px;width:100%';
+stack.append(await makePanel('default'), await makePanel('compact'));
+return stack;
 :::
 
 ## App-owned catalog loading and team assignment
