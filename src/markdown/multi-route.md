@@ -128,3 +128,9 @@ Use `MultiRoute` inside app-shell layouts where navbar/sidebar stay mounted whil
 :::warning
 Do not declare duplicate route paths in the same `routes` array; the first match wins.
 :::
+
+:::related
+- [Route](/docs/routing/route) - One route at a time.
+- [Not found](/docs/navigation/not-found) - The fallback a container can mount.
+- [Layout](/docs/layout/layout) - The shell the container mounts into.
+:::

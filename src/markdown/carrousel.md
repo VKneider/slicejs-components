@@ -270,19 +270,15 @@ return panel;
 :::
 
 ## Best Practices
+
 :::tip
 Give every carousel a `label` that says what is in it ("Product photos", "Recommended courses"). Screen readers announce it when the focus enters.
 :::
 
-:::tip
-Prefer several slides per view with a `peek` for rows of items. People see at once that there is more, and can swipe to it, without hunting for arrows or dots.
-:::
-
-:::tip
-Build slides with the data you already have, and keep that data next to them. Use `index` and `onChange` to find which item is on screen, instead of reading it back from the slide.
-:::
+Prefer several slides per view with a `peek` for rows of items: people see at once that there is more, and can swipe to it, without hunting for arrows or dots. Build slides with the data you already have and keep that data next to them — use `index` and `onChange` to find which item is on screen instead of reading it back from the slide.
 
 ## Pitfalls
+
 :::warning
 Do not hide the only copy of something important in a later slide. Most people never see past the second one.
 :::
@@ -291,10 +287,10 @@ Do not hide the only copy of something important in a later slide. Most people n
 Use autoplay sparingly, and only for content that can be missed (quotes, highlights). Text that moves while someone reads it is hard to follow. The pause button, the hover hold and the reduced-motion check are there for that reason; do not hide them.
 :::
 
-:::warning
-Inside a flex or grid item, give that item `min-width: 0`. Flex and grid items do not shrink below their content by default, and a row of slides is wider than any screen, so the page would scroll sideways.
-:::
+Inside a flex or grid item, give that item `min-width: 0`: flex and grid items do not shrink below their content by default, and a row of slides is wider than any screen, so the page would scroll sideways. For the same reason, do not give the elements inside a slide fixed widths — use `perView` to decide how many fit instead.
 
-:::warning
-A slide's content fills its width. Do not give the elements fixed widths: they would overflow the slide on a phone. Use `perView` to decide how many fit instead.
+:::related
+- [Card](/docs/layout/card) - One slide per card in a grid.
+- [Lightbox](/docs/display/lightbox) - One image, full screen.
+- [Overflow list](/docs/layout/overflow-list) - A row of items that folds into a menu.
 :::

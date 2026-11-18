@@ -207,23 +207,25 @@ return settings;
 :::
 
 ## Best Practices
-:::tip
-Name the sidebar (`sidebarLabel: 'Main navigation'`) when it holds navigation. Screen readers list it by that name.
-:::
 
 :::tip
 Use `fullHeight` and `stickyHeader` for app shells: the header and the menu stay in view while long pages scroll.
 :::
 
-:::tip
-Style the host with single properties (`layout.style.border = …`), not `style.cssText`: the widths are CSS variables in the host's inline style, and `cssText` replaces all of it.
-:::
+Name the sidebar (`sidebarLabel: 'Main navigation'`) when it holds navigation: screen readers list it by that name. Style the host with single properties (`layout.style.border = …`), not `style.cssText` — the widths are CSS variables in the host's inline style, and `cssText` replaces all of it.
 
 ## Pitfalls
+
 :::warning
 One `main` per page. A Layout inside another page's main (a preview, a demo) needs `landmarks: false`.
 :::
 
 :::warning
 `showing()` removes the previous view but does not destroy it — that is what lets a router keep its views. Views you will never show again should be destroyed by whoever created them.
+:::
+
+:::related
+- [Side menu](/docs/navigation/side-menu) - The navigation a sidebar usually holds.
+- [Navbar](/docs/navigation/navbar) - The header above it.
+- [Dock layout](/docs/layout/dock-layout) - Panels people can rearrange.
 :::

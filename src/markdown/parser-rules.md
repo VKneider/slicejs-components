@@ -54,7 +54,8 @@ The same fixtures are covered by `parser/tests/markdown-contract.test.js`.
 - `:::script ...` for interactive prop scenarios
 
 **Callout budget:** 1–3 per page. Use `:::warning` only for a real risk; use `:::compare` for a
-contrast instead of two separate tips.
+contrast instead of two separate tips. `docs:lint-md` fails above three, so the budget cannot creep
+back: the rest becomes prose, a `:::details`, a `:::compare` or a `:::related` block.
 
 ## Script Scenario Contract
 Use script blocks to validate component props through runnable scenarios:

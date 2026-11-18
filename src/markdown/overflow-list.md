@@ -138,3 +138,9 @@ Items need intrinsic widths. Use content-sized controls or explicit pixel/rem wi
 The measurement lane is invisible, inert and clipped. Overflow controls keep their original keyboard behavior inside the disclosure. Escape and outside dismissal use DropDown; when a focused visible control becomes hidden, focus goes to More. No new controls are cloned or synthesized from labels.
 
 Assignments to `items` reconcile live nodes, and removed nodes are destroyed. Reuse stable IDs and node references to retain state. The dropdown receives `owned: false` custom content: OverflowList remains responsible for its nodes. Destroying OverflowList destroys the nodes, its menu, observers and scheduled work. Native resources whose state depends on DOM attachment, such as iframe browsing contexts, can still react to reparenting.
+
+:::related
+- [Carrousel](/docs/layout/element-carrousel) - What does not fit scrolls sideways.
+- [Dropdown](/docs/navigation/dropdown) - Where the extra items go.
+- [Toolbar](/docs/navigation/navbar) - The row that usually overflows.
+:::

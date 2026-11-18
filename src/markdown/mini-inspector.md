@@ -106,3 +106,9 @@ inspectable, and editing a prop here behaves exactly like a prop change anywhere
 This demo only edits `string`, `number`, and `boolean` props. A prop only updates the UI if its
 setter performs the DOM change — if editing does nothing, the bug is in the setter, not the inspector.
 :::
+
+:::related
+- [Card](/docs/layout/card) - The component most demos inspect.
+- [Route](/docs/routing/route) - What the app shows while you edit props.
+- [DevTools](/docs/layout/layout) - The shell around an inspected component.
+:::

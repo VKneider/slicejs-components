@@ -29,5 +29,6 @@
 <p>Use the host to set dimensions. <code>--slice-split-pane-handle-size</code> defaults to <code>12px</code>; <code>--slice-split-pane-accent</code> and <code>--slice-split-pane-border</code> follow theme tokens. Keep the handle large enough to grab. No motion is required. Tiny panels scroll; this component does not replace responsive navigation or a mobile-specific product layout.</p>
 <h2 id="transferring-panel-ownership">Transferring panel ownership</h2>
 <p><code>releasePanels()</code> returns the current descriptors with their actual content nodes and empties the pane <strong>without destroying that content</strong>. Adopt the returned descriptors in another SplitPane or destroy the released nodes explicitly. Destroying the old pane after adoption does not destroy those components. This is used by <span data-inline-link="3"></span> when changing a split tree; normal <code>panels = ...</code> replacement keeps its existing destroy-on-removal behavior.</p>
-<div class="component-block" data-block-id="doc-block-6"></div>
+<div class="related-block" data-block-id="doc-block-6"></div>
+<div class="component-block" data-block-id="doc-block-7"></div>
 </div>

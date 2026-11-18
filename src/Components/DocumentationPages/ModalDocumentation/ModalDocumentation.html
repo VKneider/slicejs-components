@@ -38,14 +38,15 @@
 <p>The dialog is at most <code>min(85vh, 640px)</code> tall. Past that, only the body scrolls: the header and footer stay in view, and a scroll that reaches the end of the body does not carry on into the page on touch screens. To change the cap:</p>
 <div class="code-block" data-block-id="doc-block-9"></div>
 <h2 id="best-practices">Best Practices</h2>
+<p>A plain "are you sure?" belongs in <span data-inline-link="0"></span>: it is this modal with the question, the two buttons and the promise already wired up. Reach for <code>Modal</code> when the content is your own.</p>
 <div class="callout-block" data-block-id="doc-block-10"></div>
+<p>Use <code>mobileLayout: 'sheet'</code> for modals people open on phones: a sheet sits where the thumb is, and it can be closed with a swipe.</p>
+<h2 id="pitfalls">Pitfalls</h2>
 <div class="callout-block" data-block-id="doc-block-11"></div>
 <div class="callout-block" data-block-id="doc-block-12"></div>
-<h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-13"></div>
-<div class="callout-block" data-block-id="doc-block-14"></div>
-<div class="callout-block" data-block-id="doc-block-15"></div>
+<p><code>resizable: true</code> removes the width and height caps while the modal is open, so it can grow past them. Drag and resize only apply to the <code>center</code> and <code>top</code> layouts; on a drawer, sheet or fullscreen they are off.</p>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.modal.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. <code>closeLabel</code> and <code>texts</code> still win over the dictionary. Keys: <code>close</code>.</p>
-<div class="component-block" data-block-id="doc-block-16"></div>
+<div class="related-block" data-block-id="doc-block-13"></div>
+<div class="component-block" data-block-id="doc-block-14"></div>
 </div>

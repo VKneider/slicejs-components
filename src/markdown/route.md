@@ -119,3 +119,9 @@ Use `metadata` to keep guards and page policies declarative instead of hard-codi
 :::warning
 Dynamic params use `${param}` syntax, not `:param`.
 :::
+
+:::related
+- [Multi route](/docs/routing/multi-route) - Several routes in one container.
+- [Link](/docs/navigation/link) - How people get to a route.
+- [Not found](/docs/navigation/not-found) - When a path matches nothing.
+:::

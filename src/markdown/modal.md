@@ -609,19 +609,17 @@ slice-modal { --modal-max-height: min(90vh, 900px); }
 ```
 
 ## Best Practices
-:::tip
-For a plain "are you sure?", use [ConfirmActionModal](/docs/display/confirm-action-modal): it is this modal with the question, the two buttons and the promise already wired up. Reach for `Modal` when the content is your own.
-:::
+
+A plain "are you sure?" belongs in [ConfirmActionModal](/docs/display/confirm-action-modal): it is this modal with the question, the two buttons and the promise already wired up. Reach for `Modal` when the content is your own.
 
 :::tip
 Put `autofocus` on the safe action of a destructive dialog ("Cancel"), not on "Delete". A stray Enter should never destroy anything.
 :::
 
-:::tip
-Use `mobileLayout: 'sheet'` for modals people open on phones. A sheet sits where the thumb is, and it can be closed with a swipe.
-:::
+Use `mobileLayout: 'sheet'` for modals people open on phones: a sheet sits where the thumb is, and it can be closed with a swipe.
 
 ## Pitfalls
+
 :::warning
 A `Modal` built with `slice.build` is not destroyed when it closes. Pass `destroyOnClose: true` for a one-off modal, or build one once and reuse it. Building a new one on every click without either leaks a component each time.
 :::
@@ -630,9 +628,7 @@ A `Modal` built with `slice.build` is not destroyed when it closes. Pass `destro
 `close()` skips `onBeforeClose` on purpose. If your code closes the modal on someone's behalf and the guard should still run, call `requestClose()`.
 :::
 
-:::warning
 `resizable: true` removes the width and height caps while the modal is open, so it can grow past them. Drag and resize only apply to the `center` and `top` layouts; on a drawer, sheet or fullscreen they are off.
-:::
 
 ## Language
 
@@ -641,3 +637,10 @@ The built-in texts are `slice.modal.*` keys with English and Spanish defaults, r
 component keeps its English text when the translator is off.
 `closeLabel` and `texts` still win over the dictionary.
 Keys: `close`.
+
+:::related
+- [Confirm action modal](/docs/display/confirm-action-modal) - The question, already wired.
+- [Toast](/docs/feedback/toast) - A message that does not block.
+- [Unsaved changes guard](/docs/services/unsaved-changes-guard) - Asking before the work is lost.
+- [Shortcut service](/docs/services/shortcut-service) - Keys inside a dialog.
+:::

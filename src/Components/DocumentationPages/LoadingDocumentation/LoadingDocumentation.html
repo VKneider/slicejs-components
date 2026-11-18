@@ -48,11 +48,12 @@
 <h2 id="best-practices">Best Practices</h2>
 <div class="callout-block" data-block-id="doc-block-10"></div>
 <div class="callout-block" data-block-id="doc-block-11"></div>
-<div class="callout-block" data-block-id="doc-block-12"></div>
+<p>Say what is happening in <code>label</code> when it takes more than a moment: "Saving…", "Uploading 2 of 3…". A label tells people the app is still working, and what on.</p>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-13"></div>
-<div class="callout-block" data-block-id="doc-block-14"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<p>Keep the welcome screen short. It is shown on every visit to the app, so <code>welcome.minVisibleMs</code> above 2 seconds makes the app feel slow, however nice it looks.</p>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.loading.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>loading</code>.</p>
-<div class="component-block" data-block-id="doc-block-15"></div>
+<div class="related-block" data-block-id="doc-block-13"></div>
+<div class="component-block" data-block-id="doc-block-14"></div>
 </div>

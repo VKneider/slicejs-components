@@ -36,5 +36,6 @@
 <p>Tabs gains <code>moveTab(id, targetTabs, index, { activate })</code> for transferring an actual entry, including lazy work, to another group. SplitPane gains <code>releasePanels()</code> for handing its content back without destroying it. A caller that releases content must adopt or destroy it.</p>
 <p>The shared ownership bridge targets the verified Slice Controller 4.x ancestry contract: it unlinks the previous parent before re-registering the same live component. Keep the transfer/source-destruction tests when upgrading the framework. Existing public props and methods retain their behavior.</p>
 <p>DockLayout owns its Tabs, SplitPane instances and supplied content. Destroying it releases pointer capture and destroys owned content, including never-selected panels and late async results. The layout tree contains no HTML, executable code or content factories; dynamic labels are inserted as text.</p>
-<div class="component-block" data-block-id="doc-block-7"></div>
+<div class="related-block" data-block-id="doc-block-7"></div>
+<div class="component-block" data-block-id="doc-block-8"></div>
 </div>

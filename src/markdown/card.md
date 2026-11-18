@@ -365,6 +365,7 @@ return box;
 :::
 
 ## Best Practices
+
 :::tip
 Keep the cards in a group the same shape: the same parts, in the same order, with text of similar length. People compare cards by looking at the same spot on each one.
 :::
@@ -373,19 +374,21 @@ Keep the cards in a group the same shape: the same parts, in the same order, wit
 Put the action people take most often on the card itself (`onClick` or `href`) and the rest in `actions`. A card with five buttons is a form in disguise.
 :::
 
-:::tip
-Use `loading` while the data is on the way instead of building the cards afterwards. The grid keeps its shape, and nothing jumps under the pointer.
-:::
+Use `loading` while the data is on the way instead of building the cards afterwards: the grid keeps its shape, and nothing jumps under the pointer.
 
 ## Pitfalls
+
 :::warning
 Do not put links or buttons in `text`. Put controls in `content` or `actions`: they sit above the card's click area, so they keep working on their own.
 :::
 
-:::warning
 Give images an `imageAlt` that says what is in the picture, or leave it empty when the picture only decorates. Repeating the title in it makes screen readers say the name twice.
-:::
 
-:::warning
 `details`, `open` and the fold-out chevron are gone. A card that has to unfold something holds a [Details](/docs/layout/details) in `content`.
+
+:::related
+- [Details](/docs/layout/details) - The folding content a card no longer has.
+- [Grid](/docs/layout/grid) - Cards in columns.
+- [Data list](/docs/data/datalist) - The same records as rows.
+- [Feature list](/docs/display/feature-list) - Short cards, one line each.
 :::

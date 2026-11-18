@@ -158,3 +158,9 @@ pane **without destroying that content**. Adopt the returned descriptors in anot
 destroy the released nodes explicitly. Destroying the old pane after adoption does not destroy
 those components. This is used by [DockLayout](/docs/layout/dock-layout) when changing a split tree;
 normal `panels = ...` replacement keeps its existing destroy-on-removal behavior.
+
+:::related
+- [Dock layout](/docs/layout/dock-layout) - Several movable panels.
+- [Grid](/docs/layout/grid) - Columns that do not move.
+- [Layout](/docs/layout/layout) - The page shell around it.
+:::

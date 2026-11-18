@@ -170,3 +170,9 @@ Tabs gains `moveTab(id, targetTabs, index, { activate })` for transferring an ac
 The shared ownership bridge targets the verified Slice Controller 4.x ancestry contract: it unlinks the previous parent before re-registering the same live component. Keep the transfer/source-destruction tests when upgrading the framework. Existing public props and methods retain their behavior.
 
 DockLayout owns its Tabs, SplitPane instances and supplied content. Destroying it releases pointer capture and destroys owned content, including never-selected panels and late async results. The layout tree contains no HTML, executable code or content factories; dynamic labels are inserted as text.
+
+:::related
+- [Tabs](/docs/navigation/tabs) - Panels that stay in one group.
+- [Split pane](/docs/layout/split-pane) - A fixed boundary instead of a movable one.
+- [Grid](/docs/layout/grid) - The layout inside each panel.
+:::

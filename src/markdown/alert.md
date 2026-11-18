@@ -164,19 +164,22 @@ return grid;
 :::
 
 ## Best Practices
+
 :::tip
 Say what happened and what to do next, in that order: "The report could not be loaded · Try again". An alert with no way out leaves people stuck.
 :::
 
-:::tip
-Keep `filled` for what must be seen now (a failed payment, an undo). A page with several filled alerts has no priority left.
-:::
+Keep `filled` for what must be seen now (a failed payment, an undo): a page with several filled alerts has no priority left.
 
 ## Pitfalls
 :::warning
 Do not put a `timeout` on an error. A problem that disappears before it was read is a problem nobody fixes.
 :::
 
-:::warning
 Colour is not the message. Keep the words clear enough that the alert makes sense in grey.
+
+:::related
+- [Callout](/docs/display/callout) - A note that is part of the content.
+- [Toast](/docs/feedback/toast) - A message that leaves by itself.
+- [Modal](/docs/feedback/modal) - When the message needs an answer.
 :::

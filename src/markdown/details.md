@@ -260,23 +260,31 @@ return box;
 :::
 
 ## Best Practices
+
 :::tip
 Write summaries people can scan: the question as they would ask it, or the name of the setting. The answer goes inside. A summary that only says "More" makes people open every section to find anything.
 :::
 
-:::tip
-Make heavy sections functions. A Table, a chart or a request in a section nobody opens then costs nothing, and the page loads faster.
-:::
+Make heavy sections functions: a Table, a chart or a request in a section nobody opens then costs nothing, and the page loads faster.
 
-:::tip
-Use `multiple` when people compare sections (release notes, specs) and the default one-at-a-time when they look for one thing (a FAQ). One at a time keeps the page short. Several at once let people read side by side.
+:::compare left="One at a time" right="Several at once"
+The default. Use it when people look for one thing (a FAQ): the page stays short.
+---
+`multiple`, when people compare sections (release notes, specs) and read them side by side.
 :::
 
 ## Pitfalls
+
 :::warning
 Do not hide errors in a closed section. When a form inside a section fails, open it (`show(id)`) and put a badge on it, so people know where to look.
 :::
 
 :::warning
 Give every item a stable `id`. Open state, remembered state and kept content all go by it: an id that changes on every render rebuilds the section and closes it.
+:::
+
+:::related
+- [Card](/docs/layout/card) - A section with a banner and actions.
+- [Tabs](/docs/navigation/tabs) - Sections people switch between, not fold.
+- [Callout](/docs/display/callout) - A note that is always visible.
 :::

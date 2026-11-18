@@ -106,3 +106,9 @@ The built-in texts are `slice.toast.*` keys with English and Spanish defaults, r
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `close`.
+
+:::related
+- [Toast provider](/docs/services/toast-provider) - Toasts from anywhere in the app.
+- [Alert](/docs/feedback/alert) - A message that stays on the page.
+- [Modal](/docs/feedback/modal) - When the message needs an answer.
+:::

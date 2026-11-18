@@ -208,19 +208,25 @@ return await slice.build('Grid', { layout: 'masonry', minItemWidth: 190, gap: 12
 :::
 
 ## Best Practices
+
 :::tip
 Prefer breakpoints on the grid (`columns: { 0: 1, 600: 2, 960: 4 }`) or `minItemWidth` over media queries. The same grid then works in a page, a sidebar and a modal.
 :::
 
-:::tip
 Use `colSpan` and `rowSpan` with `autoRows` for bento layouts: without a row height, a tall tile's rows are only as tall as their content.
-:::
 
 ## Pitfalls
+
 :::warning
 `dense` and named areas change where things appear, not their order in the DOM. Keyboard focus and screen readers follow the DOM, so keep the DOM in reading order.
 :::
 
 :::warning
 Assigning `items` replaces everything. To add one, pass the old list plus the new item (`grid.items = [...grid.items, card]`) or call `setItem(card)`.
+:::
+
+:::related
+- [Card](/docs/layout/card) - What a grid usually holds.
+- [Split pane](/docs/layout/split-pane) - Two areas, one boundary.
+- [Dock layout](/docs/layout/dock-layout) - Grids that move between zones.
 :::

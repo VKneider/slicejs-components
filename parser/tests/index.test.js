@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { validateFrontMatter, mergeComponentsRegistry, lintMarkdownSourceForManualPropsTable } from '../index.js';
+import { validateFrontMatter, mergeComponentsRegistry, lintMarkdownSourceForManualPropsTable, lintCalloutBudget } from '../index.js';
 import { buildStaticPropsSectionForFrontMatter } from '../lib/staticPropsDocs.js';
 import { parseMarkdownFile } from '../lib/markdownParser.js';
 import { writeFileIfChanged } from '../lib/fileUtils.js';
@@ -397,3 +397,53 @@ component: ButtonDocumentation
   assert.match(errors[0], /Manual props table detected/);
   assert.match(errors[0], /Props \(Generated from static props\)/);
 });
+
+test('the callout budget allows three callouts and rejects a fourth', () => {
+  const page = (count) => `# Page\n\n${':::tip\nAdvice.\n:::\n\n'.repeat(count)}`;
+
+  assert.deepEqual(lintCalloutBudget(page(3), 'src/markdown/page.md'), []);
+
+  const errors = lintCalloutBudget(page(4), 'src/markdown/page.md');
+
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /src\/markdown\/page\.md/);
+  assert.match(errors[0], /4 callouts/);
+  assert.match(errors[0], /:::compare/);
+});
+
+test('the callout budget does not count compare, details, steps or related', () => {
+  const markdown = [
+    ':::tip',
+    'One.',
+    ':::',
+    ':::compare left="A" right="B"',
+    'Left.',
+    '---',
+    'Right.',
+    ':::',
+    ':::details title="More"',
+    'Body.',
+    ':::',
+    ':::steps',
+    '1. First.',
+    ':::',
+    ':::related',
+    '- [Button](/docs/input/button) - The button.',
+    ':::',
+    ':::warning',
+    'Two.',
+    ':::',
+    ':::note',
+    'Three.',
+    ':::'
+  ].join('\n');
+
+  assert.deepEqual(lintCalloutBudget(markdown, 'src/markdown/page.md'), []);
+});
+
+test('the callout budget ignores ::: inside a code fence', () => {
+  const markdown = ['```md', ':::tip', 'A.', ':::', ':::warning', 'B.', ':::', ':::note', 'C.', ':::', ':::callout', 'D.', ':::', '```'].join('\n');
+
+  assert.deepEqual(lintCalloutBudget(markdown, 'src/markdown/page.md'), []);
+});
+

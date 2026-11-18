@@ -181,6 +181,45 @@ const lintMarkdownSourceForManualPropsTable = (markdownSource, filePath) => {
   ];
 };
 
+// The shared contract keeps a page to at most three callouts: a fourth tip in
+// a row is usually a table, a Details block, a compare or plain prose. The
+// whole site was cleaned up to this budget by hand, so it is a lint now and
+// cannot creep back.
+const CALLOUT_BUDGET = 3;
+const CALLOUT_DIRECTIVES = new Set(['tip', 'warning', 'note', 'info', 'success', 'danger', 'callout']);
+
+const lintCalloutBudget = (markdownSource, filePath) => {
+  if (!markdownSource || typeof markdownSource !== 'string') {
+    return [];
+  }
+
+  const lines = markdownSource.split(/\r?\n/);
+  const found = [];
+  let inFence = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.startsWith('```')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const name = line.match(/^:::([a-zA-Z-]+)/)?.[1]?.toLowerCase();
+    if (name && CALLOUT_DIRECTIVES.has(name)) {
+      found.push(i + 1);
+    }
+  }
+
+  if (found.length <= CALLOUT_BUDGET) {
+    return [];
+  }
+
+  return [
+    `[${filePath}] ${found.length} callouts (lines ${found.join(', ')}); the contract allows ${CALLOUT_BUDGET}. ` +
+      'Turn the rest into prose, :::compare, :::details or :::related.'
+  ];
+};
+
 const buildRoutesTree = (entries) => {
   const sectionsMap = new Map();
   const routeSet = new Set();
@@ -373,6 +412,9 @@ const run = () => {
       validationErrors.push(
         ...lintBalancedDirectiveBlocks(parsed.frontMatter?.markdownSource || '', relativePath)
       );
+      validationErrors.push(
+        ...lintCalloutBudget(parsed.frontMatter?.markdownSource || '', relativePath)
+      );
       if (validationErrors.length > 0) {
         continue;
       }
@@ -474,4 +516,4 @@ if (isMain) {
   run();
 }
 
-export { validateFrontMatter, mergeComponentsRegistry, lintMarkdownSourceForManualPropsTable, generateMainRoutesFile, buildRoutesTree };
+export { validateFrontMatter, mergeComponentsRegistry, lintMarkdownSourceForManualPropsTable, lintCalloutBudget, generateMainRoutesFile, buildRoutesTree };

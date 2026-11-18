@@ -276,6 +276,7 @@ return grid;
 :::
 
 ## Best Practices
+
 :::tip
 Set `delayMs` for the app's loader (150–300 ms). Most route changes finish before it, and show nothing at all. Only slow ones show the indicator.
 :::
@@ -284,18 +285,15 @@ Set `delayMs` for the app's loader (150–300 ms). Most route changes finish bef
 Cover the smallest part that is busy. A card refreshing should block that card, not the page, so people can keep working elsewhere.
 :::
 
-:::tip
 Say what is happening in `label` when it takes more than a moment: "Saving…", "Uploading 2 of 3…". A label tells people the app is still working, and what on.
-:::
 
 ## Pitfalls
+
 :::warning
 Always pair `start()` with `stop()`, also when the work fails: put the `stop()` in a `finally`. A loader that never stops blocks the page for good.
 :::
 
-:::warning
 Keep the welcome screen short. It is shown on every visit to the app, so `welcome.minVisibleMs` above 2 seconds makes the app feel slow, however nice it looks.
-:::
 
 ## Language
 
@@ -304,3 +302,9 @@ The built-in texts are `slice.loading.*` keys with English and Spanish defaults,
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `loading`.
+
+:::related
+- [Skeleton service](/docs/services/skeleton-service) - The wait with the shape of the content.
+- [Progress bar](/docs/display/progress-bar) - The wait with a number.
+- [Empty state](/docs/display/empty-state) - The other end of the wait.
+:::

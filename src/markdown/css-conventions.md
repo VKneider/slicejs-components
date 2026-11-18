@@ -131,3 +131,9 @@ the glyphs are inline `<svg>` and the stylesheet is scoped under `slice-icon`.
 :::warning
 Scoping raises every rule's specificity uniformly (one element selector). If an app override stops working after you scope, **don't bump the component's specificity** — adjust the override instead.
 :::
+
+:::related
+- [Card](/docs/layout/card) - A component whose variables stay inside it.
+- [Theme selector](/docs/input/theme-selector) - Where the tokens those rules read come from.
+- [Markdown parser rules](/docs/internal/markdown-parser-rules) - The other internal guide.
+:::
