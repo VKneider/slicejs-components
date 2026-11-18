@@ -12,7 +12,7 @@
 <p>The two obvious alternatives are both broken, in ways that only show up as a slow memory leak:</p>
 <ul><li><code>container.innerHTML = ''</code> removes nodes <strong>without running <code>beforeDestroy()</code></strong>. Every child's document/window listeners, timers and registry entry survive. The framework never gets to clean up.</li><li>Re-creating a node (rather than moving it) re-runs its constructor and does the same thing.</li></ul>
 <p>So <code>reconcile</code> does three things, in this order:</p>
-<ol><li><strong>Refresh in place.</strong> For each item, find the existing node by its stable <code>sliceId</code> and update it. Only a genuinely new item is built.</li><li><strong>Prune.</strong> Every child whose data is gone is destroyed with <code>slice.controller.destroyComponent</code>, which runs <code>beforeDestroy()</code>. This happens <strong>before</strong> reordering so a dead node is never a reorder target.</li><li><strong>Enforce order, with the fewest moves.</strong> The DOM is moved to match <code>items</code>. <code>insertBefore</code> <strong>moves</strong> a node, it does not clone it, so no constructor re-runs. The nodes already in the right relative order (the longest increasing run of their current positions) stay put and only the rest move: moving the first item to the end is one move, not one per item. That matters beyond speed — a moved node loses keyboard focus and restarts its CSS animations.</li></ol>
+<ol class="steps"><li><strong>Refresh in place.</strong> For each item, find the existing node by its stable <code>sliceId</code> and update it. Only a genuinely new item is built.</li><li><strong>Prune.</strong> Every child whose data is gone is destroyed with <code>slice.controller.destroyComponent</code>, which runs <code>beforeDestroy()</code>. This happens <strong>before</strong> reordering so a dead node is never a reorder target.</li><li><strong>Enforce order, with the fewest moves.</strong> The DOM is moved to match <code>items</code>. <code>insertBefore</code> <strong>moves</strong> a node, it does not clone it, so no constructor re-runs. The nodes already in the right relative order (the longest increasing run of their current positions) stay put and only the rest move: moving the first item to the end is one move, not one per item. That matters beyond speed — a moved node loses keyboard focus and restarts its CSS animations.</li></ol>
 <h2 id="concurrency-renders-queue-per-container-and-coalesce">Concurrency: renders queue per container, and coalesce</h2>
 <p><code>reconcile</code> keeps one queue per container in a <code>WeakMap</code>. A render that arrives while another is still running waits for it instead of interleaving — otherwise the second could prune a node the first had just ordered, or both could decide to build the same id.</p>
 <p>Renders that are still <strong>waiting</strong> coalesce: if three calls arrive while one is running, only the newest of the three is applied, and all three callers resolve when it is. A filter box that re-renders a list on every keystroke therefore applies the last keystroke, not every intermediate one.</p>
@@ -32,12 +32,11 @@
 <div class="script-block" data-block-id="doc-block-2"></div>
 <h2 id="best-practices">Best Practices</h2>
 <div class="callout-block" data-block-id="doc-block-3"></div>
-<div class="callout-block" data-block-id="doc-block-4"></div>
-<div class="callout-block" data-block-id="doc-block-5"></div>
-<div class="callout-block" data-block-id="doc-block-6"></div>
-<div class="callout-block" data-block-id="doc-block-7"></div>
+<p>Call <code>reconcile</code> after every change to the data — a push, a filter, a re-sort — and nowhere else. Two <em>different</em> data sources reconciling the same container is a design error: each prunes what the other just built. <code>await</code> the call: the promise resolves after this render <strong>and</strong> any render already queued on the container, so a mutation that triggers two calls can still <code>await</code> once and know the DOM matches.</p>
+<div class="details-block" data-block-id="doc-block-4"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-8"></div>
-<div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="compare-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<p><code>reconcile</code> only manages <strong>direct</strong> children that carry a <code>slice-id</code>; anything you append by hand inside the container is left alone. Wrap it if it should be reconciled with the data.</p>
+<div class="related-block" data-block-id="doc-block-7"></div>
 </div>

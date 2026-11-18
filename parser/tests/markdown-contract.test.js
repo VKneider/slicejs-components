@@ -54,6 +54,12 @@ A **rich** body with \`code\`.
 - [Button](/docs/input/button) - The button component.
 - [Input](/docs/input/input) - The input component.
 :::
+
+:::steps
+1. Refresh in place, finding each node
+   by its stable id.
+2. Prune what the data no longer has.
+:::
 `;
 
 const parseFixture = () => {
@@ -125,4 +131,12 @@ test('related links become card items', () => {
   assert.equal(related.items.length, 2);
   assert.equal(related.items[0].path, '/docs/input/button');
   assert.match(related.items[0].text, /The button component/);
+});
+
+test('steps keep wrapped lines inside their step', () => {
+  const { html } = parseFixture();
+  assert.match(
+    html,
+    /<ol class="steps"><li>Refresh in place, finding each node by its stable id\.<\/li><li>Prune what the data no longer has\.<\/li><\/ol>/
+  );
 });

@@ -29,12 +29,18 @@ The two obvious alternatives are both broken, in ways that only show up as a slo
 
 So `reconcile` does three things, in this order:
 
+:::steps
 1. **Refresh in place.** For each item, find the existing node by its stable `sliceId` and update it.
    Only a genuinely new item is built.
 2. **Prune.** Every child whose data is gone is destroyed with `slice.controller.destroyComponent`,
    which runs `beforeDestroy()`. This happens **before** reordering so a dead node is never a
    reorder target.
-3. **Enforce order, with the fewest moves.** The DOM is moved to match `items`. `insertBefore` **moves** a node, it does not clone it, so no constructor re-runs. The nodes already in the right relative order (the longest increasing run of their current positions) stay put and only the rest move: moving the first item to the end is one move, not one per item. That matters beyond speed — a moved node loses keyboard focus and restarts its CSS animations.
+3. **Enforce order, with the fewest moves.** The DOM is moved to match `items`. `insertBefore` **moves**
+   a node, it does not clone it, so no constructor re-runs. The nodes already in the right relative
+   order (the longest increasing run of their current positions) stay put and only the rest move:
+   moving the first item to the end is one move, not one per item. That matters beyond speed — a
+   moved node loses keyboard focus and restarts its CSS animations.
+:::
 
 ## Concurrency: renders queue per container, and coalesce
 
@@ -172,42 +178,30 @@ With immutable data, pass `equals: Object.is`. Re-rendering a long list after on
 touches one node instead of all of them.
 :::
 
-:::tip
-Keys are page-wide `sliceId`s, not per-container. That is what lets an item **move between two
-lists** (a kanban column to another) and keep its component and state: reconcile the destination,
-then the source. It is also why two unrelated lists must not share key prefixes.
-:::
-
-:::tip
 Call `reconcile` after every change to the data — a push, a filter, a re-sort — and nowhere else.
-Concurrent calls on the same container are queued rather than fought over, but two *different*
-data sources reconciling one container is still a design error: each will prune what the other
-just built.
-:::
+Two *different* data sources reconciling the same container is a design error: each prunes what the
+other just built. `await` the call: the promise resolves after this render **and** any render
+already queued on the container, so a mutation that triggers two calls can still `await` once and
+know the DOM matches.
 
-:::tip
-`await` the call. The promise resolves after this render **and** any render already queued on the
-container, so a mutation that triggers two `reconcile` calls can still `await` once and know the DOM
-matches.
-:::
+:::details title="Why keys are page-wide sliceIds, not per-list ids"
+The key becomes the child's `sliceId`, so it is unique for the whole page, not just inside this
+container. That is what lets an item **move between two lists** (a kanban column to another) and
+keep its component and state: reconcile the destination, then the source. It is also why two
+unrelated lists must not share key prefixes.
 
-:::tip
-Reuse an item **object** across renders rather than rebuilding it, if the child keys off identity
-the object carries. `TreeView` keeps a `WeakMap` from item to a generated id for items with no
-`path` or `id` of their own, because an index key would hand item 0's component — and its
-open/closed state — to whatever took its place after a splice.
+Item **objects** should survive a render too, when the child keys off identity the object carries.
+`TreeView` keeps a `WeakMap` from item to a generated id for items with no `path` or `id` of their
+own, because an index key would hand item 0's component — and its open/closed state — to whatever
+took its place after a splice.
 :::
 
 ## Pitfalls
 
-:::warning
-Do not use the array index as `keyOf`. With an index key, inserting at the front makes item 1 inherit
-item 0's component — and its scroll position, its open/closed state, and its focus.
-:::
-
-:::warning
-`reconcile` only manages **direct** children that carry a `slice-id`. Anything you append by hand
-inside the container is left alone; wrap it if it should be reconciled with the data.
+:::compare left="Do" right="Don't"
+`keyOf: (item) => 'row-' + item.id` — a stable id that survives a sort, a filter, and a move to another list.
+---
+`keyOf: (item, index) => String(index)` — inserting at the front hands item 1 the component of item 0, with its scroll position, its open/closed state and its focus.
 :::
 
 :::warning
@@ -215,4 +209,14 @@ Never spread an item straight into `props`. `props(item)` is assigned by name on
 several common field names are getter-only DOM properties — `children` most of all — so
 `props: (item) => item` throws `Cannot set property children` and the row is silently never
 created. Forward only the keys the child declares.
+:::
+
+`reconcile` only manages **direct** children that carry a `slice-id`; anything you append by hand
+inside the container is left alone. Wrap it if it should be reconciled with the data.
+
+:::related
+- [TreeView](/docs/navigation/treeview) - Keys, open branches and selection kept per item.
+- [Table](/docs/data/table) - Rows from data, with sorting, filtering and paging.
+- [Data components](/docs/guides/data-components) - The contract a server-backed component follows.
+- [Data and loading](/docs/guides/data-and-loading) - Bringing data in without blocking the page.
 :::

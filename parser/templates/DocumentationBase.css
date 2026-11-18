@@ -316,6 +316,40 @@
   margin-bottom: 0;
 }
 
+/* Numbered steps: an accent marker and the text, no native numbering. */
+.documentation-content .steps {
+  counter-reset: doc-step;
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.documentation-content .steps li {
+  counter-increment: doc-step;
+  position: relative;
+  padding-left: 2.3rem;
+  line-height: 1.6;
+}
+
+.documentation-content .steps li::before {
+  content: counter(doc-step);
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 .documentation-content blockquote {
   margin: 1.1rem 0;
   padding: 0.65rem 0.95rem;

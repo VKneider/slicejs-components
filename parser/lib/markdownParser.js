@@ -571,10 +571,17 @@ const renderBlocks = (blocks, options = {}) => {
       }
 
       if (name === 'steps') {
-        const items = block.content
-          .split('\n')
-          .map((line) => line.replace(/^\d+\.\s/, '').trim())
-          .filter(Boolean);
+        // `1.` opens a step and the lines under it (wrapped text) belong to
+        // that step, exactly like a list item.
+        const items = [];
+        for (const raw of block.content.split('\n')) {
+          const text = raw.trim();
+          if (!text) continue;
+          const numbered = text.match(/^\d+\.\s+(.*)$/);
+          if (numbered) items.push(numbered[1].trim());
+          else if (items.length) items[items.length - 1] = `${items[items.length - 1]} ${text}`;
+          else items.push(text);
+        }
         const list = items.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('');
         htmlParts.push(`<ol class="steps">${list}</ol>`);
         continue;
