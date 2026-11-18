@@ -212,22 +212,20 @@ return nav;
 :::
 
 ## Best Practices
-:::tip
-Keep the bar to five or six top-level links and move the rest into dropdowns. The bar is the first thing people read, so short and scannable wins.
-:::
 
 :::tip
 Use `exact: true` on a link whose path is a prefix of other links' paths (an "Overview" at `/docs` next to "API" at `/docs/api`), so only one of them is marked as current.
 :::
 
+Keep the bar to five or six top-level links and move the rest into dropdowns: it is the first thing people read, so short and scannable wins.
+
 ## Pitfalls
-:::warning
-`position: 'fixed'` takes the bar out of the page. Either leave room for it yourself (a `padding-top` on your content) or pass `spacer: true`, but not both.
-:::
 
 :::warning
 `hideOnScroll` and the scrolled state listen to the window's scroll. A bar inside a scrolling panel (not the page) will not see that panel scroll.
 :::
+
+`position: 'fixed'` takes the bar out of the page. Either leave room for it yourself (a `padding-top` on your content) or pass `spacer: true`, but not both.
 
 ## Language
 
@@ -236,3 +234,9 @@ The built-in texts are `slice.navbar.*` keys with English and Spanish defaults, 
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `openMenu`, `closeMenu`.
+
+:::related
+- [Side menu](/docs/navigation/side-menu) - When there are too many destinations.
+- [Bottom nav](/docs/navigation/bottom-nav) - The bar for phones.
+- [Dropdown](/docs/navigation/dropdown) - What the extra links fold into.
+:::

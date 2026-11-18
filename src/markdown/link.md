@@ -78,3 +78,9 @@ Use `Link` for in-app navigation. For external destinations use a plain `<a>` wi
 whoever built the element. Changing them later means calling `render()` again — it is not a reactive
 component like `Button` or `Tabs`.
 :::
+
+:::related
+- [Navbar](/docs/navigation/navbar) - Links in the top bar.
+- [Breadcrumbs](/docs/navigation/breadcrumbs) - Links that say where you are.
+- [Route](/docs/routing/route) - What a link navigates to.
+:::

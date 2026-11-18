@@ -10,7 +10,7 @@ export default class LinkDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "link.md";
-    this.markdownContent = "---\ntitle: Link\nroute: /docs/navigation/link\nnavLabel: Link\nsection: Navigation Components\ngroup: Basic\norder: 30\ndescription: Route-aware anchor with optional icon and subtitle — the one link primitive that navigates through slice.router.\ncomponent: LinkDocumentation\ngenerate: true\ntags: [link, navigation, anchor]\n---\n\n# Link\n\n## Overview\n\n`Link` is a route-aware `<a>`: it keeps a real `href` in the DOM (so right-click → open in new tab\nstill works, and the URL is visible on hover) but intercepts the click and hands the path to\n`slice.router.navigate`, so navigation goes through the client-side router instead of a full page load.\n\nIt is built with DOM APIs (`setAttribute` / `textContent`) rather than an `innerHTML` template, so a\n`path` like `javascript:...` or text containing markup can never inject into the page.\n\n## API and Behavior\n\n- `path` — the route to navigate to. Also the anchor's `href`. Defaults to `'#'`.\n- `text` — the link label.\n- `classes` — extra class names applied to the `<a>`.\n- `icon` — an `Icon` name rendered before the label, `aria-hidden` (the label is the accessible name).\n- `iconSize` / `iconColor` — passed through to the `Icon`.\n- `sub` — a secondary line under the label (a count, a description).\n\nThe anchor is an inline flex row with a gap, `text-decoration: none` and `color: inherit`, so a link\nreads as part of its layout instead of fighting the UA's default link styling. Pass `classes` to add\nyour own hover/underline treatment.\n\n`path` may carry a `#section`: the router goes to the page and then the section is scrolled into view\nbelow the fixed navbar. `#section` alone stays on the current page. A hash that is not valid\npercent-encoding (`#100%`) is used as written instead of throwing.\n\n## Prop Scenarios\n\n:::script label=\"basic route-aware link\" expected=\"clicking navigates through the router, href stays in the DOM\"\nconst link = await slice.build('Link', { text: 'Components', path: '/docs' });\nmount(link);\n:::\n\n:::script label=\"icon + subtitle\" expected=\"a labelled link with an icon chip and a secondary line\"\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;flex-direction:column;gap:12px;font-family:system-ui,sans-serif;';\n\nconst docs = await slice.build('Link', {\n  text: 'Components',\n  sub: '42 items',\n  icon: 'rocket',\n  path: '/docs'\n});\n\nconst plain = await slice.build('Link', { text: 'Plain link', path: '/docs' });\n\nrow.appendChild(docs);\nrow.appendChild(plain);\nreturn row;\n:::\n\n## Best Practices\n\n:::tip\nUse `Link` for in-app navigation. For external destinations use a plain `<a>` with `target` /\n`rel` — routing an off-site URL through the router buys nothing.\n:::\n\n## Pitfalls\n\n:::warning\n`Link` has no template and no `setComponentProps`: its props are read once, in the constructor, from\nwhoever built the element. Changing them later means calling `render()` again — it is not a reactive\ncomponent like `Button` or `Tabs`.\n:::";
+    this.markdownContent = "---\ntitle: Link\nroute: /docs/navigation/link\nnavLabel: Link\nsection: Navigation Components\ngroup: Basic\norder: 30\ndescription: Route-aware anchor with optional icon and subtitle — the one link primitive that navigates through slice.router.\ncomponent: LinkDocumentation\ngenerate: true\ntags: [link, navigation, anchor]\n---\n\n# Link\n\n## Overview\n\n`Link` is a route-aware `<a>`: it keeps a real `href` in the DOM (so right-click → open in new tab\nstill works, and the URL is visible on hover) but intercepts the click and hands the path to\n`slice.router.navigate`, so navigation goes through the client-side router instead of a full page load.\n\nIt is built with DOM APIs (`setAttribute` / `textContent`) rather than an `innerHTML` template, so a\n`path` like `javascript:...` or text containing markup can never inject into the page.\n\n## API and Behavior\n\n- `path` — the route to navigate to. Also the anchor's `href`. Defaults to `'#'`.\n- `text` — the link label.\n- `classes` — extra class names applied to the `<a>`.\n- `icon` — an `Icon` name rendered before the label, `aria-hidden` (the label is the accessible name).\n- `iconSize` / `iconColor` — passed through to the `Icon`.\n- `sub` — a secondary line under the label (a count, a description).\n\nThe anchor is an inline flex row with a gap, `text-decoration: none` and `color: inherit`, so a link\nreads as part of its layout instead of fighting the UA's default link styling. Pass `classes` to add\nyour own hover/underline treatment.\n\n`path` may carry a `#section`: the router goes to the page and then the section is scrolled into view\nbelow the fixed navbar. `#section` alone stays on the current page. A hash that is not valid\npercent-encoding (`#100%`) is used as written instead of throwing.\n\n## Prop Scenarios\n\n:::script label=\"basic route-aware link\" expected=\"clicking navigates through the router, href stays in the DOM\"\nconst link = await slice.build('Link', { text: 'Components', path: '/docs' });\nmount(link);\n:::\n\n:::script label=\"icon + subtitle\" expected=\"a labelled link with an icon chip and a secondary line\"\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;flex-direction:column;gap:12px;font-family:system-ui,sans-serif;';\n\nconst docs = await slice.build('Link', {\n  text: 'Components',\n  sub: '42 items',\n  icon: 'rocket',\n  path: '/docs'\n});\n\nconst plain = await slice.build('Link', { text: 'Plain link', path: '/docs' });\n\nrow.appendChild(docs);\nrow.appendChild(plain);\nreturn row;\n:::\n\n## Best Practices\n\n:::tip\nUse `Link` for in-app navigation. For external destinations use a plain `<a>` with `target` /\n`rel` — routing an off-site URL through the router buys nothing.\n:::\n\n## Pitfalls\n\n:::warning\n`Link` has no template and no `setComponentProps`: its props are read once, in the constructor, from\nwhoever built the element. Changing them later means calling `render()` again — it is not a reactive\ncomponent like `Button` or `Tabs`.\n:::\n\n:::related\n- [Navbar](/docs/navigation/navbar) - Links in the top bar.\n- [Breadcrumbs](/docs/navigation/breadcrumbs) - Links that say where you are.\n- [Route](/docs/routing/route) - What a link navigates to.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -42,6 +42,37 @@ export default class LinkDocumentation extends HTMLElement {
                content: Array.from(body.childNodes)
             });
             container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const items = [{"title":"Navbar","path":"/docs/navigation/navbar","text":"Links in the top bar."},{"title":"Breadcrumbs","path":"/docs/navigation/breadcrumbs","text":"Links that say where you are."},{"title":"Route","path":"/docs/routing/route","text":"What a link navigates to."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
          }
       }
     await this.renderScriptScenarios();

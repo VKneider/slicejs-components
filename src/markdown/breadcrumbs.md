@@ -206,3 +206,9 @@ The built-in texts are `slice.breadcrumbs.*` keys with English and Spanish defau
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `label`.
+
+:::related
+- [Navbar](/docs/navigation/navbar) - The bar the trail usually sits under.
+- [Side menu](/docs/navigation/side-menu) - The whole map, instead of the path.
+- [Link](/docs/navigation/link) - Every crumb is one.
+:::

@@ -305,22 +305,14 @@ return wrap;
 :::
 
 ## Best Practices
+
 :::tip
 Keep each level short (about 7 items) and give it a clear name: in drill mode the name is all people see of where they are. Use `type: 'group'` headings to split a long level instead of adding another one.
 :::
 
-:::tip
-Give a submenu a `path` when its section has a page of its own. People can then reach the page in one click ("All Settings") and still browse inside the section.
-:::
-
-:::tip
-Load big submenus on demand with a function in `items`. The first level shows at once, and each department or project loads only when someone opens it.
-:::
+Give a submenu a `path` when its section has a page of its own: people can then reach the page in one click ("All Settings") and still browse inside the section. Load big submenus on demand with a function in `items` — the first level shows at once, and each department or project loads only when someone opens it.
 
 ## Pitfalls
-:::warning
-Do not put the same item in two places. The current page is marked once, and people stop trusting a menu where the same page lives in two sections.
-:::
 
 :::warning
 In drill mode, an action that stays in the menu (such as choosing a language) should go back a level, or show a result, so people see that it worked. `onClick` receives the menu, so it can call `menu.back()`.
@@ -328,4 +320,13 @@ In drill mode, an action that stays in the menu (such as choosing a language) sh
 
 :::warning
 Inside a drawer, close the drawer in `onSelect` after a link is chosen, or people are left looking at the menu over the new page.
+:::
+
+Do not put the same item in two places. The current page is marked once, and people stop trusting a menu where the same page lives in two sections.
+
+:::related
+- [Tree view](/docs/navigation/treeview) - The same navigation, expandable in place.
+- [Navbar](/docs/navigation/navbar) - The other end of the page.
+- [Bottom nav](/docs/navigation/bottom-nav) - The small-screen alternative.
+- [Tabs](/docs/navigation/tabs) - A handful of views, side by side.
 :::

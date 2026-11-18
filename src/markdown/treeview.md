@@ -220,15 +220,13 @@ return tree;
 :::
 
 ## Best Practices
-:::tip
-Give items an `id` when they can move or be renamed. The key is what keeps a row's open state, its check and its focus attached to it.
-:::
 
 :::tip
-For a navigation sidebar, pass `activePath` and a `stateKey`: the current page is always visible, and the sections the reader opened stay open between visits.
+Give items an `id` when they can move or be renamed — the key keeps a row's open state, its check and its focus attached to it — and for a navigation sidebar pass `activePath` and a `stateKey`: the current page is always visible, and the sections the reader opened stay open between visits.
 :::
 
 ## Pitfalls
+
 :::warning
 `draggable` moves items inside your own arrays (that is how your data stays in step). If your arrays are frozen or derived on every render, refuse the drop in `onMove` and update your state yourself.
 :::
@@ -244,3 +242,9 @@ The built-in texts are `slice.treeView.*` keys with English and Spanish defaults
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `searchPlaceholder`, `emptyMessage`, `search`, `loading`, `actionsFor`.
+
+:::related
+- [Side menu](/docs/navigation/side-menu) - A fixed navigation, level by level.
+- [Data list](/docs/data/datalist) - The same keys, one line per record.
+- [Dock layout](/docs/layout/dock-layout) - Panels that can be dragged around.
+:::

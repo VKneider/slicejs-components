@@ -219,15 +219,15 @@ return nav;
 :::
 
 ## Best Practices
-:::tip
-Keep menus shallow when you can: two or three levels read well. Go deeper for real hierarchies (a file tree, categories), not to hide options.
-:::
 
 :::tip
 Use `danger: true` for destructive actions and put them last, after a separator, so they are never the item a quick click lands on.
 :::
 
+Keep menus shallow when you can: two or three levels read well. Go deeper for real hierarchies (a file tree, categories), not to hide options.
+
 ## Pitfalls
+
 :::warning
 Checkbox and radio items keep their state on the item objects (`checked` is flipped in place). Rebuild the array from your own state if you need the menu to reflect changes made elsewhere, or pass `checked` as a function.
 :::
@@ -243,3 +243,9 @@ The built-in texts are `slice.dropDown.*` keys with English and Spanish defaults
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `noOptions`, `loading`, `backToPrevious`, `backToMenu`.
+
+:::related
+- [Side menu](/docs/navigation/side-menu) - A whole navigation, not one menu.
+- [Navbar](/docs/navigation/navbar) - Where a dropdown usually hangs.
+- [Tree view](/docs/navigation/treeview) - Hierarchies that stay open.
+:::

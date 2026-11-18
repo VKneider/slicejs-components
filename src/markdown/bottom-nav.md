@@ -171,19 +171,27 @@ return nav;
 :::
 
 ## Best Practices
+
 :::tip
 Keep three to five tabs. A bottom bar is reached with a thumb; more tabs than that make each target too small, so move the rest to a "More" dropdown tab.
 :::
 
-:::tip
-Use `badge: true` (a dot) for "something new" and numbers only when the count matters. A bar full of numbers stops meaning anything.
-:::
+Use `badge: true` (a dot) for "something new" and numbers only when the count matters: a bar full of numbers stops meaning anything.
 
 ## Pitfalls
+
 :::warning
 A fixed bar covers the bottom of the page. Either add a `padding-bottom` to your content or pass `spacer: true`, but not both.
 :::
 
-:::warning
-With `labels: 'none'` give every tab an `icon`. A tab without one keeps showing its label (it would have nothing else to show), so the bar looks uneven.
+:::compare left="Labels" right="Icons only"
+The default: the icon and the name, readable at a glance on a phone.
+---
+`labels: 'none'`. Give every tab an `icon`: a tab without one keeps showing its label (it would have nothing else to show), so the bar looks uneven.
+:::
+
+:::related
+- [Tabs](/docs/navigation/tabs) - The same switch, at the top of the content.
+- [Side menu](/docs/navigation/side-menu) - More destinations, in a drawer.
+- [Navbar](/docs/navigation/navbar) - The other bar, for the top of the page.
 :::

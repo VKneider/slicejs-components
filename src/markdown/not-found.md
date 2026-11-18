@@ -72,3 +72,9 @@ Use `NotFound` as the final route inside `MultiRoute` to catch unmatched paths.
 :::warning
 `NotFound` is a presentation-only component. It does not provide automatic redirect logic.
 :::
+
+:::related
+- [Route](/docs/routing/route) - The table a path is matched against.
+- [Multi route](/docs/routing/multi-route) - Where the 404 fallback lives.
+- [Empty state](/docs/display/empty-state) - Nothing to show, on purpose.
+:::

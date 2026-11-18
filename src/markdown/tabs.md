@@ -320,19 +320,21 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Use tabs for views at the same level that people switch between. If they have to go through them in order, use a [Form](/docs/input/form) with steps instead.
-:::
 
 :::tip
 Make expensive panels functions. A Table with thousands of rows, a chart or a request in a tab nobody opens then costs nothing.
 :::
 
-:::tip
-Use `urlParam` on pages people link to or come back to (settings, a record's details). A link that opens the right tab saves a click and a "where was that?".
+Use `urlParam` on pages people link to or come back to (settings, a record's details): a link that opens the right tab saves a click and a "where was that?".
+
+:::compare left="Tabs" right="Steps"
+Views at the same level that people switch between, in any order.
+---
+A flow people go through in order: a [Form](/docs/input/form) with steps, or a [Stepper](/docs/display/stepper).
 :::
 
 ## Pitfalls
+
 :::warning
 Do not hide validation errors in a tab that is not open. If a tab holds an error, put a badge on it (`setBadge(id, '!')`) and open it on submit, so people know where to look.
 :::
@@ -360,3 +362,9 @@ transfer leaves the moved content alive. Factories are not restarted.
 Use [DockLayout](/docs/layout/dock-layout) to coordinate draggable groups and split targets. Direct
 Tabs transfers are useful when an application already owns the surrounding distribution. Replacing
 `items` still means normal reconciliation and destruction; use `moveTab` for ownership transfer.
+
+:::related
+- [Side menu](/docs/navigation/side-menu) - Too many views for tabs.
+- [Stepper](/docs/display/stepper) - Steps people follow in order.
+- [Dock layout](/docs/layout/dock-layout) - Tabs that move between groups.
+:::

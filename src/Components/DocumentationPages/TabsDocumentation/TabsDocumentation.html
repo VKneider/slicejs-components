@@ -32,15 +32,16 @@
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
 <div class="callout-block" data-block-id="doc-block-7"></div>
-<div class="callout-block" data-block-id="doc-block-8"></div>
-<div class="callout-block" data-block-id="doc-block-9"></div>
+<p>Use <code>urlParam</code> on pages people link to or come back to (settings, a record's details): a link that opens the right tab saves a click and a "where was that?".</p>
+<div class="compare-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <div class="callout-block" data-block-id="doc-block-10"></div>
-<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.tabs.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. <code>ariaLabel</code> and <code>texts</code> still win over the dictionary. Keys: <code>label</code>.</p>
 <h2 id="moving-live-tabs-between-groups">Moving live tabs between groups</h2>
 <p><code>source.moveTab(id, targetTabs, index, { activate: true })</code> transfers the same entry, tab button, panel wrapper, mounted content and pending lazy work. Omitted index appends; within one group it reorders. It returns false for a missing tab, invalid/cyclic target or duplicate ID in another group. A disabled entry can be transferred programmatically but cannot be activated. It does not invoke close handlers. Ownership is reparented, so destroying the source after transfer leaves the moved content alive. Factories are not restarted.</p>
-<p>Use <span data-inline-link="1"></span> to coordinate draggable groups and split targets. Direct Tabs transfers are useful when an application already owns the surrounding distribution. Replacing <code>items</code> still means normal reconciliation and destruction; use <code>moveTab</code> for ownership transfer.</p>
+<p>Use <span data-inline-link="2"></span> to coordinate draggable groups and split targets. Direct Tabs transfers are useful when an application already owns the surrounding distribution. Replacing <code>items</code> still means normal reconciliation and destruction; use <code>moveTab</code> for ownership transfer.</p>
+<div class="related-block" data-block-id="doc-block-11"></div>
 <div class="component-block" data-block-id="doc-block-12"></div>
 </div>
