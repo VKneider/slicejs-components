@@ -30,6 +30,66 @@ export default class BottomNavDocumentation extends HTMLElement {
          }
        }
       {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Keep three to five tabs. A bottom bar is reached with a thumb; more tabs than that make each target too small, so move the rest to a \"More\" dropdown tab.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>badge: true</code> (a dot) for \"something new\" and numbers only when the count matters. A bar full of numbers stops meaning anything.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>A fixed bar covers the bottom of the page. Either add a <code>padding-bottom</code> to your content or pass <code>spacer: true</code>, but not both.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>With <code>labels: 'none'</code> give every tab an <code>icon</code>. A tab without one keeps showing its label (it would have nothing else to show), so the bar looks uneven.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
          const links = [{"text":"DropDown","path":"/docs/navigation/dropdown"}];
          for (const [index, linkProps] of links.entries()) {
             const placeholder = this.querySelector('[data-inline-link="' + index + '"]');
@@ -48,7 +108,9 @@ export default class BottomNavDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

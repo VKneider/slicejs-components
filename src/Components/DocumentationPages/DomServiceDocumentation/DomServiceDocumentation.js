@@ -30,6 +30,126 @@ export default class DomServiceDocumentation extends HTMLElement {
             container.appendChild(code);
          }
       }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-3"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>With immutable data, pass <code>equals: Object.is</code>. Re-rendering a long list after one row changes then touches one node instead of all of them.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Keys are page-wide <code>sliceId</code>s, not per-container. That is what lets an item <strong>move between two lists</strong> (a kanban column to another) and keep its component and state: reconcile the destination, then the source. It is also why two unrelated lists must not share key prefixes.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Call <code>reconcile</code> after every change to the data — a push, a filter, a re-sort — and nowhere else. Concurrent calls on the same container are queued rather than fought over, but two <em>different</em> data sources reconciling one container is still a design error: each will prune what the other just built.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>await</code> the call. The promise resolves after this render <strong>and</strong> any render already queued on the container, so a mutation that triggers two <code>reconcile</code> calls can still <code>await</code> once and know the DOM matches.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Reuse an item <strong>object</strong> across renders rather than rebuilding it, if the child keys off identity the object carries. <code>TreeView</code> keeps a <code>WeakMap</code> from item to a generated id for items with no <code>path</code> or <code>id</code> of their own, because an index key would hand item 0's component — and its open/closed state — to whatever took its place after a splice.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not use the array index as <code>keyOf</code>. With an index key, inserting at the front makes item 1 inherit item 0's component — and its scroll position, its open/closed state, and its focus.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>reconcile</code> only manages <strong>direct</strong> children that carry a <code>slice-id</code>. Anything you append by hand inside the container is left alone; wrap it if it should be reconciled with the data.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Never spread an item straight into <code>props</code>. <code>props(item)</code> is assigned by name onto the element, and several common field names are getter-only DOM properties — <code>children</code> most of all — so <code>props: (item) =&gt; item</code> throws <code>Cannot set property children</code> and the row is silently never created. Forward only the keys the child declares.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
     await this.renderScriptScenarios();
   }
 
@@ -39,7 +159,9 @@ export default class DomServiceDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

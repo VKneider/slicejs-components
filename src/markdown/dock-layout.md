@@ -113,6 +113,15 @@ bar.append(
 const box = document.createElement('div'); box.style.width = '100%'; box.append(bar, dock, status); return box;
 :::
 
+## A code editor workspace
+
+The demo below assembles a complete editor from public components: `TreeView` for the files, editable `Tabs` inside this `DockLayout`, a nested `SplitPane` for the console, and a live preview pane. Drag any tab to another strip or to a panel edge; the editor text, the preview and the console keep their state. The terminal accepts `help`, `ls`, `save`, `build` and `clear`, and the status bar follows the active file and caret.
+
+:::script label="A code editor workspace" expected="A full editor shell with an explorer, editable file tabs, a dockable live preview, a terminal and a status bar. Drag a tab to another strip or split the preview to the right; edits and notes survive the move."
+const demo = await slice.build('CodeEditorDemo', { height: '620px' });
+return demo;
+:::
+
 ## Props
 
 | Prop | Default | Meaning |

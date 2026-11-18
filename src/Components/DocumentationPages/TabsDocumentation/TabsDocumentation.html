@@ -1,19 +1,17 @@
 <div class="documentation-content tabsdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="tabs">
-     <span class="doc-title-text">Tabs</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="tabs">
+    <span class="doc-title-text">Tabs</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Tabs</code> switches between sibling views without leaving the page. It follows the WAI-ARIA tabs pattern in full:</p>
 <ul><li>the tab strip, each tab and each panel carry the roles screen readers expect, and every tab is linked to its panel;</li><li>only one tab is in the Tab order at a time, and the arrow keys move between tabs;</li><li>the active tab is marked by an indicator that slides to it.</li></ul>
 <p>Tabs can have icons and badges, be disabled or closed, and load their panel only when first opened. When there are more tabs than fit, arrows appear to scroll the strip.</p>
 <h2 id="core-behavior">Core Behavior</h2>
-<ul><li><code>items</code> are the tabs: <code>{ id, label, icon, badge, disabled, hidden, closable, panel }</code>.</li></ul>
-<p>- <code>panel</code> can be a node, a string, or a <strong>function</strong> that returns one (it may be <code>async</code>). A function runs the first time its tab opens, so expensive content (a Table, a chart, a request) only costs anything once someone looks at it. While it loads, the panel shows a shimmer.   - <code>badge</code> is a number (over 99 shows "99+"), a short text, or <code>true</code> for a dot. <code>setBadge(id, value)</code> updates it without re-rendering; <code>null</code> removes it.   - A tab with only an <code>icon</code> and no <code>label</code> takes its accessible name from <code>ariaLabel</code>.</p>
-<ul><li><code>activeTab</code> sets the open tab. <code>onChange(id)</code> and the <code>tab-change</code> event (<code>detail: { tabId, item, previous }</code>) report changes. <code>activeItem</code> and <code>activeIndex</code> tell you which one is open.</li><li><code>onBeforeChange(next, previous)</code> can return <code>false</code> to stay on the current tab, for example while it has unsaved changes.</li><li><code>select(id)</code>, <code>next()</code> and <code>prev()</code> switch from code. <code>addTab(item, index)</code> and <code>removeTab(id)</code> add and remove tabs.</li></ul>
+<ul><li><code>items</code> are the tabs: <code>{ id, label, icon, badge, disabled, hidden, closable, panel }</code>.<ul><li><code>panel</code> can be a node, a string, or a <strong>function</strong> that returns one (it may be <code>async</code>). A function runs the first time its tab opens, so expensive content (a Table, a chart, a request) only costs anything once someone looks at it. While it loads, the panel shows a shimmer.</li><li><code>badge</code> is a number (over 99 shows "99+"), a short text, or <code>true</code> for a dot. <code>setBadge(id, value)</code> updates it without re-rendering; <code>null</code> removes it.</li><li>A tab with only an <code>icon</code> and no <code>label</code> takes its accessible name from <code>ariaLabel</code>.</li></ul></li><li><code>activeTab</code> sets the open tab. <code>onChange(id)</code> and the <code>tab-change</code> event (<code>detail: { tabId, item, previous }</code>) report changes. <code>activeItem</code> and <code>activeIndex</code> tell you which one is open.</li><li><code>onBeforeChange(next, previous)</code> can return <code>false</code> to stay on the current tab, for example while it has unsaved changes.</li><li><code>select(id)</code>, <code>next()</code> and <code>prev()</code> switch from code. <code>addTab(item, index)</code> and <code>removeTab(id)</code> add and remove tabs.</li></ul>
 <h3 id="keyboard">Keyboard</h3>
 <ul><li><strong>← →</strong> (or <strong>↑ ↓</strong> when vertical) move to the next or previous tab, skipping disabled ones and wrapping at the ends.</li><li><strong>Home</strong> and <strong>End</strong> jump to the first and last tab.</li><li><strong>Delete</strong> closes a closable tab, as does a middle click.</li><li><code>activation: 'auto'</code> (default) opens a tab as soon as the arrow keys reach it. With <code>'manual'</code>, the arrows only move the focus and <strong>Enter</strong> or <strong>Space</strong> opens the tab. Use manual when opening a panel is slow.</li></ul>
 <h3 id="closing-tabs">Closing tabs</h3>
@@ -23,9 +21,7 @@
 <h3 id="memory">Memory</h3>
 <p>The panels belong to the Tabs. When you set <code>items</code> again, a tab whose <code>id</code> and <code>panel</code> are the same keeps its panel exactly as it was, along with everything typed into it. A tab that is gone, or whose <code>panel</code> changed, has its panel destroyed. <code>keepMounted: false</code> throws away a function panel when you leave its tab and runs it again the next time it opens.</p>
 <h2 id="looks">Looks</h2>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'underline'</code> (default): a bar under the active tab. It was called <code>'primary'</code>, which still works.   - <code>'pill'</code>: a soft pill behind the active tab.   - <code>'segmented'</code>: a segmented control, where the active tab is a filled pill. It was called <code>'secondary'</code>, which still works.   - <code>'enclosed'</code>: card-like tabs attached to a bordered panel.</p>
-<ul><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>orientation: 'vertical'</code> puts the tabs in a column beside the panels, as in a settings page.</li><li><code>align</code>: <code>'start'</code> (default), <code>'center'</code>, <code>'end'</code> or <code>'stretch'</code> (tabs share the width equally).</li></ul>
+<ul><li><code>variant</code>:<ul><li><code>'underline'</code> (default): a bar under the active tab. It was called <code>'primary'</code>, which still works.</li><li><code>'pill'</code>: a soft pill behind the active tab.</li><li><code>'segmented'</code>: a segmented control, where the active tab is a filled pill. It was called <code>'secondary'</code>, which still works.</li><li><code>'enclosed'</code>: card-like tabs attached to a bordered panel.</li></ul></li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>orientation: 'vertical'</code> puts the tabs in a column beside the panels, as in a settings page.</li><li><code>align</code>: <code>'start'</code> (default), <code>'center'</code>, <code>'end'</code> or <code>'stretch'</code> (tabs share the width equally).</li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="examples">Examples</h2>
@@ -35,16 +31,16 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Use tabs for views at the same level that people switch between. If they have to go through them in order, use a <span data-inline-link="0"></span> with steps instead.</div>
-<div class="callout callout-tip">Make expensive panels functions. A Table with thousands of rows, a chart or a request in a tab nobody opens then costs nothing.</div>
-<div class="callout callout-tip">Use <code>urlParam</code> on pages people link to or come back to (settings, a record's details). A link that opens the right tab saves a click and a "where was that?".</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not hide validation errors in a tab that is not open. If a tab holds an error, put a badge on it (<code>setBadge(id, '!')</code>) and open it on submit, so people know where to look.</div>
-<div class="callout callout-warning">Give every item a stable <code>id</code>. The tabs, their panels and what is remembered all go by it: an id that changes on every render rebuilds the panel each time, and throws away what was typed in it.</div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.tabs.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. <code>ariaLabel</code> and <code>texts</code> still win over the dictionary. Keys: <code>label</code>.</p>
 <h2 id="moving-live-tabs-between-groups">Moving live tabs between groups</h2>
 <p><code>source.moveTab(id, targetTabs, index, { activate: true })</code> transfers the same entry, tab button, panel wrapper, mounted content and pending lazy work. Omitted index appends; within one group it reorders. It returns false for a missing tab, invalid/cyclic target or duplicate ID in another group. A disabled entry can be transferred programmatically but cannot be activated. It does not invoke close handlers. Ownership is reparented, so destroying the source after transfer leaves the moved content alive. Factories are not restarted.</p>
 <p>Use <span data-inline-link="1"></span> to coordinate draggable groups and split targets. Direct Tabs transfers are useful when an application already owns the surrounding distribution. Replacing <code>items</code> still means normal reconciliation and destruction; use <code>moveTab</code> for ownership transfer.</p>
-<div class="component-block" data-block-id="doc-block-7"></div>
+<div class="component-block" data-block-id="doc-block-12"></div>
 </div>

@@ -109,6 +109,16 @@ export default class UnsavedChangesGuardDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -136,6 +146,96 @@ export default class UnsavedChangesGuardDocumentation extends HTMLElement {
             container.appendChild(code);
          }
       }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>In Slice.js 4.x, <strong><code>next(false)</code> does not cancel the navigation.</strong> <code>Router._executeBeforeEachGuard</code> ends with <code>return redirectPath ? { path: redirectPath, … } : null</code>, and <code>false</code> is falsy, so the cancellation branch is unreachable — the router proceeds with a warning-free \"success\". If you need to cancel a navigation, throw from the guard instead: the router's <code>catch</code> returns <code>{ path: false }</code>, which does cancel. <code>next('/some/path')</code> redirects correctly and is unaffected.</p><p>## Best Practices</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Disarm on <strong>save success</strong>, not on save click. Disarming optimistically loses the user's work if the save fails.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use a different key per form. Two forms on one page then warn independently, instead of one saving silently switching the other's guard off.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Arming is not the same as validating. The guard warns about leaving; it does not check that what the user typed is worth keeping.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not arm for trivial state — a collapsed panel, a ticked checkbox, a search filter. A guard that fires on things nobody would mourn is a guard the user learns to dismiss without reading, which costs you the warning you wanted for the one case that mattered.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>beforeunload</code> cannot be styled or worded. If the confirmation must be your own design, you cannot cover page close with it — only in-app navigation, through <code>confirmLeave()</code> or <code>setDialog()</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
     await this.renderScriptScenarios();
   }
 
@@ -145,7 +245,9 @@ export default class UnsavedChangesGuardDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

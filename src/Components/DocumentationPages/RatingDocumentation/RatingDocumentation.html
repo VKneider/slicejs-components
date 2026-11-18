@@ -1,11 +1,11 @@
 <div class="documentation-content ratingdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="rating">
-     <span class="doc-title-text">Rating</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="rating">
+    <span class="doc-title-text">Rating</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Rating</code> asks for a score: "How was the item?", a review, "Rate your experience". It draws stars (or hearts, or dots), lights them up as the pointer moves over them, and keeps the chosen value: <code>value</code> is a number from 1 to <code>max</code>, or <code>null</code> while there is none.</p>
 <p>With <code>readOnly</code> it shows a score that already exists — the average of a product, the stars of one review — as a single image with a name: "Rated 4.5 out of 5".</p>
@@ -28,10 +28,10 @@
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Give each value a word with <code>labels</code> and turn on <code>showValue</code>. "4 · Very good" is clearer than four stars, and the word is read out with the number.</div>
-<div class="callout callout-tip">Show the count next to an average: "4.6 · 128 reviews". Five stars from two people and five stars from two thousand are not the same.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not round an average to whole stars when showing it. Use <code>allowHalf</code> with <code>readOnly</code>, and write the exact number next to it.</div>
-<div class="callout callout-warning">A read-only rating is not a control: it has no Tab stop. To let people change a score they gave, show the editable one.</div>
-<div class="component-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="component-block" data-block-id="doc-block-10"></div>
 </div>

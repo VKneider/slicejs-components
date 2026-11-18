@@ -77,6 +77,16 @@ export default class DataComponentsDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -151,6 +161,16 @@ export default class DataComponentsDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -211,6 +231,51 @@ export default class DataComponentsDocumentation extends HTMLElement {
          }
       }
       {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<ul><li><code>init()</code> / <code>update()</code> do not await the network; the first paint is the skeleton.</li><li><code>item(s)</code> / <code>context</code> + <code>contextPath</code> / <code>load</code>, <code>reload()</code>, <code>onError(error, { type })</code>.</li><li>States: skeleton, busy, empty, error with Try again, saving.</li><li><code>AbortController</code>: a new request and <code>beforeDestroy()</code> abort the previous one; late answers are ignored.</li><li>Changes with <code>{ commit }</code>: lists optimistic with rollback, fields commit-first; nothing mutated.</li><li>Every component built with <code>slice.build</code> after <code>init()</code> is destroyed in <code>beforeDestroy()</code>.</li></ul>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>A <code>_fetch()</code> that does not check <code>signal.aborted</code> after its <code>await</code> lets a slow, old answer overwrite a fast, new one: the user searches \"ana\", then \"anabel\", and sees the results for \"ana\".</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not name internal state after a prop (<code>this._items</code> for loaded data when <code>items</code> is a prop): Slice resets <code>_&lt;prop&gt;</code> when the component is built, and the data disappears. Use <code>_loaded</code>, <code>_status</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
          const links = [{"text":"Data and the first load","path":"/docs/guides/data-and-loading"},{"text":"Data and the first load","path":"/docs/guides/data-and-loading"}];
          for (const [index, linkProps] of links.entries()) {
             const placeholder = this.querySelector('[data-inline-link="' + index + '"]');
@@ -229,7 +294,9 @@ export default class DataComponentsDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

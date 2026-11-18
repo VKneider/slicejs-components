@@ -32,6 +32,51 @@ export default class JsonViewerDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-5"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Open as much as people need at a glance (<code>expandDepth: 2</code> for most API responses) and let search do the rest.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Give the root a name (<code>rootName: 'response'</code>) when people copy paths into code: they get <code>response.items[0].sku</code>, ready to paste.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>It shows data; it does not hide it. Remove tokens, passwords and personal data before passing a value to a viewer that anyone with the page can read.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"data\",\"type\":\"any\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"expandDepth\",\"type\":\"number\",\"required\":false,\"default\":\"1\",\"allowedValues\":[]},{\"path\":\"rootName\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"search\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"toolbar\",\"type\":\"boolean\",\"required\":false,\"default\":\"true\",\"allowedValues\":[]},{\"path\":\"sortKeys\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"maxStringLength\",\"type\":\"number\",\"required\":false,\"default\":\"200\",\"allowedValues\":[]},{\"path\":\"copyable\",\"type\":\"boolean\",\"required\":false,\"default\":\"true\",\"allowedValues\":[]},{\"path\":\"maxHeight\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"size\",\"type\":\"string\",\"required\":false,\"default\":\"md\",\"allowedValues\":[\"sm\",\"md\"]},{\"path\":\"ariaLabel\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"onSelect\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"onCopy\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -63,7 +108,9 @@ export default class JsonViewerDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

@@ -109,6 +109,16 @@ export default class CssConventionsDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -136,6 +146,51 @@ export default class CssConventionsDocumentation extends HTMLElement {
             container.appendChild(code);
          }
       }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><strong>Icon</strong> used to be the fourth exception: its <code>.slc-*</code> icon-font glyph stylesheet was written at global scope (<code>[class^=\"slc-\"] { font-family: slc !important }</code>), so any element in a consuming app whose class happened to start with <code>slc-</code> inherited the icon font. It is no longer an exception — the glyphs are inline <code>&lt;svg&gt;</code> and the stylesheet is scoped under <code>slice-icon</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "neutral",
+               variant: "ghost",
+               title: "Note",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><strong>Renaming a class to scope it changes the CSS selector, not the DOM.</strong> Components keep adding the same class names, so <code>*.spec.js</code> assertions on <code>.some_class</code> still pass. If a rule was intentionally matching outside the component (a true leak), scoping will stop it — move that styling into the consuming app.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Scoping raises every rule's specificity uniformly (one element selector). If an app override stops working after you scope, <strong>don't bump the component's specificity</strong> — adjust the override instead.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
     await this.renderScriptScenarios();
   }
 
@@ -145,7 +200,9 @@ export default class CssConventionsDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

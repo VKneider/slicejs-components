@@ -31,6 +31,66 @@ export default class InfiniteScrollServiceDocumentation extends HTMLElement {
          }
       }
       {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Call <code>feed.reset()</code> whenever the query changes (search, filters, sort). It cancels the old request, so results of two queries never mix.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Pass the <code>signal</code> to <code>fetch</code>. A reset then cancels the network request itself, not only its answer.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Detach the sentinel when your component is destroyed (<code>beforeDestroy</code>), or the service keeps watching an element that is gone.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Infinite scrolling hides the footer. If the page has one, set <code>autoLimit</code> so a \"Load more\" button appears after a few pages.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
          const links = [{"text":"Pagination","path":"/docs/data/pagination"}];
          for (const [index, linkProps] of links.entries()) {
             const placeholder = this.querySelector('[data-inline-link="' + index + '"]');
@@ -49,7 +109,9 @@ export default class InfiniteScrollServiceDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

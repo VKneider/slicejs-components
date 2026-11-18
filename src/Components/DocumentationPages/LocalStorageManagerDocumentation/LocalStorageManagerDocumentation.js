@@ -93,6 +93,16 @@ export default class LocalStorageManagerDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -137,6 +147,36 @@ export default class LocalStorageManagerDocumentation extends HTMLElement {
          }
       }
       {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Values are JSON-serialized, so plain objects and arrays round-trip cleanly. Always provide a fallback when reading (<code>store.getItem('key') ?? defaultValue</code>) since <code>getItem</code> returns <code>null</code> for both \"missing\" and \"unparseable\".</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Only JSON-serializable values survive the round-trip — <code>Date</code>, <code>Map</code>, <code>Set</code>, and functions do not. <code>localStorage</code> is synchronous and origin-scoped; for larger or structured datasets prefer <span data-inline-link=\"0\"></span>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
          const links = [{"text":"`IndexedDbManager`","path":"/docs/services/indexed-db-manager"}];
          for (const [index, linkProps] of links.entries()) {
             const placeholder = this.querySelector('[data-inline-link="' + index + '"]');
@@ -155,7 +195,9 @@ export default class LocalStorageManagerDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

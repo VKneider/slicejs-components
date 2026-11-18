@@ -255,3 +255,104 @@
     padding: 16px;
   }
 }
+
+/* --- Shared markdown contract: page status, callout bodies, compare, related --- */
+.documentation-content .doc-status {
+  display: inline-flex;
+  margin-left: 0.45em;
+  vertical-align: middle;
+}
+
+.documentation-content .doc-status slice-badge {
+  display: inline-flex;
+}
+
+.documentation-content .callout-block {
+  margin: 1rem 0;
+}
+
+.documentation-content .doc-callout-body p {
+  margin: 0.3rem 0;
+}
+
+.documentation-content .doc-callout-body p:first-child {
+  margin-top: 0;
+}
+
+.documentation-content .doc-callout-body p:last-child {
+  margin-bottom: 0;
+}
+
+.documentation-content .compare-block,
+.documentation-content .related-block {
+  margin: 1.1rem 0;
+}
+
+.documentation-content .compare-block slice-grid,
+.documentation-content .related-block slice-grid {
+  display: block;
+}
+
+.documentation-content .compare-block .grid-item,
+.documentation-content .related-block .grid-item {
+  min-width: 0;
+}
+
+.documentation-content .doc-details-body {
+  color: var(--font-primary-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.documentation-content .doc-details-body p {
+  margin: 0.6rem 0;
+}
+
+.documentation-content .doc-details-body p:first-child {
+  margin-top: 0;
+}
+
+.documentation-content .doc-details-body p:last-child {
+  margin-bottom: 0;
+}
+
+.documentation-content blockquote {
+  margin: 1.1rem 0;
+  padding: 0.65rem 0.95rem;
+  border-left: 3px solid var(--primary-color);
+  border-radius: 0 6px 6px 0;
+  background: color-mix(in srgb, var(--secondary-background-color) 55%, transparent);
+}
+
+.documentation-content blockquote p {
+  margin: 0.3rem 0;
+}
+
+.documentation-content blockquote p:first-child {
+  margin-top: 0;
+}
+
+.documentation-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.documentation-content hr {
+  margin: 1.6rem 0;
+  border: 0;
+  border-top: 1px solid var(--doc-border-color);
+}
+
+.documentation-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
+  border-radius: 6px;
+}
+
+@media (max-width: 640px) {
+  .documentation-content .compare-block .grid-container,
+  .documentation-content .related-block .grid-container {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}

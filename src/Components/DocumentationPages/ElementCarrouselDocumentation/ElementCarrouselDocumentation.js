@@ -32,6 +32,111 @@ export default class ElementCarrouselDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Give every carousel a <code>label</code> that says what is in it (\"Product photos\", \"Recommended courses\"). Screen readers announce it when the focus enters.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Prefer several slides per view with a <code>peek</code> for rows of items. People see at once that there is more, and can swipe to it, without hunting for arrows or dots.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Build slides with the data you already have, and keep that data next to them. Use <code>index</code> and <code>onChange</code> to find which item is on screen, instead of reading it back from the slide.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not hide the only copy of something important in a later slide. Most people never see past the second one.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use autoplay sparingly, and only for content that can be missed (quotes, highlights). Text that moves while someone reads it is hard to follow. The pause button, the hover hold and the reduced-motion check are there for that reason; do not hide them.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Inside a flex or grid item, give that item <code>min-width: 0</code>. Flex and grid items do not shrink below their content by default, and a row of slides is wider than any screen, so the page would scroll sideways.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>A slide's content fills its width. Do not give the elements fixed widths: they would overflow the slide on a phone. Use <code>perView</code> to decide how many fit instead.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"elements\",\"type\":\"array\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"perView\",\"type\":\"any\",\"required\":false,\"default\":\"1\",\"allowedValues\":[]},{\"path\":\"gap\",\"type\":\"number\",\"required\":false,\"default\":\"16\",\"allowedValues\":[]},{\"path\":\"peek\",\"type\":\"number\",\"required\":false,\"default\":\"0\",\"allowedValues\":[]},{\"path\":\"align\",\"type\":\"string\",\"required\":false,\"default\":\"start\",\"allowedValues\":[]},{\"path\":\"loop\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"autoplay\",\"type\":\"any\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"arrows\",\"type\":\"string\",\"required\":false,\"default\":\"overlay\",\"allowedValues\":[]},{\"path\":\"indicators\",\"type\":\"string\",\"required\":false,\"default\":\"dots\",\"allowedValues\":[]},{\"path\":\"thumbnail\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"startIndex\",\"type\":\"number\",\"required\":false,\"default\":\"0\",\"allowedValues\":[]},{\"path\":\"label\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"onChange\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -63,7 +168,9 @@ export default class ElementCarrouselDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

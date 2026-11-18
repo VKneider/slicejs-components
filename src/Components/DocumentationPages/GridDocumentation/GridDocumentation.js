@@ -17,6 +17,66 @@ export default class GridDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-8"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Prefer breakpoints on the grid (<code>columns: { 0: 1, 600: 2, 960: 4 }</code>) or <code>minItemWidth</code> over media queries. The same grid then works in a page, a sidebar and a modal.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>colSpan</code> and <code>rowSpan</code> with <code>autoRows</code> for bento layouts: without a row height, a tall tile's rows are only as tall as their content.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>dense</code> and named areas change where things appear, not their order in the DOM. Keyboard focus and screen readers follow the DOM, so keep the DOM in reading order.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Assigning <code>items</code> replaces everything. To add one, pass the old list plus the new item (<code>grid.items = [...grid.items, card]</code>) or call <code>setItem(card)</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"layout\",\"type\":\"string\",\"required\":false,\"default\":\"grid\",\"allowedValues\":[\"grid\",\"masonry\"]},{\"path\":\"columns\",\"type\":\"any\",\"required\":false,\"default\":\"1\",\"allowedValues\":[]},{\"path\":\"rows\",\"type\":\"number\",\"required\":false,\"default\":\"1\",\"allowedValues\":[]},{\"path\":\"items\",\"type\":\"array\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"gap\",\"type\":\"any\",\"required\":false,\"default\":\"10px\",\"allowedValues\":[]},{\"path\":\"rowGap\",\"type\":\"any\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"minItemWidth\",\"type\":\"any\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"areas\",\"type\":\"any\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"autoRows\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"dense\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"align\",\"type\":\"string\",\"required\":false,\"default\":\"stretch\",\"allowedValues\":[\"stretch\",\"start\",\"center\",\"end\"]},{\"path\":\"justify\",\"type\":\"string\",\"required\":false,\"default\":\"stretch\",\"allowedValues\":[\"stretch\",\"start\",\"center\",\"end\"]},{\"path\":\"columnTemplate\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"rowTemplate\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -48,7 +108,9 @@ export default class GridDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

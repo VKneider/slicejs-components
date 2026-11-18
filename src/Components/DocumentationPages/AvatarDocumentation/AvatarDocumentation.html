@@ -1,11 +1,11 @@
 <div class="documentation-content avatardocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="avatar">
-     <span class="doc-title-text">Avatar</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="avatar">
+    <span class="doc-title-text">Avatar</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Avatar</code> shows who something belongs to: the person next to a comment, the owner of a task, the account in the top bar. It never shows a broken picture:</p>
 <ol><li>the picture (<code>src</code>);</li><li>if there is none, or it fails to load, the <strong>initials</strong> of <code>name</code> ("Ana María López" → "AL") on a colour that comes from the name, so the same person always has the same colour;</li><li>without a name either, an icon (<code>icon</code>, <code>'user'</code> by default).</li></ol>
@@ -24,10 +24,10 @@
 <div class="script-block" data-block-id="doc-block-3"></div>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Always pass <code>name</code>, even with a picture. It is what screen readers hear, and what shows when the picture fails.</div>
-<div class="callout callout-tip">Use <code>shape: 'rounded'</code> for teams, companies and projects, and circles for people. The shape tells them apart at a glance.</div>
+<div class="callout-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not pass a status the app cannot keep up to date. A green dot that stays green after the person left is worse than no dot.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.avatar.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>online</code>, <code>away</code>, <code>busy</code>, <code>offline</code>, <code>unknown</code>.</p>
 </div>

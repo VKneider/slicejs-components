@@ -32,6 +32,36 @@ export default class AvatarGroupDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Keep <code>max</code> small (3 to 5). The group says \"these people and some more\"; the full list belongs in a click on \"+N\".</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Give every person a <code>name</code>. Without one, the face has no tooltip and the group's name cannot list them.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"items\",\"type\":\"array\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"max\",\"type\":\"number\",\"required\":false,\"default\":\"4\",\"allowedValues\":[]},{\"path\":\"size\",\"type\":\"any\",\"required\":false,\"default\":\"sm\",\"allowedValues\":[]},{\"path\":\"shape\",\"type\":\"string\",\"required\":false,\"default\":\"circle\",\"allowedValues\":[\"circle\",\"rounded\"]},{\"path\":\"tooltips\",\"type\":\"boolean\",\"required\":false,\"default\":\"true\",\"allowedValues\":[]},{\"path\":\"onMoreClick\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -63,7 +93,9 @@ export default class AvatarGroupDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

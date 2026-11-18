@@ -1,11 +1,11 @@
 <div class="documentation-content linkdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="link">
-     <span class="doc-title-text">Link</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="link">
+    <span class="doc-title-text">Link</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Link</code> is a route-aware <code>&lt;a&gt;</code>: it keeps a real <code>href</code> in the DOM (so right-click → open in new tab still works, and the URL is visible on hover) but intercepts the click and hands the path to <code>slice.router.navigate</code>, so navigation goes through the client-side router instead of a full page load.</p>
 <p>It is built with DOM APIs (<code>setAttribute</code> / <code>textContent</code>) rather than an <code>innerHTML</code> template, so a <code>path</code> like <code>javascript:...</code> or text containing markup can never inject into the page.</p>
@@ -17,10 +17,7 @@
 <div class="script-block" data-block-id="doc-block-1"></div>
 <div class="script-block" data-block-id="doc-block-2"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Use <code>Link</code> for in-app navigation. For external destinations use a plain <code>&lt;a&gt;</code> with <code>target</code> /
-<code>rel</code> — routing an off-site URL through the router buys nothing.</div>
+<div class="callout-block" data-block-id="doc-block-3"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning"><code>Link</code> has no template and no <code>setComponentProps</code>: its props are read once, in the constructor, from
-whoever built the element. Changing them later means calling <code>render()</code> again — it is not a reactive
-component like <code>Button</code> or <code>Tabs</code>.</div>
+<div class="callout-block" data-block-id="doc-block-4"></div>
 </div>

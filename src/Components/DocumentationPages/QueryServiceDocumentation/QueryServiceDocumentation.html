@@ -1,11 +1,11 @@
 <div class="documentation-content queryservicedocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="queryservice">
-     <span class="doc-title-text">QueryService</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="queryservice">
+    <span class="doc-title-text">QueryService</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>QueryService</code> keeps what the app already got from the server, and knows whether it is still fresh and who is showing it. It is the layer React Query or SWR are in React.</p>
 <p>A <strong>query</strong> is a <strong>key</strong> (what the data is) and a <strong>function</strong> (how to get it):</p>
@@ -54,11 +54,8 @@
 <div class="code-block" data-block-id="doc-block-11"></div>
 <p>And the other way: a sign-in answer is server data that becomes the app's. Keep it in a context (persisted, if it must survive a reload), and <code>remove()</code> the queries on sign-out so the next user sees nothing of the last one.</p>
 <h2 id="best-practices">Best practices</h2>
-<div class="callout callout-tip">- One <code>QueryService</code> for the whole app (<code>singleton: true</code>), used through a Service per domain (<code>OrdersService</code>): components never build keys or URLs. See <span data-inline-link="5"></span>.
-- Keys from general to specific: <code>['orders']</code>, <code>['orders', 'list', params]</code>, <code>['orders', id]</code>. Then <code>invalidate(['orders'])</code> after any change to orders is always right.
-- Pass <code>signal</code> to the request: a query nobody waits for is cancelled.
-- Never <code>await</code> a query in <code>init()</code>: <code>watch</code>, then <code>load()</code>.</div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not copy query data into a context to share it. The query <strong>is</strong> the shared copy; a second one gets out of date, and then you have two truths. Share the handle (or the domain Service that gives it).</div>
-<div class="callout callout-warning">A key must contain everything the function depends on. A function that reads <code>page</code> from outside, with a key that does not include it, returns page 1's cached data for page 2.</div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
 </div>

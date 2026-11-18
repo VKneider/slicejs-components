@@ -227,6 +227,11 @@ export interface ChipDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface CodeEditorDemoProps {
+  [key: string]: unknown;
+  height?: string;
+}
+
 export interface CodeVisualizerProps {
   [key: string]: unknown;
 }
@@ -1742,6 +1747,7 @@ export interface SliceComponentPropsMap {
   CheckboxDocumentation: CheckboxDocumentationProps;
   Chip: ChipProps;
   ChipDocumentation: ChipDocumentationProps;
+  CodeEditorDemo: CodeEditorDemoProps;
   CodeVisualizer: CodeVisualizerProps;
   CodeVisualizerDocumentation: CodeVisualizerDocumentationProps;
   ColorPicker: ColorPickerProps;

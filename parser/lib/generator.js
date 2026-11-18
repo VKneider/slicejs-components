@@ -70,8 +70,116 @@ const generateJs = (componentClass, jsBlocks, tagName, markdownPath = '', markdo
         return `      {
          const container = this.querySelector('[data-block-id="${block.id}"]');
          if (container) {
-            const details = await slice.build('Details', { title: ${JSON.stringify(block.title)}, text: ${JSON.stringify(block.content)} });
-            container.appendChild(details);
+            const body = document.createElement('div');
+            body.className = 'doc-details-body';
+            body.innerHTML = ${JSON.stringify(block.html)};
+            const details = await slice.build('Details', {
+               title: ${JSON.stringify(block.title)},
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(details || body);
+         }
+      }`;
+      }
+      if (block.type === 'status') {
+        return `      {
+         const container = this.querySelector('[data-block-id="${block.id}"]');
+         if (container) {
+            const presets = {
+               new: { label: 'New', tone: 'accent' },
+               updated: { label: 'Updated', tone: 'info' },
+               deprecated: { label: 'Deprecated', tone: 'warning' },
+               beta: { label: 'Beta', tone: 'info' },
+               experimental: { label: 'Experimental', tone: 'neutral' }
+            };
+            const key = String(${JSON.stringify(block.status)}).toLowerCase();
+            const preset = presets[key] || { label: ${JSON.stringify(block.status)}, tone: 'neutral' };
+            const badge = await slice.build('Badge', {
+               label: preset.label,
+               tone: preset.tone,
+               variant: 'soft',
+               size: 'sm',
+               shape: 'rounded'
+            });
+            if (badge) container.appendChild(badge);
+         }
+      }`;
+      }
+      if (block.type === 'callout') {
+        return `      {
+         const container = this.querySelector('[data-block-id="${block.id}"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = ${JSON.stringify(block.html)};
+            const callout = await slice.build('Callout', {
+               tone: ${JSON.stringify(block.tone)},
+               variant: ${JSON.stringify(block.variant)},
+               title: ${JSON.stringify(block.title)},
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }`;
+      }
+      if (block.type === 'compare') {
+        return `      {
+         const container = this.querySelector('[data-block-id="${block.id}"]');
+         if (container) {
+            const buildSide = async (side) => {
+               const body = document.createElement('div');
+               body.className = 'doc-callout-body';
+               body.innerHTML = side.html;
+               const callout = await slice.build('Callout', {
+                  tone: side.tone,
+                  title: side.title,
+                  content: Array.from(body.childNodes)
+               });
+               return callout || body;
+            };
+            const left = await buildSide(${JSON.stringify(block.left)});
+            const right = await buildSide(${JSON.stringify(block.right)});
+            const grid = await slice.build('Grid', {
+               columns: 2,
+               gap: '14px',
+               items: [left, right]
+            });
+            if (grid) container.appendChild(grid);
+            else {
+               container.appendChild(left);
+               container.appendChild(right);
+            }
+         }
+      }`;
+      }
+      if (block.type === 'related') {
+        return `      {
+         const container = this.querySelector('[data-block-id="${block.id}"]');
+         if (container) {
+            const items = ${JSON.stringify(block.items)};
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  icon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
          }
       }`;
       }
@@ -168,6 +276,16 @@ const generateJs = (componentClass, jsBlocks, tagName, markdownPath = '', markdo
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\\[([^\\]]+)\\]\\(([^)\\s]+)\\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\\/\\/|\\/\\/|\\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\\/\\/|\\/\\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -211,7 +329,9 @@ ${buildCodeBlocks || '    // No dynamic blocks'}
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

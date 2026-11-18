@@ -27,17 +27,34 @@ Every markdown file must include:
 | `group` | yes | `Basic` |
 | `order` | yes | `10` |
 | `component` | yes | `ButtonDocumentation` |
+| `status` | no | `new`, `updated`, `deprecated`, `beta`, `experimental` |
 
 If any required field is missing, `npm run docs:lint-md` fails.
 
+`status` renders a `Badge` next to the page title.
+
+## Shared markdown contract
+
+This parser follows the same contract as `slice.js_docs` (the reference implementation):
+[`MARKDOWN-CONTRACT.md`](https://github.com/VKneider/slicejs_docs/blob/master/parser/MARKDOWN-CONTRACT.md).
+The same fixtures are covered by `parser/tests/markdown-contract.test.js`.
+
 ## Supported Blocks
-- Headings, paragraphs, lists
+- Headings, paragraphs, bold/italic, inline code, links, images
+- Unordered and ordered lists, nested and wrapped
+- Blockquotes and horizontal rules
 - Fenced code blocks -> `CodeVisualizer`
-- Tables -> `Table`
-- `:::tip` / `:::warning`
-- `:::details title="..."`
+- Tables -> `Table` (links and inline code in cells)
+- `:::tip` / `:::warning` / `:::note` / `:::info` / `:::success` / `:::danger` -> `Callout`
+- `:::callout tone="..." variant="..." title="..."` -> `Callout`
+- `:::compare left="Do" right="Don't"` -> two `Callout`s in a `Grid`
+- `:::related` with a list of links -> `Grid` of `Card`s
+- `:::details title="..."` -> `Details`, body parsed as markdown
 - `:::component name="Button"` with JSON props body
 - `:::script ...` for interactive prop scenarios
+
+**Callout budget:** 1–3 per page. Use `:::warning` only for a real risk; use `:::compare` for a
+contrast instead of two separate tips.
 
 ## Script Scenario Contract
 Use script blocks to validate component props through runnable scenarios:

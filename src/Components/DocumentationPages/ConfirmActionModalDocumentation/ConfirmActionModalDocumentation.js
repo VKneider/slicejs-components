@@ -33,40 +33,38 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-2"]');
          if (container) {
-            const code = await slice.build('CodeVisualizer', {
-               value: "if (!await confirm.ask({ title: 'Delete project?', danger: true })) return;\nawait deleteProject();",
-               language: "javascript"
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Build exactly one. Unlike a <code>Service</code>, a Visual component is <strong>not</strong> a singleton: a second instance would also subscribe to <code>confirm:request</code>, so every question would open two dialogs.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
             });
-            if (null) {
-               const label = document.createElement('div');
-               label.classList.add('code-block-title');
-               label.textContent = null;
-               container.appendChild(label);
-            }
-            container.appendChild(code);
+            container.appendChild(callout || body);
          }
       }
       {
          const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
-            const code = await slice.build('CodeVisualizer', {
-               value: "slice.events.emit('confirm:request', {\n   title: 'Discard unsaved draft?',\n   message: 'Three responses have not been sent.',\n   danger: true,\n});",
-               language: "javascript"
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>It must be <strong>in the document</strong>. The Modal is built inside the component, and <code>showModal()</code> on a detached <code>&lt;dialog&gt;</code> is a silent no-op: nothing appears, the promise still settles, and it looks like the button is dead. Append it somewhere real — <code>document.body</code> is the usual choice — and the component logs a warning if you forget.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
             });
-            if ("No reference needed") {
-               const label = document.createElement('div');
-               label.classList.add('code-block-title');
-               label.textContent = "No reference needed";
-               container.appendChild(label);
-            }
-            container.appendChild(code);
+            container.appendChild(callout || body);
          }
       }
       {
          const container = this.querySelector('[data-block-id="doc-block-4"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
-               value: "slice.events.emit('confirm:request', {\n   title: 'Publish?',\n   onConfirm: () => publish(),\n   onCancel: () => console.log('left it'),\n});",
+               value: "if (!await confirm.ask({ title: 'Delete project?', danger: true })) return;\nawait deleteProject();",
                language: "javascript"
             });
             if (null) {
@@ -82,6 +80,38 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          const container = this.querySelector('[data-block-id="doc-block-5"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
+               value: "slice.events.emit('confirm:request', {\n   title: 'Discard unsaved draft?',\n   message: 'Three responses have not been sent.',\n   danger: true,\n});",
+               language: "javascript"
+            });
+            if ("No reference needed") {
+               const label = document.createElement('div');
+               label.classList.add('code-block-title');
+               label.textContent = "No reference needed";
+               container.appendChild(label);
+            }
+            container.appendChild(code);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const code = await slice.build('CodeVisualizer', {
+               value: "slice.events.emit('confirm:request', {\n   title: 'Publish?',\n   onConfirm: () => publish(),\n   onCancel: () => console.log('left it'),\n});",
+               language: "javascript"
+            });
+            if (null) {
+               const label = document.createElement('div');
+               label.classList.add('code-block-title');
+               label.textContent = null;
+               container.appendChild(label);
+            }
+            container.appendChild(code);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const code = await slice.build('CodeVisualizer', {
                value: "slice.events.emit('confirm:request', {\n   title: 'Your name',\n   inputLabel: 'Name',\n   inputValue: 'Ana',\n   onConfirm: (name) => save({ name }),\n});",
                language: "javascript"
             });
@@ -95,7 +125,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "const admin = await slice.build('ConfirmActionModal', {\n   sliceId: 'admin-confirm',\n   eventName: 'admin:confirm:request',\n});",
@@ -111,7 +141,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
          if (container) {
             const lines = ["| Option | Default | Notes |","| --- | --- | --- |","| `title` | `''` | |","| `message` | `''` | hidden when empty |","| `icon` | by `danger` | any Icon name; `false` hides the mark |","| `confirmLabel` | `'Confirm'` | |","| `cancelLabel` | `'Cancel'` | |","| `danger` | `false` | confirm button becomes the `danger` variant |","| `confirmVariant` | `'filled'` | used when `danger` is false |","| `inputLabel` / `inputPlaceholder` / `inputValue` | `''` | `prompt()` only |","| `inputType` | `'text'` | `'email'` adds native validation |","| `required` | `false` | `prompt()` only; blocks confirm while empty |"];
             const clean = (line) => {
@@ -173,6 +203,16 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -182,6 +222,126 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
             const rows = lines.slice(2).map((line) => clean(line).map((cell) => ({ html: formatCell(cell) })));
             const table = await slice.build('Table', { headers, rows });
             container.appendChild(table);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Put the consequence in <code>message</code>, not in the title. The title says what is being asked; the message says what happens if the answer is yes. \"This cannot be undone\" is worth more than \"Confirm\".</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>danger: true</code> for anything irreversible. It swaps the confirm button, the header mark and the badge behind it in one property.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-14"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Prefer the promise over the event. Reach for the event when the emitter genuinely has no reference to the component, not because callbacks read nicely at the call site.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-15"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>required</code> blocks the confirm button and paints an error, but it does not disable it. That is deliberate: a permanently greyed-out button tells the user nothing about why. If the empty case should not even be reachable, validate before opening the modal.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-16"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not pass <code>singleton: true</code>. That flag is only for components registered as <code>\"Service\"</code>, and <code>slice.build</code> returns <strong><code>null</code></strong> for a Visual component built with it — so <code>confirm.ask</code> is then \"not a function\". Build the modal once and share it with <code>slice.getComponent</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-17"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>A prompt's field is focused when it opens, so <code>Enter</code> confirms. If the answer is not something a user should be able to submit with a single keystroke, do not put a prompt on that action.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-18"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>ask()</code> cannot prevent the modal from being dismissed — <code>Escape</code> and the backdrop always count as \"no\". If the answer must be explicit, do not make it cancellable: leave <code>dismissable</code> on and accept that a stray Escape reads as a refusal.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-19"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Every instance subscribes to <code>confirm:request</code>. Two instances means two dialogs for one question, so build exactly one, or give the second a different <code>eventName</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
          }
       }
       {
@@ -203,7 +363,9 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

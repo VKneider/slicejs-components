@@ -33,6 +33,21 @@ export default class DragDropServiceDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-2"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><strong>This component ships TWO files, and <code>slice get</code> only delivers one.</strong></p><p>``<code>bash slice get DragDropService ls src/Components/Service/DragDropService/   # expect DragDropService.js AND dndGeometry.js </code>``</p><p><code>DragDropService.js</code> imports <code>./dndGeometry.js</code>, a sibling module holding the resize maths. The CLI follows imports between <em>registered components</em>, but a bare <code>./relative.js</code> inside a component folder is not fetched — the download fails silently and the service throws at runtime with <code>dndGeometry is not defined</code>.</p><p>If it is missing after <code>slice get</code>, copy it from the registry repo. This is the only component in the library with a sibling module, and the reason is deliberate: the geometry maths was split out so it could be tested in plain Node (<code>DragDropService.test.js</code> runs under <code>node --test</code>, with no browser).</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-3"]');
+         if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeDraggable(node, {\n  handle: '.title-bar',   // optional — restrict drag to a child\n  axis: 'both',           // 'x', 'y', or 'both'\n  ghost: true,            // show a ghost clone\n  threshold: 0,           // px before activating\n  touchDelay: 200,        // ms of finger stillness before a TOUCH drag arms (mouse/pen unaffected)\n  autoScroll: true,       // scroll scrollable ancestors near their edges, chaining outward\n  data: { id: 1 },\n  onDragStart(node, event, data),\n  onDrag(node, event, data, { dx, dy }),\n  onDragEnd(node, event, data)\n});",
                language: "js"
@@ -47,7 +62,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeDroppable(node, {\n  accept: (data) => data.type === 'task',\n  onDragEnter(node, event, data),\n  onDragLeave(node, event, data),\n  onDragOver(node, event, data),\n  onDrop(node, event, data)\n});",
@@ -63,7 +78,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeResizable(node, {\n  handles: ['se', 'e', 's', 'w', 'n', 'ne', 'nw', 'sw'],\n  minWidth: 100, minHeight: 80,\n  maxWidth: 600, maxHeight: 400,\n  onResizeStart(node, event, rect),\n  onResize(node, event, rect),\n  onResizeEnd(node, event, rect)\n});",
@@ -79,7 +94,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeDraggable(node, { ghost: true, freePosition: true });",
@@ -95,7 +110,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeSortable(container, {\n  items: ':scope > *',     // selector for sortable items\n  axis: 'y',               // 'x' or 'y'\n  autoScroll: true,        // scroll a long/overflowing list while dragging near its edges\n  touchDelay: 200,         // ms of finger stillness before a TOUCH sort arms\n  onReorder: ({ fromIndex, toIndex, item, container }) => {\n    console.log(`Moved from ${fromIndex} to ${toIndex}`);\n  }\n});",
@@ -111,7 +126,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-14"]');
+         const container = this.querySelector('[data-block-id="doc-block-15"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.makeDraggable(node, { touchDelay: 200 });   // ms of stillness before a touch drag arms\ndnd.makeSortable(container, { touchDelay: 120 });",
@@ -127,7 +142,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-15"]');
+         const container = this.querySelector('[data-block-id="doc-block-16"]');
          if (container) {
             const lines = ["| What | On `pointercancel` |","| --- | --- |","| Draggable | `onDragLeave` fires for the hovered droppable, the live transform is cleared, and no free-position `left/top` is committed — the node snaps back |","| Draggable | `onDragEnd` **still** fires, so you can undo any `onDragStart` state |","| Sortable | the item returns to its original index and `onReorder` is **not** called |","| Any | the ghost is removed and the service is immediately usable again |"];
             const clean = (line) => {
@@ -189,6 +204,16 @@ export default class DragDropServiceDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -201,7 +226,7 @@ export default class DragDropServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-17"]');
+         const container = this.querySelector('[data-block-id="doc-block-18"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "dnd.detach(node);   // remove registrations from a specific node",
@@ -225,7 +250,9 @@ export default class DragDropServiceDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

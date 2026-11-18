@@ -1,11 +1,11 @@
 <div class="documentation-content stepperdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="stepper">
-     <span class="doc-title-text">Stepper</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="stepper">
+    <span class="doc-title-text">Stepper</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Stepper</code> is the single component for an ordered process. <code>mode: 'static'</code> explains how something works. <code>mode: 'interactive'</code> shows where someone is in a task and lets them move between stages. It replaces the earlier separate Steps proposal and implementation; there is no Steps component, alias or compatibility route.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -13,18 +13,7 @@
 <p>Use static mode for a landing page's “How it works”, a setup procedure, or instructions with commands. Use interactive mode for checkout stages, onboarding or a multi-step form. Use <code>Tabs</code> for sibling views with no order/completion, <code>Timeline</code> for events with dates, and <code>TourService</code> for a guided overlay pointing at controls across an existing screen.</p>
 <h2 id="items-and-modes">Items and modes</h2>
 <p><code>items</code> is an array of <code>{ id, title, text, icon, content, status, disabled }</code>. IDs are unique strings (numbers normalize to strings); omitted IDs fall back to the index. Supply stable IDs when items change. Duplicate IDs throw a clear error rather than sharing the wrong DOM row.</p>
-<ul><li>Static mode has an <code>&lt;ol&gt;</code> with headings and decorative number/icon/dot markers. No navigation</li></ul>
-<p>controls, current-step announcement or click handlers are added.</p>
-<ul><li>Interactive mode has real buttons, one <code>aria-current="step"</code> item, state text and a polite</li></ul>
-<p>announcement of the active title and position. It remains an ordered list, never a tablist.</p>
-<ul><li><code>active</code> is an item ID. By default the first enabled item marked <code>current</code> is selected, or the</li></ul>
-<p>first enabled item. One item is current even if input data marks several. Invalid/disabled IDs   fall back by the same rule. Static mode exposes <code>active === null</code>.</p>
-<ul><li><code>status</code> is <code>upcoming</code>, <code>current</code>, <code>done</code>, or <code>error</code>. <code>active</code> determines the current item;</li></ul>
-<p>completion/error are supplied by the app. Clicking does not mark anything done or validate data.</p>
-<ul><li><code>linear: true</code> allows completed steps and the first incomplete step, but blocks future steps.</li></ul>
-<p>Disabled steps are not actionable. <code>clickable: false</code> makes interactive state read-only;   <code>disabled</code> disables all navigation. Programmatic <code>active = id</code> can select any enabled item:   the app owns validation and can restore a saved task.</p>
-<ul><li><code>select(id)</code> returns true only when a permitted user selection changes the current item. It fires</li></ul>
-<p><code>onChange(id, { previous, step, index })</code> and bubbling <code>step-change</code> with <code>{ id, previous, step, index }</code>.   Assigning <code>active</code> does not fire these callbacks. The component does not own panels or routes.</p>
+<ul><li>Static mode has an <code>&lt;ol&gt;</code> with headings and decorative number/icon/dot markers. No navigation controls, current-step announcement or click handlers are added.</li><li>Interactive mode has real buttons, one <code>aria-current="step"</code> item, state text and a polite announcement of the active title and position. It remains an ordered list, never a tablist.</li><li><code>active</code> is an item ID. By default the first enabled item marked <code>current</code> is selected, or the first enabled item. One item is current even if input data marks several. Invalid/disabled IDs fall back by the same rule. Static mode exposes <code>active === null</code>.</li><li><code>status</code> is <code>upcoming</code>, <code>current</code>, <code>done</code>, or <code>error</code>. <code>active</code> determines the current item; completion/error are supplied by the app. Clicking does not mark anything done or validate data.</li><li><code>linear: true</code> allows completed steps and the first incomplete step, but blocks future steps. Disabled steps are not actionable. <code>clickable: false</code> makes interactive state read-only; <code>disabled</code> disables all navigation. Programmatic <code>active = id</code> can select any enabled item: the app owns validation and can restore a saved task.</li><li><code>select(id)</code> returns true only when a permitted user selection changes the current item. It fires <code>onChange(id, { previous, step, index })</code> and bubbling <code>step-change</code> with <code>{ id, previous, step, index }</code>. Assigning <code>active</code> does not fire these callbacks. The component does not own panels or routes.</li></ul>
 <h2 id="layout-and-content">Layout and content</h2>
 <p><code>orientation</code> is vertical by default. Horizontal becomes vertical when <strong>its container</strong> is under 600px. <code>marker</code> is <code>number</code>, <code>icon</code> (number fallback), or <code>dot</code>; <code>start</code> continues the numbering. <code>variant</code> is <code>soft</code>, <code>filled</code>, or <code>outlined</code>, independently of semantic <code>tone</code>. <code>size</code> is <code>sm</code>/<code>md</code>, <code>connector</code> hides/shows joining lines, and <code>headingLevel</code> controls the item headings.</p>
 <p><code>content</code> accepts text, nodes, components or arrays. Strings stay text. Rows and existing icons are reused by ID; assigning <code>items</code> again keeps surviving content nodes, including an editor's draft. Removed/replaced content and icons are destroyed. The component owns the content you give it.</p>

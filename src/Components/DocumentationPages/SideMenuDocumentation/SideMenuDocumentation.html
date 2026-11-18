@@ -1,11 +1,11 @@
 <div class="documentation-content sidemenudocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="sidemenu">
-     <span class="doc-title-text">SideMenu</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="sidemenu">
+    <span class="doc-title-text">SideMenu</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>SideMenu</code> is the menu of an app's sidebar or drawer. Its items go to a page, run an action, or open a submenu, and a submenu's items can open more submenus, as deep as the app needs.</p>
 <p>It shows the levels in one of two ways, with the same items:</p>
@@ -32,9 +32,7 @@
 <h3 id="focus-and-screen-readers">Focus and screen readers</h3>
 <ul><li>When a level slides in, the focus goes to its first item. When it slides out, the focus goes back to the item that opened it, so people never lose their place.</li><li>Each new level is announced, for example "Products, 4 items".</li><li>Tree branches use <code>aria-expanded</code>. The menu is a <code>&lt;nav&gt;</code> with a name (<code>label</code>, or <code>title</code>).</li></ul>
 <h2 id="looks">Looks</h2>
-<ul><li><code>title</code>: the name of the first level, shown above it in drill mode. Deeper levels show the back button instead.</li><li><code>variant</code>: how the current page is marked:</li></ul>
-<p>- <code>'soft'</code> (default): a tint and the accent colour;   - <code>'filled'</code>: the accent colour as the background;   - <code>'ghost'</code>: a bar at the start and the accent colour, for busy sidebars.</p>
-<ul><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>. Use <code>'lg'</code> for touch-first drawers.</li><li><code>multiple: false</code> (tree) keeps one submenu open per level.</li><li>The CSS variables <code>--slice-side-menu-accent</code>, <code>--slice-side-menu-row-height</code>, <code>--slice-side-menu-indent</code> and <code>--slice-side-menu-radius</code> adjust it further.</li></ul>
+<ul><li><code>title</code>: the name of the first level, shown above it in drill mode. Deeper levels show the back button instead.</li><li><code>variant</code>: how the current page is marked:<ul><li><code>'soft'</code> (default): a tint and the accent colour;</li><li><code>'filled'</code>: the accent colour as the background;</li><li><code>'ghost'</code>: a bar at the start and the accent colour, for busy sidebars.</li></ul></li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>. Use <code>'lg'</code> for touch-first drawers.</li><li><code>multiple: false</code> (tree) keeps one submenu open per level.</li><li>The CSS variables <code>--slice-side-menu-accent</code>, <code>--slice-side-menu-row-height</code>, <code>--slice-side-menu-indent</code> and <code>--slice-side-menu-radius</code> adjust it further.</li></ul>
 <h2 id="language">Language</h2>
 <p><code>texts</code> replaces every word:</p>
 <ul><li><code>label</code>;</li><li><code>back</code> (<code>{label}</code>) and <code>overview</code> (<code>{label}</code>);</li><li><code>level</code> (<code>{label}</code>, <code>{count}</code>);</li><li><code>loading</code>, <code>error</code>, <code>retry</code>, <code>empty</code>;</li><li><code>expand</code> (<code>{label}</code>).</li></ul>
@@ -46,11 +44,11 @@
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep each level short (about 7 items) and give it a clear name: in drill mode the name is all people see of where they are. Use <code>type: 'group'</code> headings to split a long level instead of adding another one.</div>
-<div class="callout callout-tip">Give a submenu a <code>path</code> when its section has a page of its own. People can then reach the page in one click ("All Settings") and still browse inside the section.</div>
-<div class="callout callout-tip">Load big submenus on demand with a function in <code>items</code>. The first level shows at once, and each department or project loads only when someone opens it.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not put the same item in two places. The current page is marked once, and people stop trusting a menu where the same page lives in two sections.</div>
-<div class="callout callout-warning">In drill mode, an action that stays in the menu (such as choosing a language) should go back a level, or show a result, so people see that it worked. <code>onClick</code> receives the menu, so it can call <code>menu.back()</code>.</div>
-<div class="callout callout-warning">Inside a drawer, close the drawer in <code>onSelect</code> after a link is chosen, or people are left looking at the menu over the new page.</div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 </div>

@@ -32,6 +32,51 @@ export default class TimelineDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-7"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Pick one date format for the whole timeline. Mixing \"3 hours ago\" and \"Mar 2, 2026\" makes readers compare two scales.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>dateLabel</code> for ranges and fuzzy dates (\"2019 — 2022\", \"Spring 2025\"); keep <code>date</code> too when you sort or group, so the order stays right.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>upcoming</code> is not \"disabled\". It says something has not happened yet; do not use it to hide events.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"items\",\"type\":\"array\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"layout\",\"type\":\"string\",\"required\":false,\"default\":\"stacked\",\"allowedValues\":[\"stacked\",\"split\",\"alternate\"]},{\"path\":\"dateFormat\",\"type\":\"string\",\"required\":false,\"default\":\"date\",\"allowedValues\":[\"date\",\"datetime\",\"time\",\"month\",\"year\",\"relative\",\"none\"]},{\"path\":\"groupBy\",\"type\":\"string\",\"required\":false,\"default\":\"none\",\"allowedValues\":[\"none\",\"year\",\"month\",\"day\"]},{\"path\":\"sort\",\"type\":\"string\",\"required\":false,\"default\":\"none\",\"allowedValues\":[\"none\",\"newest\",\"oldest\"]},{\"path\":\"marker\",\"type\":\"string\",\"required\":false,\"default\":\"dot\",\"allowedValues\":[\"dot\",\"icon\"]},{\"path\":\"variant\",\"type\":\"string\",\"required\":false,\"default\":\"soft\",\"allowedValues\":[\"soft\",\"filled\",\"outlined\"]},{\"path\":\"tone\",\"type\":\"string\",\"required\":false,\"default\":\"accent\",\"allowedValues\":[\"neutral\",\"accent\",\"info\",\"success\",\"warning\",\"danger\"]},{\"path\":\"size\",\"type\":\"string\",\"required\":false,\"default\":\"md\",\"allowedValues\":[\"sm\",\"md\"]},{\"path\":\"headingLevel\",\"type\":\"number\",\"required\":false,\"default\":\"3\",\"allowedValues\":[]},{\"path\":\"locale\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"ariaLabel\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]}]}") {
                try {
@@ -63,7 +108,9 @@ export default class TimelineDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

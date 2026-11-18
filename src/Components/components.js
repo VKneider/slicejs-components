@@ -22,6 +22,7 @@ const components = {
   "CheckboxDocumentation": "DocumentationPages",
   "Chip": "Visual",
   "ChipDocumentation": "DocumentationPages",
+  "CodeEditorDemo": "DemoComponents",
   "CodeVisualizer": "Visual",
   "CodeVisualizerDocumentation": "DocumentationPages",
   "ColorPicker": "Visual",

@@ -1,19 +1,23 @@
 <div class="documentation-content markdownparserrulesdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="markdown-parser-rules">
-     <span class="doc-title-text">Markdown Parser Rules</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="markdown-parser-rules">
+    <span class="doc-title-text">Markdown Parser Rules</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="scope">Scope</h2>
 <p>Documentation markdown files live in <code>src/markdown/</code> and are converted into Slice.js components in <code>src/Components/DocumentationPages/</code>.</p>
 <h2 id="required-front-matter">Required Front Matter</h2>
 <p>Every markdown file must include:</p>
 <div class="table-block" data-block-id="doc-block-1"></div>
 <p>If any required field is missing, <code>npm run docs:lint-md</code> fails.</p>
+<p><code>status</code> renders a <code>Badge</code> next to the page title.</p>
+<h2 id="shared-markdown-contract">Shared markdown contract</h2>
+<p>This parser follows the same contract as <code>slice.js_docs</code> (the reference implementation): <a href="https://github.com/VKneider/slicejs_docs/blob/master/parser/MARKDOWN-CONTRACT.md" target="_blank" rel="noopener noreferrer"><code>MARKDOWN-CONTRACT.md</code></a>. The same fixtures are covered by <code>parser/tests/markdown-contract.test.js</code>.</p>
 <h2 id="supported-blocks">Supported Blocks</h2>
-<ul><li>Headings, paragraphs, lists</li><li>Fenced code blocks -&gt; <code>CodeVisualizer</code></li><li>Tables -&gt; <code>Table</code></li><li><code>:::tip</code> / <code>:::warning</code></li><li><code>:::details title="..."</code></li><li><code>:::component name="Button"</code> with JSON props body</li><li><code>:::script ...</code> for interactive prop scenarios</li></ul>
+<ul><li>Headings, paragraphs, bold/italic, inline code, links, images</li><li>Unordered and ordered lists, nested and wrapped</li><li>Blockquotes and horizontal rules</li><li>Fenced code blocks -&gt; <code>CodeVisualizer</code></li><li>Tables -&gt; <code>Table</code> (links and inline code in cells)</li><li><code>:::tip</code> / <code>:::warning</code> / <code>:::note</code> / <code>:::info</code> / <code>:::success</code> / <code>:::danger</code> -&gt; <code>Callout</code></li><li><code>:::callout tone="..." variant="..." title="..."</code> -&gt; <code>Callout</code></li><li><code>:::compare left="Do" right="Don't"</code> -&gt; two <code>Callout</code>s in a <code>Grid</code></li><li><code>:::related</code> with a list of links -&gt; <code>Grid</code> of <code>Card</code>s</li><li><code>:::details title="..."</code> -&gt; <code>Details</code>, body parsed as markdown</li><li><code>:::component name="Button"</code> with JSON props body</li><li><code>:::script ...</code> for interactive prop scenarios</li></ul>
+<p><strong>Callout budget:</strong> 1–3 per page. Use <code>:::warning</code> only for a real risk; use <code>:::compare</code> for a contrast instead of two separate tips.</p>
 <h2 id="script-scenario-contract">Script Scenario Contract</h2>
 <p>Use script blocks to validate component props through runnable scenarios:</p>
 <div class="code-block" data-block-id="doc-block-2"></div>
@@ -22,10 +26,7 @@
 <ul><li>Generated components are added to <code>src/Components/components.js</code> with category <code>DocumentationPages</code>.</li><li><code>CopyMarkdownMenu</code> is synced to <code>src/Components/AppComponents/CopyMarkdownMenu/</code>.</li><li>Global docs style is synced to <code>src/Styles/DocumentationBase.css</code>.</li></ul>
 <h2 id="seo-artifacts">SEO Artifacts</h2>
 <p><code>docs:generate</code> also writes two files from the same front matter, so they can never drift:</p>
-<ul><li><code>src/public/sitemap.xml</code> — one <code>&lt;url&gt;</code> per <strong>real</strong> page (the generated <code>docRoutes</code> plus <code>/</code>,</li></ul>
-<p><code>/docs</code> and <code>/theme-creator</code>), never a section index that has no page. <code>&lt;lastmod&gt;</code> is the   markdown file's last <strong>commit</strong> date (not its mtime), so a fresh clone does not rewrite it.</p>
-<ul><li><code>src/public/seo.json</code> — per-route <code>title</code>, <code>description</code>, <code>robots</code>, <code>sitemap</code> and <code>jsonLd</code>.</li></ul>
-<p>Internal routes (<code>/__test</code>, <code>/playground</code>, <code>/game</code>, <code>/404</code>) carry <code>robots: false</code> so they get   served without being indexed, and the same file is what the framework's <code>seo</code> option reads.</p>
+<ul><li><code>src/public/sitemap.xml</code> — one <code>&lt;url&gt;</code> per <strong>real</strong> page (the generated <code>docRoutes</code> plus <code>/</code>, <code>/docs</code> and <code>/theme-creator</code>), never a section index that has no page. <code>&lt;lastmod&gt;</code> is the markdown file's last <strong>commit</strong> date (not its mtime), so a fresh clone does not rewrite it.</li><li><code>src/public/seo.json</code> — per-route <code>title</code>, <code>description</code>, <code>robots</code>, <code>sitemap</code> and <code>jsonLd</code>. Internal routes (<code>/__test</code>, <code>/playground</code>, <code>/game</code>, <code>/404</code>) carry <code>robots: false</code> so they get served without being indexed, and the same file is what the framework's <code>seo</code> option reads.</li></ul>
 <p>Both are generated: edit <code>parser/lib/seo.js</code> or the front matter, never the XML/JSON by hand. <code>parser/tests/seo.test.js</code> fails when the committed sitemap does not match the generated routes.</p>
 <h2 id="commands">Commands</h2>
 <div class="code-block" data-block-id="doc-block-3"></div>

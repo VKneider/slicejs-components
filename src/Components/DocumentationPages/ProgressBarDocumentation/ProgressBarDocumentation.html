@@ -1,11 +1,11 @@
 <div class="documentation-content progressbardocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="progressbar">
-     <span class="doc-title-text">ProgressBar</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="progressbar">
+    <span class="doc-title-text">ProgressBar</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>ProgressBar</code> shows how much work is complete when a total is known. Give it a meaningful <code>label</code>, a <code>value</code> and a <code>max</code>. For an operation whose total is temporarily unknown, use <code>indeterminate</code>.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -14,16 +14,7 @@
 <h3 id="when-not-to-use-it">When not to use it</h3>
 <p>Use <code>Loading</code> for a general busy indicator, <code>SkeletonService</code> for content whose shape is known, and <code>Stepper</code> for the named stages of a process. A progress bar is not a chart or a circular gauge.</p>
 <h2 id="behavior">Behavior</h2>
-<ul><li>Values are finite numbers clamped to <code>0…max</code>. A nonpositive/nonfinite maximum falls back to 100.</li></ul>
-<p>The assigned amount is retained, so increasing <code>max</code> can reveal an amount that was previously clamped.</p>
-<ul><li><code>label</code> names the bar. An omitted label falls back to translated “Progress”; use a specific label</li></ul>
-<p>in real apps. <code>showLabel: false</code> hides it visually while the bar retains its accessible name.</p>
-<ul><li><code>showValue</code> exposes the formatted value beside the track. The default is a localized percentage;</li></ul>
-<p><code>format(value, max)</code> customizes both that value and <code>aria-valuetext</code>. <code>ariaValueText</code> overrides   the spoken value without changing the visible one. Explicit <code>locale</code> wins over the app locale.</p>
-<ul><li><code>tone</code> is semantic; <code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) controls track height. Props update without rebuilding.</li><li><code>indeterminate</code> omits <code>aria-valuenow</code>/<code>aria-valuetext</code>: it never claims a fake percentage. With</li></ul>
-<p>reduced motion it stays still; otherwise its fill moves. Returning to determinate restores the value.</p>
-<ul><li>The bar has <code>role="progressbar"</code> and min/max/current values. It is not a live region by default;</li></ul>
-<p>announce meaningful milestones separately rather than every percentage tick.</p>
+<ul><li>Values are finite numbers clamped to <code>0…max</code>. A nonpositive/nonfinite maximum falls back to 100. The assigned amount is retained, so increasing <code>max</code> can reveal an amount that was previously clamped.</li><li><code>label</code> names the bar. An omitted label falls back to translated “Progress”; use a specific label in real apps. <code>showLabel: false</code> hides it visually while the bar retains its accessible name.</li><li><code>showValue</code> exposes the formatted value beside the track. The default is a localized percentage; <code>format(value, max)</code> customizes both that value and <code>aria-valuetext</code>. <code>ariaValueText</code> overrides the spoken value without changing the visible one. Explicit <code>locale</code> wins over the app locale.</li><li><code>tone</code> is semantic; <code>size</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) controls track height. Props update without rebuilding.</li><li><code>indeterminate</code> omits <code>aria-valuenow</code>/<code>aria-valuetext</code>: it never claims a fake percentage. With reduced motion it stays still; otherwise its fill moves. Returning to determinate restores the value.</li><li>The bar has <code>role="progressbar"</code> and min/max/current values. It is not a live region by default; announce meaningful milestones separately rather than every percentage tick.</li></ul>
 <h2 id="examples">Examples</h2>
 <div class="script-block" data-block-id="doc-block-2"></div>
 <div class="script-block" data-block-id="doc-block-3"></div>

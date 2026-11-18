@@ -17,6 +17,36 @@ export default class MiniInspectorDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-5"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Give your component's props clear setters that do the DOM work — then the component is instantly inspectable, and editing a prop here behaves exactly like a prop change anywhere in your app.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>This demo only edits <code>string</code>, <code>number</code>, and <code>boolean</code> props. A prop only updates the UI if its setter performs the DOM change — if editing does nothing, the bug is in the setter, not the inspector.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"target\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"title\",\"type\":\"string\",\"required\":false,\"default\":\"Inspector\",\"allowedValues\":[]}]}") {
                try {
@@ -38,7 +68,9 @@ export default class MiniInspectorDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

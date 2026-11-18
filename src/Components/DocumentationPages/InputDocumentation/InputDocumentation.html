@@ -1,11 +1,11 @@
 <div class="documentation-content inputdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="input">
-     <span class="doc-title-text">Input</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="input">
+    <span class="doc-title-text">Input</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Input</code> is a single-line text field. Underneath it is a real <code>&lt;input&gt;</code> labelled by a real <code>&lt;label&gt;</code>, so browser autofill, password managers, screen readers and native <code>&lt;form&gt;</code>s all work with it as they would with a plain field. It shares one look with <span data-inline-link="0"></span> and <span data-inline-link="1"></span>: the same heights, border, focus ring, variants and help line. Its floating label and error shake are the same as Textarea's.</p>
 <h2 id="core-behavior">Core Behavior</h2>
@@ -33,14 +33,14 @@
 <div class="script-block" data-block-id="doc-block-6"></div>
 <div class="script-block" data-block-id="doc-block-7"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Give every field a <code>label</code>. A placeholder disappears as soon as someone types, so it cannot be the only thing that says what the field is for. Use <code>placeholder</code> for an example of the format ("you@company.com").</div>
-<div class="callout callout-tip">Use the right <code>type</code> and <code>autocomplete</code>. <code>type: 'email'</code> brings the email keyboard on phones and the format check for free; <code>autocomplete: 'current-password'</code> lets password managers fill it.</div>
-<div class="callout callout-tip">For a server check (a username, a coupon), set <code>error</code> from your own code and clear it on the next change, as in the availability example. Keep the format rules in <code>validator</code> so they answer instantly.</div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Inputs no longer carry a 20px margin. Spacing belongs to whatever holds them (a Form, a grid, a flex column with a <code>gap</code>). To get the old spacing back on one field, set <code>--control-margin-block: 20px</code> on it.</div>
-<div class="callout callout-warning">Inside a <span data-inline-link="3"></span>, the Form owns the label and the error: it sets <code>labelPlacement: 'above'</code>, turns off the field's own validation display and prints the message itself. Give the label to the schema item (<code>label: 'Email'</code>), not to the Input's <code>props</code>, or it shows twice.</div>
-<div class="callout callout-warning"><code>maxlength</code> stops typing at the limit. If you would rather let people type past it and show the error, use a <code>validator</code> that checks the length, with <code>showCount</code> to show how far over they are.</div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.input.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>clear</code>, <code>togglePassword</code>.</p>
-<div class="component-block" data-block-id="doc-block-8"></div>
+<div class="component-block" data-block-id="doc-block-14"></div>
 </div>

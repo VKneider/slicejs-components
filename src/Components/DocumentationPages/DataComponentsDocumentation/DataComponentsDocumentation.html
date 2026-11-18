@@ -1,11 +1,11 @@
 <div class="documentation-content datacomponentsdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="writing-a-component-that-loads-data">
-     <span class="doc-title-text">Writing a component that loads data</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="writing-a-component-that-loads-data">
+    <span class="doc-title-text">Writing a component that loads data</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>DataList, Table and DescriptionList load, show and save data the same way, with the same names. This page is that standard, for anyone writing a component (in the library or in an app) that does the same: a profile card, a dashboard tile, an order summary.</p>
 <p>Follow it and your component behaves like the library's: it never keeps the page behind the loader, it always shows what is happening, and an app developer already knows its API. The rules are also in <code>COMPONENT_API_STANDARDS.md</code> §13, the checklist for library contributions.</p>
@@ -35,13 +35,8 @@
 <p>Read these when your component grows:</p>
 <ul><li><code>Visual/DescriptionList/DescriptionList.js</code>: one record from <code>item</code>, <code>context</code> or <code>load</code>; skeleton, error with Try again; fields edited with <code>commit</code> first.</li><li><code>Visual/DataList/DataList.js</code>: many records; queries (page, search, filters, sort) sent to <code>load</code>; optimistic <code>addItem</code>, <code>updateItem</code>, <code>removeItem</code> with Undo.</li><li><code>Visual/Table/Table.js</code>: the same for rows, with cells edited in place.</li><li><code>shared/README.md</code>: the helpers they share (<code>data/paths.js</code>, <code>data/collection.js</code>, <code>editing/inlineControl.js</code>).</li></ul>
 <h2 id="checklist">Checklist</h2>
-<div class="callout callout-tip">- <code>init()</code> / <code>update()</code> do not await the network; the first paint is the skeleton.
-- <code>item(s)</code> / <code>context</code> + <code>contextPath</code> / <code>load</code>, <code>reload()</code>, <code>onError(error, { type })</code>.
-- States: skeleton, busy, empty, error with Try again, saving.
-- <code>AbortController</code>: a new request and <code>beforeDestroy()</code> abort the previous one; late answers are ignored.
-- Changes with <code>{ commit }</code>: lists optimistic with rollback, fields commit-first; nothing mutated.
-- Every component built with <code>slice.build</code> after <code>init()</code> is destroyed in <code>beforeDestroy()</code>.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">A <code>_fetch()</code> that does not check <code>signal.aborted</code> after its <code>await</code> lets a slow, old answer overwrite a fast, new one: the user searches "ana", then "anabel", and sees the results for "ana".</div>
-<div class="callout callout-warning">Do not name internal state after a prop (<code>this._items</code> for loaded data when <code>items</code> is a prop): Slice resets <code>_&lt;prop&gt;</code> when the component is built, and the data disappears. Use <code>_loaded</code>, <code>_status</code>.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 </div>

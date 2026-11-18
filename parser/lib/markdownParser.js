@@ -57,11 +57,16 @@ const escapeHtmlAttribute = (text) => {
     .replace(/'/g, '&#39;');
 };
 
-const isSafeMarkdownHref = (href) => /^(?:https?:\/\/|\/|#|mailto:)/i.test(href);
-const isInternalMarkdownHref = (href) => /^\/(?!\/)/.test(href);
+const isSafeMarkdownHref = (href) => /^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href);
+const isSafeImageSrc = (src) => /^(?:https?:\/\/|\/)/i.test(src);
+const isInternalMarkdownHref = (href) => href.startsWith('/') && !href.startsWith('//');
+
+const CODE_TOKEN_PREFIX = '\u0000SLICE_CODE_';
+const CODE_TOKEN_SUFFIX = '_TOKEN\u0000';
 
 // Internal links become tokens, and each token becomes a Link in the page.
-// Shared by the text and by table cells (which are formatted in the page).
+// External links are plain anchors. Code spans are tokenized first so a
+// `[not a link](x)` inside inline code is never turned into an anchor.
 const tokenizeInternalLinks = (text, inlineLinks) => text.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
   if (!isInternalMarkdownHref(href)) return match;
   const token = `SLICE_INLINE_LINK_${inlineLinks.length}_TOKEN`;
@@ -71,17 +76,38 @@ const tokenizeInternalLinks = (text, inlineLinks) => text.replace(/\[([^\]]+)\]\
 
 const inlineMarkdown = (text, inlineLinks = []) => {
   const tokenized = tokenizeInternalLinks(text, inlineLinks);
+  const codeSpans = [];
 
-  let output = escapeHtml(tokenized);
-  output = output.replace(/`([^`]+)`/g, '<code>$1</code>');
+  let output = escapeHtml(tokenized).replace(/`([^`]+)`/g, (_, code) => {
+    const token = `${CODE_TOKEN_PREFIX}${codeSpans.length}${CODE_TOKEN_SUFFIX}`;
+    codeSpans.push(`<code>${code}</code>`);
+    return token;
+  });
+
   output = output.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  output = output.replace(/(^|[^\w*])\*([^*\n]+)\*(?![\w*])/g, '$1<em>$2</em>');
+
+  output = output.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, src) => {
+    if (!isSafeImageSrc(src)) return alt;
+    return `<img src="${escapeHtmlAttribute(src)}" alt="${escapeHtmlAttribute(alt)}" loading="lazy" decoding="async">`;
+  });
+
   output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
     if (!isSafeMarkdownHref(href)) return label;
-    return `<a href="${escapeHtmlAttribute(href)}">${label}</a>`;
+    const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+    const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+    return `<a href="${escapeHtmlAttribute(href)}"${attrs}>${label}</a>`;
   });
+
+  output = output.replace(
+    new RegExp(`${CODE_TOKEN_PREFIX.replace(/\u0000/g, '\\u0000')}(\\d+)${CODE_TOKEN_SUFFIX.replace(/\u0000/g, '\\u0000')}`, 'g'),
+    (_, index) => codeSpans[Number(index)]
+  );
+
   output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, (_, index) => {
     return `<span data-inline-link="${index}"></span>`;
   });
+
   return output;
 };
 
@@ -93,6 +119,73 @@ const parseAttributes = (raw) => {
     attrs[match[1]] = match[2];
   }
   return attrs;
+};
+
+const PARAGRAPH_BREAK = /^\s*$/;
+const HORIZONTAL_RULE = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
+const BLOCKQUOTE = /^\s*>\s?/;
+
+// Renders the body of a directive (callout, details) as rich HTML:
+// paragraphs, unordered lists and ordered lists.
+const renderRich = (text, inlineLinks = []) => {
+  const lines = text.split('\n');
+  const parts = [];
+  let paragraph = [];
+  let list = null;
+  let listTag = '';
+
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    parts.push(`<p>${inlineMarkdown(paragraph.join(' '), inlineLinks)}</p>`);
+    paragraph = [];
+  };
+
+  const flushList = () => {
+    if (!list) return;
+    parts.push(`<${listTag}>${list.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('')}</${listTag}>`);
+    list = null;
+    listTag = '';
+  };
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+
+    const unordered = line.match(/^[-*]\s+(.*)$/);
+    if (unordered) {
+      flushParagraph();
+      if (listTag !== 'ul') {
+        flushList();
+        listTag = 'ul';
+        list = [];
+      }
+      list.push(unordered[1]);
+      continue;
+    }
+
+    const ordered = line.match(/^\d+\.\s+(.*)$/);
+    if (ordered) {
+      flushParagraph();
+      if (listTag !== 'ol') {
+        flushList();
+        listTag = 'ol';
+        list = [];
+      }
+      list.push(ordered[1]);
+      continue;
+    }
+
+    flushList();
+    paragraph.push(line);
+  }
+
+  flushParagraph();
+  flushList();
+  return parts.join('');
 };
 
 const parseBlocks = (body) => {
@@ -152,17 +245,17 @@ const parseBlocks = (body) => {
     }
 
    // A table row must START with "|". Matching includes("|") instead turned
-   // any list item containing a union into a table, because the NEXT list
-   // item starts with "-" and so matched the delimiter-row test. An API
-   // list like
-   //
-   //     - `variant` (`neutral` | `accent` | `success`, default `neutral`)
-   //     - `label` (string) -- the text
-   //
-   // became a one-row table, and every item after it vanished behind a
-   // "No data". Every real table row in src/markdown starts with "|"
-   // (173 of 173), so requiring it costs nothing and fixes all four of the
-   // affected pages at once.
+    // any list item containing a union into a table, because the NEXT list
+    // item starts with "-" and so matched the delimiter-row test. An API
+    // list like
+    //
+    //     - `variant` (`neutral` | `accent` | `success`, default `neutral`)
+    //     - `label` (string) -- the text
+    //
+    // became a one-row table, and every item after it vanished behind a
+    // "No data". Every real table row in src/markdown starts with "|"
+    // (173 of 173), so requiring it costs nothing and fixes all four of the
+    // affected pages at once.
     if (/^\s*\|/.test(line) && i + 1 < lines.length && /^\s*\|?\s*-/.test(lines[i + 1])) {
       const tableLines = [];
       while (i < lines.length && /^\s*\|/.test(lines[i])) {
@@ -181,23 +274,35 @@ const parseBlocks = (body) => {
       continue;
     }
 
-    if (line.startsWith('- ') || line.startsWith('* ')) {
-      const items = [];
-      while (i < lines.length && (lines[i].startsWith('- ') || lines[i].startsWith('* '))) {
-        items.push(lines[i].slice(2).trim());
-        i++;
-      }
-      blocks.push({ type: 'ul', items });
+    if (line.startsWith('- ') || line.startsWith('* ') || /^\d+\.\s/.test(line)) {
+      const { block, next } = parseList(lines, i);
+      blocks.push(block);
+      i = next;
       continue;
     }
 
-    if (/^\d+\.\s/.test(line)) {
-      const items = [];
-      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
-        items.push(lines[i].replace(/^\d+\.\s/, '').trim());
+    if (BLOCKQUOTE.test(line)) {
+      const paragraphs = [];
+      let current = [];
+      while (i < lines.length && BLOCKQUOTE.test(lines[i])) {
+        const quoted = lines[i].replace(BLOCKQUOTE, '');
+        if (PARAGRAPH_BREAK.test(quoted)) {
+          if (current.length) paragraphs.push(current.join(' ').trim());
+          current = [];
+        } else {
+          current.push(quoted.trim());
+        }
         i++;
       }
-      blocks.push({ type: 'ol', items });
+      if (current.length) paragraphs.push(current.join(' ').trim());
+      const clean = paragraphs.filter(Boolean);
+      if (clean.length) blocks.push({ type: 'blockquote', paragraphs: clean });
+      continue;
+    }
+
+    if (HORIZONTAL_RULE.test(line)) {
+      blocks.push({ type: 'hr' });
+      i++;
       continue;
     }
 
@@ -215,7 +320,10 @@ const parseBlocks = (body) => {
       !lines[i].startsWith('#') &&
       !lines[i].startsWith('- ') &&
       !lines[i].startsWith('* ') &&
-      !/^\d+\.\s/.test(lines[i])
+      !/^\d+\.\s/.test(lines[i]) &&
+      !BLOCKQUOTE.test(lines[i]) &&
+      !HORIZONTAL_RULE.test(lines[i]) &&
+      !/^\s*\|/.test(lines[i])
     ) {
       paragraphLines.push(lines[i]);
       i++;
@@ -226,7 +334,79 @@ const parseBlocks = (body) => {
   return blocks;
 };
 
-const renderBlocks = (blocks) => {
+const LIST_ITEM = /^(\s*)([-*]|\d+\.)\s+(.*)$/;
+
+const parseList = (lines, start) => {
+  const first = lines[start].match(LIST_ITEM);
+  const indent = first[1].length;
+  const ordered = /\d/.test(first[2]);
+  const items = [];
+  let i = start;
+
+  while (i < lines.length) {
+    const match = lines[i].match(LIST_ITEM);
+
+    if (!match) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      // A wrapped list item belongs to the item above it.
+      if (!trimmed) break;
+      if (/^\s*(?:#|```|:::|>|\|)/.test(line) || HORIZONTAL_RULE.test(line)) break;
+      if (!items.length) break;
+
+      items[items.length - 1].text = `${items[items.length - 1].text} ${trimmed}`.trim();
+      i++;
+      continue;
+    }
+
+    const depth = match[1].length;
+    if (depth < indent) break;
+    if (depth > indent) {
+      const { block, next } = parseList(lines, i);
+      if (!items.length) items.push({ text: '', children: [] });
+      items[items.length - 1].children.push(block);
+      i = next;
+      continue;
+    }
+    if (/\d/.test(match[2]) !== ordered) break;
+    items.push({ text: match[3].trim(), children: [] });
+    i++;
+  }
+
+  return { block: { type: ordered ? 'ol' : 'ul', items }, next: i };
+};
+
+const renderList = (block, inlineLinks) => {
+  const tag = block.type === 'ol' ? 'ol' : 'ul';
+  const items = block.items.map((item) => {
+    if (typeof item === 'string') return `<li>${inlineMarkdown(item, inlineLinks)}</li>`;
+    const nested = (item.children || []).map((child) => renderList(child, inlineLinks)).join('');
+    return `<li>${inlineMarkdown(item.text, inlineLinks)}${nested}</li>`;
+  }).join('');
+  return `<${tag}>${items}</${tag}>`;
+};
+
+const plainInline = (text) => {
+  return text
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+};
+
+const CALLOUTS = {
+  tip: { tone: 'success', title: 'Tip', variant: 'soft' },
+  warning: { tone: 'warning', title: 'Warning', variant: 'soft' },
+  note: { tone: 'neutral', title: 'Note', variant: 'ghost' },
+  info: { tone: 'info', title: 'Note', variant: 'soft' },
+  success: { tone: 'success', title: 'Success', variant: 'soft' },
+  danger: { tone: 'danger', title: 'Warning', variant: 'soft' }
+};
+
+const renderBlocks = (blocks, options = {}) => {
+  const frontMatter = options.frontMatter;
+  const status = Array.isArray(frontMatter?.status) ? frontMatter.status[0] : frontMatter?.status;
   const htmlParts = [];
   const jsBlocks = [];
   const inlineLinks = [];
@@ -248,34 +428,44 @@ const renderBlocks = (blocks) => {
       }
       usedIds.add(unique);
       if (!hasTitle && block.level === 1) {
-     htmlParts.push(`
- <div class="doc-title-bar">
-   <h1 id="${unique}">
-     <span class="doc-title-text">${inlineMarkdown(block.text, inlineLinks)}</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>`);
+        const statusId = status ? nextId() : '';
+        htmlParts.push(`
+<div class="doc-title-bar">
+  <h1 id="${unique}">
+    <span class="doc-title-text">${inlineMarkdown(block.text, inlineLinks)}</span>${status ? `\n    <span class="doc-status" data-block-id="${statusId}"></span>` : ''}
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>`);
+        if (status) {
+          jsBlocks.push({ type: 'status', id: statusId, status: String(status) });
+        }
         hasTitle = true;
       } else {
-         htmlParts.push(`<h${block.level} id="${unique}">${inlineMarkdown(block.text, inlineLinks)}</h${block.level}>`);
+        htmlParts.push(`<h${block.level} id="${unique}">${inlineMarkdown(block.text, inlineLinks)}</h${block.level}>`);
       }
       continue;
     }
 
     if (block.type === 'paragraph') {
-       htmlParts.push(`<p>${inlineMarkdown(block.text, inlineLinks)}</p>`);
+      htmlParts.push(`<p>${inlineMarkdown(block.text, inlineLinks)}</p>`);
       continue;
     }
 
-    if (block.type === 'ul') {
-       const items = block.items.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('');
-      htmlParts.push(`<ul>${items}</ul>`);
+    if (block.type === 'ul' || block.type === 'ol') {
+      htmlParts.push(renderList(block, inlineLinks));
       continue;
     }
 
-    if (block.type === 'ol') {
-       const items = block.items.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('');
-      htmlParts.push(`<ol>${items}</ol>`);
+    if (block.type === 'blockquote') {
+      const paragraphs = block.paragraphs
+        .map((text) => `<p>${inlineMarkdown(text, inlineLinks)}</p>`)
+        .join('');
+      htmlParts.push(`<blockquote>${paragraphs}</blockquote>`);
+      continue;
+    }
+
+    if (block.type === 'hr') {
+      htmlParts.push('<hr>');
       continue;
     }
 
@@ -299,12 +489,84 @@ const renderBlocks = (blocks) => {
       if (name === 'details') {
         const id = nextId();
         htmlParts.push(`<div class="details-block" data-block-id="${id}"></div>`);
-        jsBlocks.push({ type: 'details', id, title: block.attrs.title || '', content: block.content });
+        jsBlocks.push({
+          type: 'details',
+          id,
+          title: block.attrs.title || '',
+          html: renderRich(block.content, inlineLinks)
+        });
         continue;
       }
 
-      if (name === 'tip' || name === 'warning') {
-         htmlParts.push(`<div class="callout callout-${name}">${inlineMarkdown(block.content, inlineLinks)}</div>`);
+      const preset = CALLOUTS[name];
+      if (preset || name === 'callout') {
+        const id = nextId();
+        htmlParts.push(`<div class="callout-block" data-block-id="${id}"></div>`);
+        jsBlocks.push({
+          type: 'callout',
+          id,
+          tone: block.attrs.tone || preset?.tone || 'info',
+          variant: block.attrs.variant || preset?.variant || 'soft',
+          title: block.attrs.title || preset?.title || 'Note',
+          html: renderRich(block.content, inlineLinks)
+        });
+        continue;
+      }
+
+      if (name === 'compare') {
+        const id = nextId();
+        const parts = block.content.split(/\n\s*---\s*\n/);
+        htmlParts.push(`<div class="compare-block" data-block-id="${id}"></div>`);
+        jsBlocks.push({
+          type: 'compare',
+          id,
+          left: {
+            title: block.attrs.left || block.attrs.do || 'Do',
+            tone: block.attrs.leftTone || 'success',
+            html: renderRich(parts[0] || '', inlineLinks)
+          },
+          right: {
+            title: block.attrs.right || block.attrs.dont || "Don't",
+            tone: block.attrs.rightTone || 'danger',
+            html: renderRich(parts[1] || '', inlineLinks)
+          }
+        });
+        continue;
+      }
+
+      if (name === 'related') {
+        const items = block.content
+          .split('\n')
+          .map((line) => line.trim())
+          .filter((line) => line.startsWith('- '))
+          .map((line) => {
+            const raw = line.slice(2).trim();
+            const linked = raw.match(/^\[([^\]]+)\]\(([^)\s]+)\)\s*(?:[-—–]\s*(.*))?$/);
+            if (linked) {
+              return {
+                title: plainInline(linked[1]),
+                path: linked[2],
+                text: plainInline(linked[3] || '')
+              };
+            }
+            const parts = raw.split('|').map((part) => part.trim());
+            if (parts.length < 2) return null;
+            return {
+              title: plainInline(parts[0]),
+              path: parts[1],
+              text: plainInline(parts[2] || '')
+            };
+          })
+          .filter(Boolean);
+
+        if (!items.length) {
+          htmlParts.push(`<div class="doc-directive doc-directive-related">${renderRich(block.content, inlineLinks)}</div>`);
+          continue;
+        }
+
+        const id = nextId();
+        htmlParts.push(`<div class="related-block" data-block-id="${id}"></div>`);
+        jsBlocks.push({ type: 'related', id, items });
         continue;
       }
 
@@ -313,7 +575,7 @@ const renderBlocks = (blocks) => {
           .split('\n')
           .map((line) => line.replace(/^\d+\.\s/, '').trim())
           .filter(Boolean);
-         const list = items.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('');
+        const list = items.map((item) => `<li>${inlineMarkdown(item, inlineLinks)}</li>`).join('');
         htmlParts.push(`<ol class="steps">${list}</ol>`);
         continue;
       }
@@ -346,6 +608,8 @@ const renderBlocks = (blocks) => {
         htmlParts.push(block.content);
         continue;
       }
+
+      htmlParts.push(`<div class="doc-directive doc-directive-${name}">${renderRich(block.content, inlineLinks)}</div>`);
     }
   }
 
@@ -377,7 +641,7 @@ const parseMarkdownFile = (filePath, options = {}) => {
   }
 
   const blocks = parseBlocks(enrichedBody);
-  const { html, jsBlocks } = renderBlocks(blocks);
+  const { html, jsBlocks } = renderBlocks(blocks, { frontMatter: data });
   if (data) {
     data.markdownSource = content;
   }

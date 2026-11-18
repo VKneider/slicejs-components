@@ -1,11 +1,11 @@
 <div class="documentation-content realtimeservicedocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="realtimeservice">
-     <span class="doc-title-text">RealtimeService</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="realtimeservice">
+    <span class="doc-title-text">RealtimeService</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>RealtimeService</code> keeps a connection to the server open so the server can tell the app when something changes: a WebSocket, or Server-Sent Events (SSE).</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -44,10 +44,8 @@
 <div class="code-block" data-block-id="doc-block-11"></div>
 <p>To resume across visits too, keep <code>live.lastEventId</code> with <span data-inline-link="4"></span> and pass it back as the <code>lastEventId</code> prop.</p>
 <h2 id="best-practices">Best practices</h2>
-<div class="callout callout-tip">- One RealtimeService for the app (<code>singleton: true</code>), used from domain Services; components listen with <code>on()</code> and the listener goes with them.
-- Send <strong>what changed</strong> (<code>{ type, id }</code>) and let <code>invalidates()</code> or <code>setData()</code> decide what to ask again. The server does not need to know what each page shows.
-- Show the status somewhere discreet: people trust live data more when they can see it is live.</div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Messages sent while the app was disconnected are lost. That is why <code>invalidates()</code> asks again after every reconnect; with <code>on()</code> alone, ask again yourself when <code>watch()</code> reports <code>reconnected</code>.</div>
-<div class="callout callout-warning">A token in the URL lives in server logs. Prefer a cookie, or a short-lived token from a function <code>url</code> (called on every connect, so it is always fresh).</div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
 </div>

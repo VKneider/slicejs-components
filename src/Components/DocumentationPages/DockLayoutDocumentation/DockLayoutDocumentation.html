@@ -1,11 +1,11 @@
 <div class="documentation-content docklayoutdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="docklayout">
-     <span class="doc-title-text">DockLayout</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="docklayout">
+    <span class="doc-title-text">DockLayout</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <p><code>DockLayout</code> arranges groups of <span data-inline-link="0"></span> inside <span data-inline-link="1"></span>. Drag a tab to another strip to move or reorder it; drop it near a panel edge to create a split. Empty groups disappear and a split with one child collapses into that child.</p>
 <p><strong>Content is moved, not rebuilt.</strong> Tab IDs identify the existing entries, panel wrappers and live nodes. Lazy factories run when first selected and continue if their tab moves while loading. The workspace transfers component ownership before retiring old containers, so deleting an empty source group cannot destroy a moved child.</p>
 <p>Use it for editors, analysis tools, monitoring dashboards and review workspaces. Use plain Tabs for one fixed group, SplitPane for fixed resizable regions, or Layout for application navigation. Floating windows and dragging across separate DockLayout instances are outside this first version.</p>
@@ -20,18 +20,21 @@
 <h2 id="export-and-restore-without-rebuilding-content">Export and restore without rebuilding content</h2>
 <p><code>getLayout()</code> returns a fresh serializable tree: tab IDs, order, active tabs, groups, splits and current sizes. Keep item definitions in your application; JSON cannot serialize a component instance or a factory. Storage is explicit and app-owned. Version your storage key and reconcile item IDs when your application's available tabs change.</p>
 <div class="script-block" data-block-id="doc-block-3"></div>
+<h2 id="a-code-editor-workspace">A code editor workspace</h2>
+<p>The demo below assembles a complete editor from public components: <code>TreeView</code> for the files, editable <code>Tabs</code> inside this <code>DockLayout</code>, a nested <code>SplitPane</code> for the console, and a live preview pane. Drag any tab to another strip or to a panel edge; the editor text, the preview and the console keep their state. The terminal accepts <code>help</code>, <code>ls</code>, <code>save</code>, <code>build</code> and <code>clear</code>, and the status bar follows the active file and caret.</p>
+<div class="script-block" data-block-id="doc-block-4"></div>
 <h2 id="props">Props</h2>
-<div class="table-block" data-block-id="doc-block-4"></div>
+<div class="table-block" data-block-id="doc-block-5"></div>
 <h2 id="methods">Methods</h2>
 <ul><li><code>await moveTab(tabId, groupId, { index, position })</code>: positions are <code>center</code> (default), <code>left</code>, <code>right</code>, <code>top</code>, <code>bottom</code>. Center inserts into the group's tab strip; <code>index</code> is the <strong>final zero-based index after removing the source</strong>. Omitted index appends. Edge positions create a new group beside the target. Left/right refer to physical edges, including in RTL.</li><li><code>await closeTab(tabId)</code>: respects disabled/closable and the close veto, destroys the content and prunes empty groups. The final close leaves one reachable empty group.</li><li><code>getLayout()</code>: fresh JSON snapshot including current active tabs and splitter sizes.</li><li><code>await restoreLayout(tree)</code>: validates the whole tree before applying it. Invalid data throws TypeError and leaves the current view intact. Changing the tree transfers existing entries; it does not replay factories.</li><li><code>getTabs(groupId)</code>: the underlying Tabs instance, for selection or inspection. Use DockLayout's methods for structural edits so its model stays consistent.</li></ul>
 <p>Mutation methods resolve to whether the operation succeeded. No-op, disabled, unknown-tab and concurrent user edits during a layout update return false. Wait for a method before starting the next one. Prop assignments are silent; methods and user interactions notify. <code>onChange</code> can fire repeatedly during resize; debounce persistence or use a Save button.</p>
 <h2 id="pointer-and-keyboard">Pointer and keyboard</h2>
 <p>Drag starts after 8px. A preview shows the tab insertion slot or half-panel split target. Dropping outside this workspace, pressing Escape, pointer cancellation or destruction discards the gesture. Touch and pen use the same Pointer Events path; dragging is restricted to tab headers.</p>
-<div class="table-block" data-block-id="doc-block-5"></div>
+<div class="table-block" data-block-id="doc-block-6"></div>
 <p>A polite live region announces moves and closes. Content focus, supported text selection and scroll offsets are restored after moving DOM. Native browser state tied to DOM attachment (for example, an iframe's browsing context) may behave differently; this is not a guarantee that every browser-owned resource survives reparenting.</p>
 <h2 id="lifecycle-and-compatibility">Lifecycle and compatibility</h2>
 <p>Tabs gains <code>moveTab(id, targetTabs, index, { activate })</code> for transferring an actual entry, including lazy work, to another group. SplitPane gains <code>releasePanels()</code> for handing its content back without destroying it. A caller that releases content must adopt or destroy it.</p>
 <p>The shared ownership bridge targets the verified Slice Controller 4.x ancestry contract: it unlinks the previous parent before re-registering the same live component. Keep the transfer/source-destruction tests when upgrading the framework. Existing public props and methods retain their behavior.</p>
 <p>DockLayout owns its Tabs, SplitPane instances and supplied content. Destroying it releases pointer capture and destroys owned content, including never-selected panels and late async results. The layout tree contains no HTML, executable code or content factories; dynamic labels are inserted as text.</p>
-<div class="component-block" data-block-id="doc-block-6"></div>
+<div class="component-block" data-block-id="doc-block-7"></div>
 </div>

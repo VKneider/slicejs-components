@@ -48,6 +48,36 @@ export default class ThemeSwitcherDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-8"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use the same theme names you registered in <code>sliceConfig.json</code> (<code>themeManager</code>). The value shown by the switcher is exactly the name passed to <code>slice.setTheme</code>, so keep them consistent across <code>ThemeSwitcher</code>, <code>ThemeSelector</code>, and any custom theme UI.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>themes</code> must list theme names that actually exist under your themes folder. Cycling to an unregistered name makes <code>slice.setTheme</code> fail; the error is logged via <code>slice.logger.logError</code> and the displayed value falls back to the current theme.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"themes\",\"type\":\"array\",\"required\":false,\"default\":\"LIGHT,DARK\",\"allowedValues\":[]},{\"path\":\"variant\",\"type\":\"string\",\"required\":false,\"default\":\"button\",\"allowedValues\":[\"button\",\"menu-item\"]},{\"path\":\"label\",\"type\":\"string\",\"required\":false,\"default\":\"Theme\",\"allowedValues\":[]},{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"display\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"onChange\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -79,7 +109,9 @@ export default class ThemeSwitcherDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

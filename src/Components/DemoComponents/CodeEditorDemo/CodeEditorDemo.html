@@ -1,0 +1,46 @@
+<section class="slice-code-editor" aria-label="Slice Notes code editor demo">
+  <div class="slice-code-editor__window" data-window data-explorer="open">
+    <header class="slice-code-editor__titlebar">
+      <div class="slice-code-editor__traffic" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="slice-code-editor__identity">
+        <span class="slice-code-editor__brand">SLICE NOTES</span>
+        <span class="slice-code-editor__crumb" data-crumb>src / app.js</span>
+        <span class="slice-code-editor__dirty" data-dirty hidden aria-label="Unsaved changes">&#9679;</span>
+      </div>
+      <div class="slice-code-editor__actions" data-actions></div>
+    </header>
+
+    <div class="slice-code-editor__body">
+      <nav class="slice-code-editor__activity" data-activity aria-label="Editor views"></nav>
+      <aside class="slice-code-editor__sidebar" aria-label="Editor sidebar">
+        <div class="slice-code-editor__view" data-view="explorer">
+          <div class="slice-code-editor__sidebar-heading"><span>Explorer</span><span class="slice-code-editor__project">SLICE-NOTES</span></div>
+          <div class="slice-code-editor__tree" data-tree></div>
+          <div class="slice-code-editor__outline">
+            <div class="slice-code-editor__sidebar-heading"><span>Outline</span></div>
+            <ul class="slice-code-editor__outline-list" data-outline></ul>
+          </div>
+        </div>
+        <div class="slice-code-editor__view" data-view="search" hidden>
+          <div class="slice-code-editor__sidebar-heading"><span>Search</span></div>
+          <div class="slice-code-editor__search" data-search></div>
+          <p class="slice-code-editor__helper" data-search-status>Type to search every file in the workspace.</p>
+          <ul class="slice-code-editor__results" data-search-results></ul>
+        </div>
+        <div class="slice-code-editor__view" data-view="source" hidden>
+          <div class="slice-code-editor__sidebar-heading"><span>Source control</span></div>
+          <p class="slice-code-editor__helper" data-source-status>No changes.</p>
+          <ul class="slice-code-editor__results" data-source-results></ul>
+          <div class="slice-code-editor__source-actions" data-source-actions hidden></div>
+        </div>
+      </aside>
+      <main class="slice-code-editor__workspace" data-workspace></main>
+    </div>
+
+    <footer class="slice-code-editor__statusbar">
+      <div class="slice-code-editor__status-left" data-status-left></div>
+      <div class="slice-code-editor__status-right" data-status-right></div>
+    </footer>
+    <p class="slice-code-editor__sr" role="status" aria-live="polite" data-live></p>
+  </div>
+</section>

@@ -1,11 +1,11 @@
 <div class="documentation-content skeletonservicedocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="skeletonservice">
-     <span class="doc-title-text">SkeletonService</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="skeletonservice">
+    <span class="doc-title-text">SkeletonService</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>A skeleton promises the shape of what is coming. A generic one (grey bars in a column) promises the wrong shape: the page jumps when the real content arrives.</p>
 <p><code>SkeletonService</code> takes the shape <strong>from the component itself</strong>. It walks what the element renders and marks its leaves — runs of text, images, icons, fields, buttons — and a stylesheet turns each into a block of exactly its own size. The shapes are the layout, so nothing moves when the data is in. No component needs to know the service exists.</p>
@@ -24,9 +24,9 @@
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Cover what you are about to replace, then set the data after <code>during()</code> returns. The skeleton shows the old shapes; the new content lands in the same place.</div>
-<div class="callout callout-tip">For a first load, build the component with placeholder text of a realistic length. The shapes are only as good as the text they are made from.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">A covered element is <code>inert</code>: nothing inside it can be clicked or focused until <code>done()</code>. Do not cover a form the user is typing in — cover the part that is loading.</div>
-<div class="callout callout-warning">Always call <code>done()</code> (or use <code>during()</code>, which does it even when the work fails). A forgotten cover leaves the element busy and inert.</div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 </div>

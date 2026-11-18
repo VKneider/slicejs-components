@@ -48,6 +48,36 @@ export default class ThemeSelectorDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Place <code>ThemeSelector</code> in a persistent shell element (navbar, topbar, sidebar) so the user can switch themes from any page. The component auto-syncs with other theme controls via the <code>themeChanged</code> event, so you can safely use multiple selectors and switchers on the same page.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>ThemeSelector</code> is hardcoded to the <code>'LIGHT'</code> / <code>'DARK'</code> pair. If your app uses additional themes (e.g. <code>'SOLARIZED'</code>), use <span data-inline-link=\"1\"></span> instead, which accepts a custom <code>themes</code> array.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
                try {
@@ -79,7 +109,9 @@ export default class ThemeSelectorDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

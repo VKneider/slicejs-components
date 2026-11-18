@@ -14,7 +14,36 @@ export default class LinkDocumentation extends HTMLElement {
     if (true) {
       await this.setupCopyButton();
     }
-    // No dynamic blocks
+      {
+         const container = this.querySelector('[data-block-id="doc-block-3"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>Link</code> for in-app navigation. For external destinations use a plain <code>&lt;a&gt;</code> with <code>target</code> / <code>rel</code> — routing an off-site URL through the router buys nothing.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>Link</code> has no template and no <code>setComponentProps</code>: its props are read once, in the constructor, from whoever built the element. Changing them later means calling <code>render()</code> again — it is not a reactive component like <code>Button</code> or <code>Tabs</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
     await this.renderScriptScenarios();
   }
 
@@ -24,7 +53,9 @@ export default class LinkDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

@@ -1,14 +1,14 @@
 <div class="documentation-content infinitescrollservicedocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="infinitescrollservice">
-     <span class="doc-title-text">InfiniteScrollService</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="infinitescrollservice">
+    <span class="doc-title-text">InfiniteScrollService</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>InfiniteScrollService</code> loads the next page of a list when its end comes into view, the way a social feed does. It is <strong>headless</strong>: it draws nothing and knows nothing about your items. You decide what the list looks like; it decides <strong>when</strong> to ask for more, and makes sure the answers arrive in order.</p>
-<p>You put an element at the end of your list (the *sentinel*), attach it, and give the service a <code>load</code> function:</p>
+<p>You put an element at the end of your list (the <em>sentinel</em>), attach it, and give the service a <code>load</code> function:</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
 <p>If you know React, it does the work of an <code>useEffect</code> with an <code>IntersectionObserver</code>, an <code>AbortController</code> and a "loading" flag, written once and tested.</p>
 <h3 id="when-to-use-it">When to use it</h3>
@@ -28,9 +28,9 @@
 <div class="script-block" data-block-id="doc-block-2"></div>
 <div class="script-block" data-block-id="doc-block-3"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Call <code>feed.reset()</code> whenever the query changes (search, filters, sort). It cancels the old request, so results of two queries never mix.</div>
-<div class="callout callout-tip">Pass the <code>signal</code> to <code>fetch</code>. A reset then cancels the network request itself, not only its answer.</div>
+<div class="callout-block" data-block-id="doc-block-4"></div>
+<div class="callout-block" data-block-id="doc-block-5"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Detach the sentinel when your component is destroyed (<code>beforeDestroy</code>), or the service keeps watching an element that is gone.</div>
-<div class="callout callout-warning">Infinite scrolling hides the footer. If the page has one, set <code>autoLimit</code> so a "Load more" button appears after a few pages.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
 </div>

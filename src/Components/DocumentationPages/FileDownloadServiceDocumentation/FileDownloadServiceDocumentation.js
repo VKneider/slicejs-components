@@ -78,6 +78,51 @@ export default class FileDownloadServiceDocumentation extends HTMLElement {
             container.appendChild(code);
          }
       }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Pass the <code>mimeType</code> even when the browser would guess from the extension. It decides whether the saved file opens in a text editor, a spreadsheet or an image viewer, and a wrong type is confusing in a way a wrong name is not.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Never revoke the object URL yourself after calling <code>download</code>. The service already revokes it after a short delay, and revoking it immediately cancels the download in some browsers — the navigation has not started yet.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>For a file larger than a few tens of MB, <code>Blob</code> + <code>URL.createObjectURL</code> is the only thing that works: a base64 <code>data:</code> URL has to fit in a string, and browser string limits are far below what that sounds like. Past that size, stream it from a server instead.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
     await this.renderScriptScenarios();
   }
 
@@ -87,7 +132,9 @@ export default class FileDownloadServiceDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

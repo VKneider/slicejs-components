@@ -1,11 +1,11 @@
 <div class="documentation-content detailsdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="details">
-     <span class="doc-title-text">Details</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="details">
+    <span class="doc-title-text">Details</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Details</code> hides content until someone asks for it. It is one section with a title, or a group of sections (an <strong>accordion</strong>) where opening one closes the others.</p>
 <h3 id="when-to-use-it">When to use it</h3>
@@ -28,9 +28,7 @@
 <p>The sections own their content. Destroying the Details destroys the components inside, along with the icons and badges it built. When you set <code>items</code> again:</p>
 <ul><li>a section with the same <code>id</code> and the same <code>content</code> keeps its body exactly as it was, with what was typed in it and whether it was open;</li><li>a section that is gone, or whose <code>content</code> changed, has its body destroyed.</li></ul>
 <h2 id="looks">Looks</h2>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'outlined'</code> (default): one border around the group, with dividers between sections;   - <code>'separated'</code>: each section its own box, and the open one stands out;   - <code>'filled'</code>: a tinted surface;   - <code>'ghost'</code>: dividers only, flush with the text around it.</p>
-<ul><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>marker</code>: <code>'chevron'</code> (default) turns as the section opens. <code>'plus'</code> is a plus that becomes a minus.</li><li>The CSS variables <code>--slice-details-accent</code>, <code>--slice-details-bg</code>, <code>--slice-details-border</code> and <code>--slice-details-radius</code> retint it.</li></ul>
+<ul><li><code>variant</code>:<ul><li><code>'outlined'</code> (default): one border around the group, with dividers between sections;</li><li><code>'separated'</code>: each section its own box, and the open one stands out;</li><li><code>'filled'</code>: a tinted surface;</li><li><code>'ghost'</code>: dividers only, flush with the text around it.</li></ul></li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>marker</code>: <code>'chevron'</code> (default) turns as the section opens. <code>'plus'</code> is a plus that becomes a minus.</li><li>The CSS variables <code>--slice-details-accent</code>, <code>--slice-details-bg</code>, <code>--slice-details-border</code> and <code>--slice-details-radius</code> retint it.</li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="examples">Examples</h2>
@@ -40,11 +38,11 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Write summaries people can scan: the question as they would ask it, or the name of the setting. The answer goes inside. A summary that only says "More" makes people open every section to find anything.</div>
-<div class="callout callout-tip">Make heavy sections functions. A Table, a chart or a request in a section nobody opens then costs nothing, and the page loads faster.</div>
-<div class="callout callout-tip">Use <code>multiple</code> when people compare sections (release notes, specs) and the default one-at-a-time when they look for one thing (a FAQ). One at a time keeps the page short. Several at once let people read side by side.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not hide errors in a closed section. When a form inside a section fails, open it (<code>show(id)</code>) and put a badge on it, so people know where to look.</div>
-<div class="callout callout-warning">Give every item a stable <code>id</code>. Open state, remembered state and kept content all go by it: an id that changes on every render rebuilds the section and closes it.</div>
-<div class="component-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="component-block" data-block-id="doc-block-12"></div>
 </div>

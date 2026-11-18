@@ -1,11 +1,11 @@
 <div class="documentation-content tooltipdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="tooltip">
-     <span class="doc-title-text">ToolTip</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="tooltip">
+    <span class="doc-title-text">ToolTip</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>A <code>ToolTip</code> explains the control it wraps: what an icon button does, the keyboard shortcut, or why a button is disabled. It shows on hover after a short delay, on keyboard focus right away, and on a long press on touch screens.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -28,11 +28,7 @@
 <p><code>mode: 'toggletip'</code> is for an ⓘ button that explains something and may hold a link.</p>
 <ul><li>A click opens and closes it. Hover does nothing.</li><li>The trigger gets <code>aria-expanded</code>.</li><li>The bubble sits right after the trigger, so <strong>Tab</strong> goes from the ⓘ into its links.</li><li><strong>Escape</strong> closes it and puts the focus back on the ⓘ. Tabbing out or clicking elsewhere closes it too.</li></ul>
 <h2 id="looks">Looks</h2>
-<ul><li><code>placement</code>: <code>'top'</code> (default), <code>'bottom'</code>, <code>'left'</code> or <code>'right'</code>, each with <code>-start</code> or <code>-end</code> to align with an edge of the trigger (<code>'bottom-start'</code>).</li></ul>
-<p>- When the side has no room, it flips to the other side, then shifts into the screen.   - The arrow keeps pointing at the trigger's centre after a shift. <code>arrow: false</code> removes it.</p>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'inverse'</code> (default): dark on a light theme, light on a dark one;   - <code>'light'</code>: a raised surface with a border;   - <code>'accent'</code>: the primary colour.</p>
-<ul><li><code>size</code>: <code>'sm'</code> or <code>'md'</code> (default).</li><li><code>offset</code> (8px) is the gap to the trigger. <code>maxWidth</code> (280px) wraps long text.</li><li><code>customColor: { background, text, border }</code> retints one tooltip.</li></ul>
+<ul><li><code>placement</code>: <code>'top'</code> (default), <code>'bottom'</code>, <code>'left'</code> or <code>'right'</code>, each with <code>-start</code> or <code>-end</code> to align with an edge of the trigger (<code>'bottom-start'</code>).<ul><li>When the side has no room, it flips to the other side, then shifts into the screen.</li><li>The arrow keeps pointing at the trigger's centre after a shift. <code>arrow: false</code> removes it.</li></ul></li><li><code>variant</code>:<ul><li><code>'inverse'</code> (default): dark on a light theme, light on a dark one;</li><li><code>'light'</code>: a raised surface with a border;</li><li><code>'accent'</code>: the primary colour.</li></ul></li><li><code>size</code>: <code>'sm'</code> or <code>'md'</code> (default).</li><li><code>offset</code> (8px) is the gap to the trigger. <code>maxWidth</code> (280px) wraps long text.</li><li><code>customColor: { background, text, border }</code> retints one tooltip.</li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-2"></div>
 <h2 id="examples">Examples</h2>
@@ -43,10 +39,10 @@
 <div class="script-block" data-block-id="doc-block-7"></div>
 <div class="script-block" data-block-id="doc-block-8"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep it short: a name, or a sentence. If it needs a paragraph, it belongs on the page or in a toggletip.</div>
-<div class="callout callout-tip">Explain disabled buttons. "Add a title to publish" saves people from guessing what is missing.</div>
-<div class="callout callout-tip">Show the shortcut. A tooltip is the one place people look for it, and <code>shortcut</code> styles it as a key.</div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not put links or buttons in a plain tooltip: it closes when the pointer leaves, and touch users barely see it. Use <code>mode: 'toggletip'</code>.</div>
-<div class="callout callout-warning">A tooltip is not a label. An icon-only button still needs its own accessible name (Button's <code>value</code>), and the tooltip describes it.</div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 </div>

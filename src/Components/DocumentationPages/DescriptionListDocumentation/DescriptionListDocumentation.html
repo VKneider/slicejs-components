@@ -1,11 +1,11 @@
 <div class="documentation-content descriptionlistdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="descriptionlist">
-     <span class="doc-title-text">DescriptionList</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="descriptionlist">
+    <span class="doc-title-text">DescriptionList</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>DescriptionList</code> shows <strong>one record</strong> with all its properties: the detail of an order, a customer's profile, the settings of a project. Each property is a row with a label and a value, and the value is shown the way it should be read: an amount as money, a date as a date, a status as a <span data-inline-link="0"></span>, a person with their <span data-inline-link="1"></span>, an email as a link you can copy.</p>
 <p>It is the other half of <span data-inline-link="2"></span>. DataList shows <strong>many records</strong> with a few properties each; DescriptionList shows one with all of them. DataList's <code>detail</code> option opens a DescriptionList in a drawer when you open an item.</p>
@@ -46,14 +46,14 @@
 <div class="script-block" data-block-id="doc-block-9"></div>
 <div class="script-block" data-block-id="doc-block-10"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep the order people read in: what it is (number, status), who it belongs to, then the details. Put the two or three things people look for first in the first rows.</div>
-<div class="callout callout-tip">Use <code>sections</code> once there are more than eight or nine fields. A heading every few rows makes a long record scannable; <code>collapsible</code> hides the parts people rarely open.</div>
-<div class="callout callout-tip">Save each field through <code>commit</code> and let it throw on failure. The editor keeps what was typed and shows the message, so nothing is lost and nobody has to read a toast to know what failed.</div>
-<div class="callout callout-tip">Choose <code>variant: 'sheet'</code> when people will edit many values in a row at the keyboard. For a record people mostly read, the default looks are calmer and show the copy and edit buttons a mouse user expects.</div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not use it as a form to create a record. It edits the fields of a record that exists, one at a time; a new record needs a <span data-inline-link="14"></span> that validates and saves everything together.</div>
-<div class="callout callout-warning"><code>percent</code> takes a fraction: <code>0.25</code> shows as 25%. Pass <code>25</code> and it shows 2,500%. If your data is already in percent, use <code>type: 'number'</code> with <code>unit: '%'</code>.</div>
+<div class="callout-block" data-block-id="doc-block-15"></div>
+<div class="callout-block" data-block-id="doc-block-16"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.descriptionList.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>empty</code>, <code>yes</code>, <code>no</code>, <code>edit</code>, <code>editing</code>, <code>copy</code>, <code>copied</code>, <code>save</code>, <code>cancel</code>, <code>saving</code>, <code>saved</code>, <code>saveError</code>, <code>error</code>, <code>retry</code>, <code>loading</code>, <code>expand</code>, <code>collapse</code>.</p>
-<div class="component-block" data-block-id="doc-block-11"></div>
+<div class="component-block" data-block-id="doc-block-17"></div>
 </div>

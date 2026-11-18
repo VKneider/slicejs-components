@@ -1,11 +1,11 @@
 <div class="documentation-content sliderdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="slider">
-     <span class="doc-title-text">Slider</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="slider">
+    <span class="doc-title-text">Slider</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Slider</code> picks a number within a range by dragging, clicking the track or using the keyboard. With <code>range: true</code> it has two thumbs and picks an interval (<code>[low, high]</code>), such as a price filter.</p>
 <p>Use it when an approximate value is fine and seeing it relative to the whole range helps (volume, opacity, a price band). When the exact number matters, prefer <code>Input</code> with a number type — dragging to precisely 1,375 is frustrating.</p>
@@ -30,10 +30,10 @@
 <div class="script-block" data-block-id="doc-block-9"></div>
 <div class="script-block" data-block-id="doc-block-10"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Always pass <code>formatValue</code> when the number has a unit. It is what a screen reader announces, so "40%" is understood where "0.4" is not.</div>
-<div class="callout callout-tip">Use <code>onInput</code> for cheap live feedback (a preview) and <code>onChange</code> for anything expensive (a request, saving), so dragging does not fire a hundred requests.</div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">A slider has no intrinsic width. It reserves a minimum of <code>12rem</code> so it never collapses; give it a real width in tight rows.</div>
-<div class="callout callout-warning">In range mode, when both thumbs sit on the same value, dragging grabs the top one, which can only move away from the other in one direction. Use the keyboard (Tab to the other thumb) or click the track on the side you want.</div>
-<div class="component-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
+<div class="component-block" data-block-id="doc-block-15"></div>
 </div>

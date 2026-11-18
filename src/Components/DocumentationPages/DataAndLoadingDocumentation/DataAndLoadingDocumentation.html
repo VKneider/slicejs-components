@@ -1,11 +1,11 @@
 <div class="documentation-content dataandloadingdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="data-and-the-first-load">
-     <span class="doc-title-text">Data and the first load</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="data-and-the-first-load">
+    <span class="doc-title-text">Data and the first load</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>Almost every app shows data from a server. Where you ask for it decides how fast the app feels. This guide explains what Slice waits for before it shows a page, and five patterns that keep pages fast while the data is on its way.</p>
 <p>The short version: <strong>build the page, then bring the data. Never make the page wait for the network.</strong></p>
@@ -49,13 +49,8 @@
 <ul><li><code>delayMs</code>: work that ends before this shows nothing. Use 150–300 ms, so fast route changes do not flash.</li><li><code>minVisibleMs</code>: once shown, it stays at least this long, so it does not blink.</li><li><code>welcome</code>: a branded screen for the first load of the app.</li></ul>
 <p>None of this makes a slow <code>init()</code> fast. It only makes the wait look better. The real fix is the rule at the top.</p>
 <h2 id="checklist">Checklist</h2>
-<div class="callout callout-tip">- <code>init()</code> and <code>update()</code> build and return; they never <code>await</code> the network.
-- One set of data, one component: give it <code>load</code>.
-- Data several components show: a context with its state (<code>loading</code>, <code>refreshing</code>, <code>ready</code>, <code>error</code>), asked for once.
-- Requests start early and together; only what decides the page is awaited, with a time budget.
-- Every place that shows data has a skeleton, an empty state, and an error with Try again.
-- Changes: lists optimistic with rollback (and Undo for removals), fields commit-first; errors say what to do.</div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning"><code>Promise.all</code> over requests that do not depend on each other, not a <code>for</code> with an <code>await</code> inside: five requests of 300 ms take 300 ms together, and 1.5 s in a row.</div>
-<div class="callout callout-warning">Do not hide a slow request behind a longer <code>minVisibleMs</code> or a nicer welcome screen. Measure the first paint (as in the first example) and move the request out of <code>init()</code>.</div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 </div>

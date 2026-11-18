@@ -1,11 +1,11 @@
 <div class="documentation-content unsavedchangesguarddocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="unsavedchangesguard">
-     <span class="doc-title-text">UnsavedChangesGuard</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="unsavedchangesguard">
+    <span class="doc-title-text">UnsavedChangesGuard</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>The "you have unsaved changes" guard. Any component can declare pending work with a stable key, and the guard covers the three ways a user can walk away from it.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -18,8 +18,7 @@
 <h3 id="the-back-button-is-best-effort-and-cannot-be-otherwise">The back button is best effort, and cannot be otherwise</h3>
 <p>The router does <strong>not</strong> run <code>beforeEach</code> on <code>popstate</code> — <code>Router.onRouteChange()</code> goes straight to rendering. By the time the event reaches you, the URL has already changed.</p>
 <p>So this service asks anyway, and if the answer is no it calls <code>history.go(1)</code> to put the history back. Two consequences are worth knowing:</p>
-<ul><li>The route you navigated away from can paint for a frame before being restored.</li><li>Only a <strong>single step</strong> back is reliably recoverable. Pressing Back three times in a row can</li></ul>
-<p>outrun the recovery.</p>
+<ul><li>The route you navigated away from can paint for a frame before being restored.</li><li>Only a <strong>single step</strong> back is reliably recoverable. Pressing Back three times in a row can outrun the recovery.</li></ul>
 <p>The browser's native <code>confirm</code> is used on this path and <strong>your <code>setDialog</code> dialog is not</strong>, because a <code>popstate</code> handler has to answer synchronously or the browser moves on without it.</p>
 <h3 id="the-browser-owns-the-wording-on-beforeunload">The browser owns the wording on <code>beforeunload</code></h3>
 <p>Every current browser ignores any message you set and shows its own text. That is deliberate: a page that could name the consequence could also use it to trick people into staying. Expect "Changes you made may not be saved."</p>
@@ -27,25 +26,13 @@
 <h2 id="prop-scenarios">Prop Scenarios</h2>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <h2 id="composing-with-your-own-router-guard">Composing with your own router guard</h2>
-<p>The router keeps guards in a <strong>single slot</strong> (<code>router._beforeEachGuard</code>), so registering a second one replaces the first. This service composes with whatever was already there at the moment it was built — but an app that registers a guard *afterwards* replaces this one. If that is you, compose explicitly:</p>
+<p>The router keeps guards in a <strong>single slot</strong> (<code>router._beforeEachGuard</code>), so registering a second one replaces the first. This service composes with whatever was already there at the moment it was built — but an app that registers a guard <em>afterwards</em> replaces this one. If that is you, compose explicitly:</p>
 <div class="code-block" data-block-id="doc-block-5"></div>
-<div class="callout callout-warning">In Slice.js 4.x, <strong><code>next(false)</code> does not cancel the navigation.</strong> <code>Router._executeBeforeEachGuard</code>
-ends with <code>return redirectPath ? { path: redirectPath, … } : null</code>, and <code>false</code> is falsy, so the
-cancellation branch is unreachable — the router proceeds with a warning-free "success". If you need to
-cancel a navigation, throw from the guard instead: the router's <code>catch</code> returns <code>{ path: false }</code>,
-which does cancel. <code>next('/some/path')</code> redirects correctly and is unaffected.
-
-## Best Practices</div>
-<div class="callout callout-tip">Disarm on <strong>save success</strong>, not on save click. Disarming optimistically loses the user's work if the
-save fails.</div>
-<div class="callout callout-tip">Use a different key per form. Two forms on one page then warn independently, instead of one saving
-silently switching the other's guard off.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Arming is not the same as validating. The guard warns about leaving; it does not check that what the
-user typed is worth keeping.</div>
-<div class="callout callout-warning">Do not arm for trivial state — a collapsed panel, a ticked checkbox, a search filter. A guard that
-fires on things nobody would mourn is a guard the user learns to dismiss without reading, which
-costs you the warning you wanted for the one case that mattered.</div>
-<div class="callout callout-warning"><code>beforeunload</code> cannot be styled or worded. If the confirmation must be your own design, you cannot
-cover page close with it — only in-app navigation, through <code>confirmLeave()</code> or <code>setDialog()</code>.</div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 </div>

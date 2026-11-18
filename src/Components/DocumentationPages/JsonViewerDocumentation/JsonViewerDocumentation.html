@@ -1,11 +1,11 @@
 <div class="documentation-content jsonviewerdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="jsonviewer">
-     <span class="doc-title-text">JsonViewer</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="jsonviewer">
+    <span class="doc-title-text">JsonViewer</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>JsonViewer</code> shows a JSON value as a tree: objects and arrays fold open, strings, numbers, booleans and <code>null</code> have their own colour, and the path (<code>user.addresses[0].city</code>) or the value of any node can be copied.</p>
 <p>Only what is open is in the page, and a long array opens in ranges of 100 (<code>[0 … 99]</code>), so a large response stays fast.</p>
@@ -26,9 +26,9 @@
 <div class="script-block" data-block-id="doc-block-3"></div>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Open as much as people need at a glance (<code>expandDepth: 2</code> for most API responses) and let search do the rest.</div>
-<div class="callout callout-tip">Give the root a name (<code>rootName: 'response'</code>) when people copy paths into code: they get <code>response.items[0].sku</code>, ready to paste.</div>
+<div class="callout-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">It shows data; it does not hide it. Remove tokens, passwords and personal data before passing a value to a viewer that anyone with the page can read.</div>
-<div class="component-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="component-block" data-block-id="doc-block-8"></div>
 </div>

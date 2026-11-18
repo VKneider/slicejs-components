@@ -1,11 +1,11 @@
 <div class="documentation-content dropdowndocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="dropdown">
-     <span class="doc-title-text">DropDown</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="dropdown">
+    <span class="doc-title-text">DropDown</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>DropDown</code> is a menu button: a trigger and a menu of links, actions, checkboxes, radio options and <strong>submenus nested as deep as you need</strong>. You build the menu from plain objects, and the same vocabulary works at every level.</p>
 <h2 id="core-behavior">Core Behavior</h2>
@@ -34,12 +34,12 @@
 <p>Give a <code>Navbar</code> item an <code>items</code> array and it becomes a dropdown: plain text in the bar, opening on hover (click and keyboard work too), with any submenus you nest. <code>type: 'dropdown'</code> with <code>options</code> keeps working. Per item you can override <code>variant</code>, <code>trigger</code>, <code>placement</code> and <code>icon</code>.</p>
 <div class="script-block" data-block-id="doc-block-7"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep menus shallow when you can: two or three levels read well. Go deeper for real hierarchies (a file tree, categories), not to hide options.</div>
-<div class="callout callout-tip">Use <code>danger: true</code> for destructive actions and put them last, after a separator, so they are never the item a quick click lands on.</div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Checkbox and radio items keep their state on the item objects (<code>checked</code> is flipped in place). Rebuild the array from your own state if you need the menu to reflect changes made elsewhere, or pass <code>checked</code> as a function.</div>
-<div class="callout callout-warning">An icon-only trigger has no visible text, so give it <code>ariaLabel</code>; otherwise screen readers announce an unnamed button.</div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.dropDown.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>noOptions</code>, <code>loading</code>, <code>backToPrevious</code>, <code>backToMenu</code>.</p>
-<div class="component-block" data-block-id="doc-block-8"></div>
+<div class="component-block" data-block-id="doc-block-12"></div>
 </div>

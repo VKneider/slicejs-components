@@ -1,11 +1,11 @@
 <div class="documentation-content layoutdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="layout">
-     <span class="doc-title-text">Layout</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="layout">
+    <span class="doc-title-text">Layout</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Layout</code> is the frame around a page: a <strong>header</strong> (logo, search, account), a <strong>sidebar</strong> (the app's navigation), the <strong>main</strong> content, an optional <strong>aside</strong> (filters, details, a table of contents) and a <strong>footer</strong>.</p>
 <p>You give it the pieces; it does the parts that are easy to forget:</p>
@@ -29,11 +29,11 @@
 <div class="script-block" data-block-id="doc-block-3"></div>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Name the sidebar (<code>sidebarLabel: 'Main navigation'</code>) when it holds navigation. Screen readers list it by that name.</div>
-<div class="callout callout-tip">Use <code>fullHeight</code> and <code>stickyHeader</code> for app shells: the header and the menu stay in view while long pages scroll.</div>
-<div class="callout callout-tip">Style the host with single properties (<code>layout.style.border = …</code>), not <code>style.cssText</code>: the widths are CSS variables in the host's inline style, and <code>cssText</code> replaces all of it.</div>
+<div class="callout-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">One <code>main</code> per page. A Layout inside another page's main (a preview, a demo) needs <code>landmarks: false</code>.</div>
-<div class="callout callout-warning"><code>showing()</code> removes the previous view but does not destroy it — that is what lets a router keep its views. Views you will never show again should be destroyed by whoever created them.</div>
-<div class="component-block" data-block-id="doc-block-5"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="component-block" data-block-id="doc-block-10"></div>
 </div>

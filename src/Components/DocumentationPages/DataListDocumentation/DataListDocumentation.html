@@ -1,11 +1,11 @@
 <div class="documentation-content datalistdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="datalist">
-     <span class="doc-title-text">DataList</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="datalist">
+    <span class="doc-title-text">DataList</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>DataList</code> shows the records an app works with: the people in a team, the orders of a shop, the tasks of a project, the files of a folder. Each record is a row (or a card) with a title, its details, a status and its actions, and the list adds what an app always needs around them:</p>
 <ul><li><strong>finding things</strong>: search, quick views ("Open 12 · Mine 5"), filters, sort and groups;</li><li><strong>acting on things</strong>: buttons and a ⋯ menu per item, selection, and actions on many items at once;</li><li><strong>changing things</strong>: <code>addItem</code>, <code>updateItem</code> and <code>removeItem</code>, shown at once and taken back if the server says no, with Undo for removals;</li><li><strong>a lot of things</strong>: pages, "Load more" or infinite scrolling, from memory or from a server.</li></ul>
@@ -34,7 +34,7 @@
 <p>Three methods, the same three a store would have:</p>
 <div class="code-block" data-block-id="doc-block-6"></div>
 <ul><li><strong>The change shows at once.</strong> With <code>commit</code>, the item is marked busy (a line moves under it, its actions wait) until the promise settles.</li><li><strong>If <code>commit</code> fails, the change is taken back</strong>: the new item leaves, the edited one goes back as it was, and the removed ones return to their places. A bar says "The change could not be saved", and <code>onError(error, { type, item })</code> reports it.</li><li><strong><code>addItem</code></strong>: <code>position: 'start'</code> (default), <code>'end'</code> or an index. The new row is scrolled into view and flashes. If <code>commit</code> returns an object (the server's version, with its real id and dates), it is merged into the item.</li><li><strong><code>updateItem</code></strong>: <code>changes</code> is an object to merge, or a function from the item to one. Only that row is redrawn.</li><li><strong><code>removeItem</code></strong>: one key or an array. With <code>undo: true</code>, a bar says "“Buy milk” removed · Undo" for five seconds, and <code>commit</code> runs only when that time is over, or the bar is closed. Undo brings the items back and nothing reaches the server. Without <code>undo</code>, <code>commit</code> runs right away.</li><li><code>createAction: { label, icon, onClick }</code> adds a "New" button to the toolbar.</li></ul>
-<p>&gt; Why <code>addItem</code> and not <code>add</code>? Slice calls a component's <code>update()</code> when a cached route comes back, so the list keeps that name for the framework, and uses <code>addItem</code>, <code>updateItem</code> and <code>removeItem</code> for your data.</p>
+<blockquote><p>Why <code>addItem</code> and not <code>add</code>? Slice calls a component's <code>update()</code> when a cached route comes back, so the list keeps that name for the framework, and uses <code>addItem</code>, <code>updateItem</code> and <code>removeItem</code> for your data.</p></blockquote>
 <h3 id="6-sharing-the-data-slicecontext">6. Sharing the data: <code>slice.context</code></h3>
 <p>With <code>context: 'tasks'</code>, the items live in a <code>slice.context</code> store (the framework's shared state) instead of the list:</p>
 <div class="code-block" data-block-id="doc-block-7"></div>
@@ -47,9 +47,7 @@
 <div class="code-block" data-block-id="doc-block-8"></div>
 <ul><li>It is called again when the search, a view, a filter, the sort or the page changes. The request in flight is aborted (<code>signal</code>), and a late answer is dropped.</li><li>While it loads, the list shows placeholders (the first time) or dims the rows. If it fails, the list says so, with a <strong>Try again</strong> button.</li><li>With <code>pagination: 'load-more'</code> or <code>'infinite'</code>, pages are added to the ones already shown. Return <code>done: true</code>, or fewer items than <code>pageSize</code>, at the end.</li><li><code>filters</code> arrive as <code>[{ key, values }]</code>, <code>sort</code> as <code>{ key, direction }</code> and <code>view</code> as the view's id.</li><li>Filter options cannot come from the data here: give them <code>options</code>. View counts appear when a view has a <code>count</code>.</li><li><code>refresh()</code> loads the current page again. <code>onQueryChange(query)</code> reports every change, for example to put it in the URL.</li></ul>
 <h2 id="looks">Looks</h2>
-<ul><li><code>layout</code>: <code>'list'</code> (default) or <code>'grid'</code>, cards in columns at least <code>minItemWidth</code> wide (260px).</li><li><code>variant</code>:</li></ul>
-<p>- <code>'outlined'</code> (default): one box with lines between the rows;   - <code>'separated'</code>: one card per row;   - <code>'filled'</code>: tinted rows;   - <code>'ghost'</code>: lines only.</p>
-<ul><li><code>density</code>: <code>'compact'</code>, <code>'comfortable'</code> (default) or <code>'spacious'</code>.</li><li><code>maxHeight</code> makes the list scroll inside itself, with group headings that stay on top.</li><li><code>loading</code> shows placeholders (or dims the rows) for data you load yourself. <code>error</code> shows a message.</li><li><code>emptyState: { icon, title, description, action: { label, onClick } }</code> is what shows when there is nothing yet.</li></ul>
+<ul><li><code>layout</code>: <code>'list'</code> (default) or <code>'grid'</code>, cards in columns at least <code>minItemWidth</code> wide (260px).</li><li><code>variant</code>:<ul><li><code>'outlined'</code> (default): one box with lines between the rows;</li><li><code>'separated'</code>: one card per row;</li><li><code>'filled'</code>: tinted rows;</li><li><code>'ghost'</code>: lines only.</li></ul></li><li><code>density</code>: <code>'compact'</code>, <code>'comfortable'</code> (default) or <code>'spacious'</code>.</li><li><code>maxHeight</code> makes the list scroll inside itself, with group headings that stay on top.</li><li><code>loading</code> shows placeholders (or dims the rows) for data you load yourself. <code>error</code> shows a message.</li><li><code>emptyState: { icon, title, description, action: { label, onClick } }</code> is what shows when there is nothing yet.</li></ul>
 <h2 id="remembering-the-view">Remembering the view</h2>
 <p><code>stateKey: 'orders'</code> remembers the search, the view, the filters and the sort in this browser, and puts them back the next time the list is built. <code>clearSavedState()</code> forgets them.</p>
 <h2 id="language">Language</h2>
@@ -66,13 +64,13 @@
 <div class="script-block" data-block-id="doc-block-14"></div>
 <div class="script-block" data-block-id="doc-block-15"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Give every item a stable key (<code>itemKey</code>, <code>'id'</code> by default). Selection, updates and removals find items by it, and rows that did not change are not redrawn.</div>
-<div class="callout callout-tip">Use <code>commit</code> for every change that goes to a server. People see the change at once, and a failure undoes it by itself, instead of leaving the list out of step with the server.</div>
-<div class="callout callout-tip">Prefer <code>removeItem(…, { undo: true })</code> to a confirmation for things that can be brought back. Undo is faster for the nine times people meant it, and safe for the tenth. Keep <code>confirm</code> for what cannot be undone.</div>
-<div class="callout callout-tip">Put the one or two actions people use most on the row (<code>inline: true</code>) and the rest in the menu. A row full of buttons is hard to scan.</div>
+<div class="callout-block" data-block-id="doc-block-16"></div>
+<div class="callout-block" data-block-id="doc-block-17"></div>
+<div class="callout-block" data-block-id="doc-block-18"></div>
+<div class="callout-block" data-block-id="doc-block-19"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">With <code>load</code>, filter options and view counts do not come from the data, because the list only holds one page. Give filters their <code>options</code>, and views a <code>count</code> if you want one.</div>
-<div class="callout callout-warning">Do not change item objects in place (<code>item.done = true</code>) and expect the list to notice. Use <code>updateItem</code>, or set <code>items</code> (or the context) to a new array, the way you would in React or Vue.</div>
-<div class="callout callout-warning">A list inside a flex or grid item needs <code>min-width: 0</code> on that item, or long titles push it wider than the screen.</div>
-<div class="component-block" data-block-id="doc-block-16"></div>
+<div class="callout-block" data-block-id="doc-block-20"></div>
+<div class="callout-block" data-block-id="doc-block-21"></div>
+<div class="callout-block" data-block-id="doc-block-22"></div>
+<div class="component-block" data-block-id="doc-block-23"></div>
 </div>

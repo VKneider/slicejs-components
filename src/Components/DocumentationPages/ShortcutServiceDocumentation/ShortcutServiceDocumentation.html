@@ -1,11 +1,11 @@
 <div class="documentation-content shortcutservicedocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="shortcutservice">
-     <span class="doc-title-text">ShortcutService</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="shortcutservice">
+    <span class="doc-title-text">ShortcutService</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>ShortcutService</code> keeps the app's keyboard shortcuts in one place. A component says which keys do what; the service listens once for the whole app and decides which shortcut, if any, a key press belongs to.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -39,11 +39,8 @@
 <p><code>within</code> limits them to focus inside the element, <code>inInputs: true</code> lets them fire while typing there, and <code>override: true</code> says that taking the browser's Ctrl+B (bookmarks in Firefox) is meant inside an editor.</p>
 <div class="code-block" data-block-id="doc-block-10"></div>
 <h2 id="best-practices">Best practices</h2>
-<div class="callout callout-tip">- One service for the app (<code>singleton: true</code>), and every shortcut added by the component it belongs to: it goes away with it.
-- Give each shortcut a <code>label</code>, and offer <code>?</code> with <code>list()</code>: shortcuts nobody can discover are not used.
-- Use Ctrl/⌘ only where people expect an app to take it (<code>mod+k</code> for a palette, <code>mod+enter</code> to send); almost every other Ctrl+letter is the browser's. Plain keys and sequences (<code>j</code>, <code>e</code>, <code>g i</code>), with a <code>within</code> or a <code>scope</code>, are what Gmail, GitHub or Linear use for the rest.
-- Read the warnings: when the service says a key is the browser's, choose another, or pass <code>override: true</code> only when taking it is the point.</div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not take keys the browser or the screen reader relies on (Tab, Ctrl+L, Ctrl+F, F6, Alt+arrows for history). <code>preventDefault</code> would take them away from people who depend on them. Some (Ctrl+T, Ctrl+W, Ctrl+N) the browser never gives to a page at all; the service warns about both while you develop.</div>
-<div class="callout callout-warning">A single-letter shortcut fires anywhere on the page that is not a text field. In pages with many custom widgets, give it a <code>scope</code> or a <code>within</code>, or use a sequence.</div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 </div>

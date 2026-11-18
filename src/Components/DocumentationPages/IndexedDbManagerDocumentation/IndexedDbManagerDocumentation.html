@@ -1,11 +1,11 @@
 <div class="documentation-content indexeddbmanagerdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="indexeddbmanager">
-     <span class="doc-title-text">IndexedDbManager</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="indexeddbmanager">
+    <span class="doc-title-text">IndexedDbManager</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>IndexedDbManager</code> is a database in the browser: many records, found by index, kept between visits. Declare the stores and indexes you need; it creates them, opens <strong>one</strong> connection shared by every call, and turns IndexedDB's events into promises.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -48,10 +48,8 @@
 <div class="table-block" data-block-id="doc-block-12"></div>
 <p>Two instances with different <code>storeName</code>s on the same database used to leave the second store uncreated. Now each one adds its store when it is missing.</p>
 <h2 id="best-practices">Best practices</h2>
-<div class="callout callout-tip">- One manager per database, built once (<code>singleton: true</code>), with every store declared there.
-- Index what you search by; <code>filter</code> walks every record of the range it is given.
-- Keep <code>version</code> out until you need <code>upgrade</code>: adding stores and indexes works without it.</div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Inside <code>transaction</code>, do not await anything but the stores' own calls. A <code>fetch</code> in the middle lets the transaction close, and the next call fails with <code>TransactionInactiveError</code>. Fetch first, then write in one transaction.</div>
-<div class="callout callout-warning">Once you set <code>version</code>, never lower it: a browser that already has a higher version refuses to open (<code>VersionError</code>).</div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
+<div class="callout-block" data-block-id="doc-block-15"></div>
 </div>

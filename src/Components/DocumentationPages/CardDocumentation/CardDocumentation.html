@@ -1,11 +1,11 @@
 <div class="documentation-content carddocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="card">
-     <span class="doc-title-text">Card</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="card">
+    <span class="doc-title-text">Card</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p>A <code>Card</code> sums up <strong>one thing</strong>: a product, a person, a file, a project, a metric. Cards usually come in groups of the same kind, in a grid or a list, so people can scan and compare them. When the thing has more to it than fits, the card leads there: a link, a Modal, a page.</p>
 <h3 id="when-to-use-it">When to use it</h3>
@@ -14,9 +14,7 @@
 <ul><li><strong>A section of a page</strong> (a settings group, a form) is not one thing among others like it. Use a plain container or a <span data-inline-link="0"></span> with sections.</li><li><strong>Content that folds open</strong> belongs in <span data-inline-link="1"></span>.</li><li><strong>A message</strong> that comes and goes is a <span data-inline-link="2"></span>.</li><li><strong>Rows people sort and filter</strong> are a <span data-inline-link="3"></span>. Cards are for scanning, tables for comparing values.</li><li><strong>One card alone</strong>, with nothing like it next to it, is usually a section in disguise.</li></ul>
 <h2 id="anatomy">Anatomy</h2>
 <p>Every part is optional, and nothing is drawn unless you ask for it:</p>
-<ul><li><strong>Media</strong> at the top: <code>image</code>, or <code>icon</code> as a large mark. When an image fails to load, the icon takes its place, or there is no media.</li><li><strong>Header</strong>:</li></ul>
-<p>- <code>headerIcon</code>, a small mark in a chip beside the title;   - <code>title</code> and <code>subtitle</code>;   - <code>badge</code> in the corner.</p>
-<ul><li><strong>Body</strong>: <code>text</code>, then <code>content</code>, which takes any nodes or components: a chart, a list, a progress bar, a Table.</li><li><strong>Footer</strong>: <code>actions</code>, always visible, so they work on phones and from the keyboard.</li></ul>
+<ul><li><strong>Media</strong> at the top: <code>image</code>, or <code>icon</code> as a large mark. When an image fails to load, the icon takes its place, or there is no media.</li><li><strong>Header</strong>:<ul><li><code>headerIcon</code>, a small mark in a chip beside the title;</li><li><code>title</code> and <code>subtitle</code>;</li><li><code>badge</code> in the corner.</li></ul></li><li><strong>Body</strong>: <code>text</code>, then <code>content</code>, which takes any nodes or components: a chart, a list, a progress bar, a Table.</li><li><strong>Footer</strong>: <code>actions</code>, always visible, so they work on phones and from the keyboard.</li></ul>
 <h2 id="core-behavior">Core Behavior</h2>
 <h3 id="leading-somewhere">Leading somewhere</h3>
 <ul><li><code>href</code> turns the title into a link. <code>target: '_blank'</code> opens it in a new tab and adds <code>rel="noopener noreferrer"</code>.</li><li><code>onClick({ card, event })</code> turns the title into a button.</li><li>Either way, the title's click area is stretched over the whole card, so a click anywhere opens it.</li><li>For screen readers and the keyboard, the card is <strong>one control</strong> (its title) and each action is its own control. There are no buttons inside a button, and Tab goes title → actions.</li><li>A card with neither <code>href</code> nor <code>onClick</code> is not a control at all: it is not focusable and does not lift on hover.</li><li>With no <code>title</code>, give the card an <code>ariaLabel</code> so the link or button still has a name.</li></ul>
@@ -33,8 +31,7 @@
 <h3 id="memory">Memory</h3>
 <p>The card owns what it builds (icons, badge, buttons) and what you hand it in <code>content</code>. Replacing <code>content</code> or <code>actions</code> destroys the components that are gone, and destroying the card destroys all of them. Nodes you pass again keep their state.</p>
 <h2 id="looks">Looks</h2>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'outlined'</code> (default): a border;   - <code>'elevated'</code>: a shadow, no border;   - <code>'filled'</code>: a tinted surface;   - <code>'ghost'</code>: neither, for cards inside a surface that already has one.</p>
+<ul><li><code>variant</code>:<ul><li><code>'outlined'</code> (default): a border;</li><li><code>'elevated'</code>: a shadow, no border;</li><li><code>'filled'</code>: a tinted surface;</li><li><code>'ghost'</code>: neither, for cards inside a surface that already has one.</li></ul></li></ul>
 <p><code>'default'</code> and <code>'minimal'</code>, the old names, still work as <code>'outlined'</code> and <code>'ghost'</code>.</p>
 <ul><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code> sets the padding, the title size and the icon size.</li><li><code>layout: 'horizontal'</code> puts the media beside the content, which suits lists. On narrow screens it stacks again.</li><li><code>mediaRatio</code> is the image's aspect ratio (<code>'16 / 9'</code> by default).</li><li><code>headingLevel</code> (default 3) sets the title's heading level, to fit the page's outline.</li><li><code>customColor: { accent, background, text, border }</code> retints one card. The CSS variables <code>--slice-card-accent</code>, <code>--slice-card-bg</code>, <code>--slice-card-text</code>, <code>--slice-card-border</code> and <code>--slice-card-radius</code> do the same from a stylesheet.</li></ul>
 <h3 id="icons">Icons</h3>
@@ -48,11 +45,11 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep the cards in a group the same shape: the same parts, in the same order, with text of similar length. People compare cards by looking at the same spot on each one.</div>
-<div class="callout callout-tip">Put the action people take most often on the card itself (<code>onClick</code> or <code>href</code>) and the rest in <code>actions</code>. A card with five buttons is a form in disguise.</div>
-<div class="callout callout-tip">Use <code>loading</code> while the data is on the way instead of building the cards afterwards. The grid keeps its shape, and nothing jumps under the pointer.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not put links or buttons in <code>text</code>. Put controls in <code>content</code> or <code>actions</code>: they sit above the card's click area, so they keep working on their own.</div>
-<div class="callout callout-warning">Give images an <code>imageAlt</code> that says what is in the picture, or leave it empty when the picture only decorates. Repeating the title in it makes screen readers say the name twice.</div>
-<div class="callout callout-warning"><code>details</code>, <code>open</code> and the fold-out chevron are gone. A card that has to unfold something holds a <span data-inline-link="7"></span> in <code>content</code>.</div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
 </div>

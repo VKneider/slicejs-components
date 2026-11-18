@@ -1,11 +1,11 @@
 <div class="documentation-content loadingdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="loading">
-     <span class="doc-title-text">Loading</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="loading">
+    <span class="doc-title-text">Loading</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>Loading</code> shows that the app is working: over the <strong>whole page</strong> while a route loads, or over <strong>one part</strong> of it while a form saves, a card refreshes or a table fetches its next page.</p>
 <p>Slice also uses it for the app itself. With <code>"loading": { "enabled": true }</code> in <code>sliceConfig.json</code>, Slice builds one as <code>slice.loading</code>. It shows while the first page loads and on every route change. The rest of <code>sliceConfig.loading</code> decides how it looks, including a <strong>welcome screen</strong> for the first load of the app (see "The app's loading screen" below).</p>
@@ -22,9 +22,7 @@
 <p><code>stop()</code> does not cut to the page. The overlay <strong>fades out where it is</strong> — 220 ms, 320 ms for the welcome — so the content underneath comes in as a crossfade instead of appearing in one frame. That is what keeps a first load or a route change from reading as a jump. Only when the fade ends is the overlay removed and the container given back its styles.</p>
 <ul><li>The page is usable immediately: the fading overlay lets clicks through, and <code>active</code> turns <code>false</code> when the stop is applied, not when the fade ends.</li><li>A <code>start()</code> during the fade takes the same overlay back — no second entrance, no blink.</li><li>Nothing animates the page itself, so a page with its own entrance (a <span data-inline-link="3"></span>, a list) keeps it.</li><li>With <strong>reduce motion</strong> on, the fade stays (it only changes opacity); what goes away is the movement: the indicator does not lift, the welcome card does not step back.</li></ul>
 <h3 id="variants">Variants</h3>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'slice'</code> (default): the Slice.js logo, spinning;   - <code>'spinner'</code>: a ring;   - <code>'dots'</code>: three bouncing dots, softer, for small areas;   - <code>'bar'</code>: a thin line along the top. It has no backdrop and blocks nothing, so it suits route changes and uploads. <code>progress</code> (0–1) shows a known amount; without it, the line slides.</p>
-<ul><li><code>label</code>: a short text under the indicator, such as "Saving…" or "Signing you in…".</li><li><code>backdrop</code>: <code>'dim'</code> (default), <code>'blur'</code>, <code>'solid'</code> (hides what is underneath) or <code>'none'</code>.</li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li>With <strong>reduce motion</strong> on in the system, the indicators pulse slowly instead of spinning, entrances are off, and the fade out stays (it only changes opacity).</li></ul>
+<ul><li><code>variant</code>:<ul><li><code>'slice'</code> (default): the Slice.js logo, spinning;</li><li><code>'spinner'</code>: a ring;</li><li><code>'dots'</code>: three bouncing dots, softer, for small areas;</li><li><code>'bar'</code>: a thin line along the top. It has no backdrop and blocks nothing, so it suits route changes and uploads. <code>progress</code> (0–1) shows a known amount; without it, the line slides.</li></ul></li><li><code>label</code>: a short text under the indicator, such as "Saving…" or "Signing you in…".</li><li><code>backdrop</code>: <code>'dim'</code> (default), <code>'blur'</code>, <code>'solid'</code> (hides what is underneath) or <code>'none'</code>.</li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li>With <strong>reduce motion</strong> on in the system, the indicators pulse slowly instead of spinning, entrances are off, and the fade out stays (it only changes opacity).</li></ul>
 <h2 id="the-apps-loading-screen">The app's loading screen</h2>
 <p><code>sliceConfig.json</code> configures the loader Slice builds for the app. Props passed to a <code>Loading</code> win over it, so the same keys work in both places.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -48,13 +46,13 @@
 <div class="script-block" data-block-id="doc-block-8"></div>
 <div class="script-block" data-block-id="doc-block-9"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Set <code>delayMs</code> for the app's loader (150–300 ms). Most route changes finish before it, and show nothing at all. Only slow ones show the indicator.</div>
-<div class="callout callout-tip">Cover the smallest part that is busy. A card refreshing should block that card, not the page, so people can keep working elsewhere.</div>
-<div class="callout callout-tip">Say what is happening in <code>label</code> when it takes more than a moment: "Saving…", "Uploading 2 of 3…". A label tells people the app is still working, and what on.</div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Always pair <code>start()</code> with <code>stop()</code>, also when the work fails: put the <code>stop()</code> in a <code>finally</code>. A loader that never stops blocks the page for good.</div>
-<div class="callout callout-warning">Keep the welcome screen short. It is shown on every visit to the app, so <code>welcome.minVisibleMs</code> above 2 seconds makes the app feel slow, however nice it looks.</div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.loading.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>loading</code>.</p>
-<div class="component-block" data-block-id="doc-block-10"></div>
+<div class="component-block" data-block-id="doc-block-15"></div>
 </div>

@@ -1,11 +1,11 @@
 <div class="documentation-content fetchmanagerdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="fetchmanager">
-     <span class="doc-title-text">FetchManager</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="fetchmanager">
+    <span class="doc-title-text">FetchManager</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>FetchManager</code> is how a Slice app talks to its server. It is <code>fetch</code> with what every app ends up writing around it: a base URL, headers sent every time, a query object turned into <code>?page=2&amp;status=open</code>, a body sent as JSON, the answer read the right way, a timeout, and — the important part — <strong>a failed answer throws</strong>.</p>
 <div class="code-block" data-block-id="doc-block-1"></div>
@@ -48,11 +48,8 @@
 <p>The old call still works exactly as before, and the console warns once that it is deprecated. It returned the error body as if it were data and reported failures through callbacks; the new methods throw.</p>
 <div class="table-block" data-block-id="doc-block-12"></div>
 <h2 id="best-practices">Best practices</h2>
-<div class="callout callout-tip">- Build it once (<code>singleton: true</code>) and give components functions (<code>orders.list</code>), not URLs.
-- Pass <code>signal</code> from <code>load</code> to <code>get</code>: a new search cancels the old request, and leaving the page cancels everything.
-- Return useful messages from the server (<code>{ "message": "…" }</code>): <code>HttpError</code> shows them as they are.
-- Put the token in <code>onRequest</code> and the 401 in <code>onResponseError</code>, not in every call.</div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Retries are only for GET and HEAD. A POST that timed out may have been saved; asking again could create the order twice. If your API supports it, send an idempotency key and retry it yourself.</div>
-<div class="callout callout-warning">Do not await requests in a component's <code>init()</code>: the app's loader waits for it. Give the request to a component's <code>load</code>, or start it without <code>await</code>. See <span data-inline-link="6"></span>.</div>
+<div class="callout-block" data-block-id="doc-block-14"></div>
+<div class="callout-block" data-block-id="doc-block-15"></div>
 </div>

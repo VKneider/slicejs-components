@@ -17,6 +17,21 @@ export default class IconDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-1"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Icon used to render a glyph from the <strong>slc</strong> icon font, where every symbol came in a <code>filled</code> and an <code>outlined</code> variant. It now renders <strong>Lucide</strong>, which is stroke-only.</p><ul><li><strong>All 291 names still work.</strong> Names Lucide spells differently (<code>trash-bin</code>, <code>angle-down</code>, <code>check-circle</code>, ...) are aliased to their Lucide equivalent; the brand, language and Slice marks Lucide does not ship keep their original artwork. Run <code>node scripts/icon-map-audit.mjs</code> to see the full mapping, or read <code>ALIASES</code> in <code>icons.generated.js</code>.</li><li><strong><code>iconStyle</code> is a deprecated no-op.</strong> It is still accepted (and warns once) so existing callers keep working, but it no longer selects anything: drop it.</li><li><strong>The <code>slc-*</code> glyph classes are gone.</strong> If your CSS targeted <code>slice-icon .slc-filrocket</code>, delete that rule and style the host or the <code>&lt;svg&gt;</code> instead. The old stylesheet styled <code>[class^=\"slc-\"]</code> at global scope, so those rules were leaking anyway.</li><li><strong><code>color</code> now defaults to <code>currentColor</code></strong>, so an icon inherits its surroundings and follows the theme. Pass an explicit color to override.</li><li><strong>Size and color land on the host</strong>, so <code>getComputedStyle(icon).fontSize</code> is meaningful and the glyph scales with the surrounding text.</li><li><strong>A few names now draw the same glyph</strong> (<code>angle-down</code> and <code>caret-down</code> are both the chevron) because Lucide merged the old duplicates.</li></ul>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-2"]');
+         if (container) {
             let props = {};
             if ("{\n  \"name\": \"rocket\",\n  \"size\": \"large\",\n  \"color\": \"var(--primary-color)\"\n}") {
                try {
@@ -30,7 +45,7 @@ export default class IconDocumentation extends HTMLElement {
          }
        }
       {
-         const container = this.querySelector('[data-block-id="doc-block-2"]');
+         const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
             const lines = ["| Meaning | Token |","| --- | --- |","| Primary action / current state | `var(--primary-color)` |","| Secondary / neutral | `var(--secondary-color)` |","| Success, confirmation | `var(--success-color)` |","| Warning, attention | `var(--warning-color)` |","| Danger, destructive | `var(--danger-color)` |","| Muted / supporting | `var(--font-secondary-color)` |"];
             const clean = (line) => {
@@ -92,6 +107,16 @@ export default class IconDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -104,7 +129,7 @@ export default class IconDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"name\",\"type\":\"string\",\"required\":false,\"default\":\"youtube\",\"allowedValues\":[]},{\"path\":\"size\",\"type\":\"string\",\"required\":false,\"default\":\"small\",\"allowedValues\":[]},{\"path\":\"color\",\"type\":\"string\",\"required\":false,\"default\":\"currentColor\",\"allowedValues\":[]},{\"path\":\"label\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"iconStyle\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
@@ -127,7 +152,9 @@ export default class IconDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

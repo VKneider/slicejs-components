@@ -1,11 +1,11 @@
 <div class="documentation-content radiogroupdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="radiogroup">
-     <span class="doc-title-text">RadioGroup</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="radiogroup">
+    <span class="doc-title-text">RadioGroup</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>RadioGroup</code> lets the user pick <strong>exactly one</strong> option from a short list. The group owns the value: <code>value</code> is the selected option's <code>value</code> (or <code>null</code> while nothing is selected), and <code>onChange</code> fires with the new one.</p>
 <p>Use it when every option should be visible at once and there are only a handful of them (2–6). For a long list use <code>Select</code>; for a single on/off setting use <code>Switch</code> or <code>Checkbox</code>.</p>
@@ -38,15 +38,11 @@
 <div class="script-block" data-block-id="doc-block-13"></div>
 <div class="script-block" data-block-id="doc-block-14"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Order options in a meaningful way (cheapest first, most common first) and pre-select a sensible
-default when one exists — a group with nothing selected forces an extra decision.</div>
-<div class="callout callout-tip">Inside a <code>Form</code>, use <code>variant: 'plain'</code> and let the Form field's <code>label</code> name the group: the Form passes
-it to the group as <code>ariaLabel</code>. A <code>label</code> on the RadioGroup itself (its legend) is only needed outside a Form.</div>
-<div class="callout callout-tip">Keep <code>buttons</code> labels to a word or two, and to two–five options. Longer lists wrap badly in a bar: use <code>card</code> or the default look.</div>
+<div class="callout-block" data-block-id="doc-block-15"></div>
+<div class="callout-block" data-block-id="doc-block-16"></div>
+<div class="callout-block" data-block-id="doc-block-17"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning"><code>value</code> is compared strictly. If your options use numbers (<code>value: 1</code>), set <code>value: 1</code>, not <code>'1'</code> —
-otherwise nothing is selected and a warning is logged.</div>
-<div class="callout callout-warning">Do not use a RadioGroup for actions. Selecting an option should only change a value; if picking it
-should immediately trigger an action, use buttons instead.</div>
-<div class="component-block" data-block-id="doc-block-15"></div>
+<div class="callout-block" data-block-id="doc-block-18"></div>
+<div class="callout-block" data-block-id="doc-block-19"></div>
+<div class="component-block" data-block-id="doc-block-20"></div>
 </div>

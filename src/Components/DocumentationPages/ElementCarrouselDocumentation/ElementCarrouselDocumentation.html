@@ -1,11 +1,11 @@
 <div class="documentation-content elementcarrouseldocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="elementcarrousel">
-     <span class="doc-title-text">ElementCarrousel</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="elementcarrousel">
+    <span class="doc-title-text">ElementCarrousel</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>ElementCarrousel</code> shows a row of slides that moves one position at a time. A slide can hold anything: a picture, a <span data-inline-link="0"></span>, a testimonial, or any other component.</p>
 <p>The row is a native scroll container with scroll snapping. A swipe on a phone, a trackpad flick and Shift+wheel all move it the way the platform does, and a mouse can drag it. Arrows, dots, the keyboard and autoplay move the same scroll.</p>
@@ -21,16 +21,11 @@
 <h3 id="several-per-view">Several per view</h3>
 <ul><li><code>perView</code> is how many slides sit side by side. It can be a number, or an object keyed by the carousel's <strong>own</strong> width: <code>{ 0: 1, 560: 2, 900: 3 }</code>. The carousel's width is used, not the window's, so the same carousel works in a sidebar and in a page.</li><li><code>gap</code> is the space between slides, in pixels (16 by default).</li><li><code>peek</code> shows that many pixels of the next slide, as a hint that there is more.</li><li><code>align: 'center'</code> puts the current slide in the middle, with the peek on both sides, and dims the slides around it.</li><li>When everything fits, there are no arrows and no dots.</li></ul>
 <h3 id="autoplay">Autoplay</h3>
-<ul><li><code>autoplay: true</code> moves every 5 seconds; a number sets the time in milliseconds. It goes back to the first slide after the last.</li><li>It stops while the pointer is over the carousel or the focus is in it, so nothing moves while someone reads or clicks.</li><li>A pause button is always shown with it (WCAG 2.2.2: anything that moves by itself can be paused).</li><li>With *reduce motion* on in the system, it never starts, and the button starts it on request.</li><li>While it plays, slides are not announced, so a screen reader is not interrupted every few seconds.</li></ul>
+<ul><li><code>autoplay: true</code> moves every 5 seconds; a number sets the time in milliseconds. It goes back to the first slide after the last.</li><li>It stops while the pointer is over the carousel or the focus is in it, so nothing moves while someone reads or clicks.</li><li>A pause button is always shown with it (WCAG 2.2.2: anything that moves by itself can be paused).</li><li>With <em>reduce motion</em> on in the system, it never starts, and the button starts it on request.</li><li>While it plays, slides are not announced, so a screen reader is not interrupted every few seconds.</li></ul>
 <h2 id="looks">Looks</h2>
-<ul><li><code>arrows</code>:</li></ul>
-<p>- <code>'overlay'</code> (default): round buttons over the edges of the slides, hidden at the ends;   - <code>'outside'</code>: beside the row, for cards that should not be covered. Under 480px they move over the slides, so a phone keeps the width for the slides;   - <code>'none'</code>: no arrows, for a row moved by swiping or by the dots.</p>
-<ul><li><code>indicators</code>:</li></ul>
-<p>- <code>'dots'</code> (default): one dot per position, built with <span data-inline-link="5"></span>;   - <code>'count'</code>: "2 / 5";   - <code>'thumbnails'</code>: small buttons built by <code>thumbnail(slide, index)</code>, for galleries;   - <code>'none'</code>.</p>
-<ul><li>The CSS variables <code>--element-carrousel-accent</code> and <code>--element-carrousel-radius</code> adjust the current thumbnail, the focus ring and the corners.</li></ul>
+<ul><li><code>arrows</code>:<ul><li><code>'overlay'</code> (default): round buttons over the edges of the slides, hidden at the ends;</li><li><code>'outside'</code>: beside the row, for cards that should not be covered. Under 480px they move over the slides, so a phone keeps the width for the slides;</li><li><code>'none'</code>: no arrows, for a row moved by swiping or by the dots.</li></ul></li><li><code>indicators</code>:<ul><li><code>'dots'</code> (default): one dot per position, built with <span data-inline-link="5"></span>;</li><li><code>'count'</code>: "2 / 5";</li><li><code>'thumbnails'</code>: small buttons built by <code>thumbnail(slide, index)</code>, for galleries;</li><li><code>'none'</code>.</li></ul></li><li>The CSS variables <code>--element-carrousel-accent</code> and <code>--element-carrousel-radius</code> adjust the current thumbnail, the focus ring and the corners.</li></ul>
 <h2 id="language">Language</h2>
-<ul><li><code>label</code> names the carousel ("Product photos"). Give every carousel one.</li><li><code>texts</code> replaces the other words:</li></ul>
-<p>- <code>label</code> (the default name);   - <code>slide</code> (<code>{index}</code>, <code>{total}</code>) and <code>announce</code> (<code>{index}</code>, <code>{total}</code>);   - <code>previous</code>, <code>next</code>, <code>goTo</code> (<code>{page}</code>);   - <code>play</code>, <code>pause</code>.</p>
+<ul><li><code>label</code> names the carousel ("Product photos"). Give every carousel one.</li><li><code>texts</code> replaces the other words:<ul><li><code>label</code> (the default name);</li><li><code>slide</code> (<code>{index}</code>, <code>{total}</code>) and <code>announce</code> (<code>{index}</code>, <code>{total}</code>);</li><li><code>previous</code>, <code>next</code>, <code>goTo</code> (<code>{page}</code>);</li><li><code>play</code>, <code>pause</code>.</li></ul></li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="examples">Examples</h2>
@@ -39,13 +34,13 @@
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Give every carousel a <code>label</code> that says what is in it ("Product photos", "Recommended courses"). Screen readers announce it when the focus enters.</div>
-<div class="callout callout-tip">Prefer several slides per view with a <code>peek</code> for rows of items. People see at once that there is more, and can swipe to it, without hunting for arrows or dots.</div>
-<div class="callout callout-tip">Build slides with the data you already have, and keep that data next to them. Use <code>index</code> and <code>onChange</code> to find which item is on screen, instead of reading it back from the slide.</div>
+<div class="callout-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not hide the only copy of something important in a later slide. Most people never see past the second one.</div>
-<div class="callout callout-warning">Use autoplay sparingly, and only for content that can be missed (quotes, highlights). Text that moves while someone reads it is hard to follow. The pause button, the hover hold and the reduced-motion check are there for that reason; do not hide them.</div>
-<div class="callout callout-warning">Inside a flex or grid item, give that item <code>min-width: 0</code>. Flex and grid items do not shrink below their content by default, and a row of slides is wider than any screen, so the page would scroll sideways.</div>
-<div class="callout callout-warning">A slide's content fills its width. Do not give the elements fixed widths: they would overflow the slide on a phone. Use <code>perView</code> to decide how many fit instead.</div>
-<div class="component-block" data-block-id="doc-block-6"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="component-block" data-block-id="doc-block-13"></div>
 </div>

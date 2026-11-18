@@ -1,11 +1,11 @@
 <div class="documentation-content datepickerdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="datepicker">
-     <span class="doc-title-text">DatePicker</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="datepicker">
+    <span class="doc-title-text">DatePicker</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>DatePicker</code> is a date field with a calendar. People can do either of two things:</p>
 <ul><li><strong>type the date</strong> in the order their locale writes it (<code>21/10/2026</code> in <code>es-VE</code>, <code>10/21/2026</code> in <code>en-US</code>) or as ISO (<code>2026-10-21</code>);</li><li><strong>pick it</strong> from a calendar that opens under the field.</li></ul>
@@ -44,13 +44,13 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Keep the value as ISO text all the way to the server. <code>'2026-10-21'</code> sorts, compares and stores as it is, and it means the same day in every time zone. Turn it into a <code>Date</code> only to do date arithmetic: <code>new Date(day + 'T00:00')</code> is local midnight, and <code>toLocaleDateString('en-CA')</code> turns it back into ISO text.</div>
-<div class="callout callout-tip">Use <code>months: 2</code> for ranges. Most stays, trips and report periods cross a month boundary, and seeing both months saves paging back and forth.</div>
-<div class="callout callout-tip">Give report filters presets ("Last 7 days", "This month"). They are what people pick most of the time, and a function preset stays right tomorrow.</div>
-<div class="callout callout-tip">For a birth date or another date far in the past, people type faster than they page. Leave the field typeable, set the placeholder order with <code>locale</code>, and let the year view handle the rest.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">Do not build the value with <code>new Date('2026-10-21')</code> and then <code>getDate()</code>. That string is read as UTC midnight, which is still the 20th in the Americas. Use <code>valueAsDate</code> (local midnight) or work with the ISO text.</div>
-<div class="callout callout-warning"><code>disabledDates</code> as a function runs for every day drawn, which is 42 times per month shown. Keep it to a lookup (a <code>Set</code>, a comparison) and fetch what it needs beforehand, not inside it.</div>
-<div class="callout callout-warning">Disabling days does not validate what the server receives. A date can still be typed, sent from code or posted by hand. Check <code>min</code>, <code>max</code> and availability on the server too.</div>
-<div class="component-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-13"></div>
+<div class="component-block" data-block-id="doc-block-14"></div>
 </div>

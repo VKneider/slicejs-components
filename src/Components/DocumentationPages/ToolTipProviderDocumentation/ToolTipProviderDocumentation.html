@@ -1,11 +1,11 @@
 <div class="documentation-content tooltipproviderdocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="tooltipprovider">
-     <span class="doc-title-text">ToolTipProvider</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="tooltipprovider">
+    <span class="doc-title-text">ToolTipProvider</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>ToolTipProvider</code> is a Service that gives tooltips to many elements with <strong>one shared bubble</strong> and <strong>one set of listeners on the document</strong>. Nothing is built per trigger: a toolbar of twenty buttons or a table of a thousand cells costs one bubble.</p>
 <p>It behaves exactly like <span data-inline-link="0"></span>, because both run on the same code:</p>
@@ -35,9 +35,9 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Use one provider for the whole app (<code>{ singleton: true }</code>) and <code>scope()</code> the containers that hold tooltips: the toolbar, the table, the sidebar. Rows and buttons added later are covered with no extra code.</div>
-<div class="callout callout-tip">Give truncated text a tooltip with the full text. Make the element focusable (<code>tabIndex = 0</code>) or let <code>scope()</code> do it, so keyboard users can read it too.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning">One provider shows one tooltip at a time, and so does ToolTip: opening one closes any other. A comparison that needs two explanations side by side belongs on the page, not in tooltips.</div>
-<div class="callout callout-warning">An element added after <code>scope()</code> does not get the automatic <code>tabindex</code>. If it is not focusable on its own (a <code>&lt;span&gt;</code>), set <code>tabIndex = 0</code> on it, or call <code>attach()</code> for it.</div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
 </div>

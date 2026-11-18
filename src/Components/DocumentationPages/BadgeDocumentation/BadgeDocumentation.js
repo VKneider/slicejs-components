@@ -17,6 +17,21 @@ export default class BadgeDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-1"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Before tones, <code>variant</code> took the meaning (<code>variant: 'success'</code>). That still works: the badge takes it as the tone and logs one note. Change it to <code>tone: 'success'</code> when you can.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "neutral",
+               variant: "ghost",
+               title: "Note",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-2"]');
+         if (container) {
             let props = {};
             if ("{\n  \"label\": \"Paid\",\n  \"tone\": \"success\",\n  \"icon\": \"check\"\n}") {
                try {
@@ -30,7 +45,7 @@ export default class BadgeDocumentation extends HTMLElement {
          }
        }
       {
-         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: ":root {\n  /* light theme: toward black */\n  --primary-color-readable: color-mix(in srgb, var(--primary-color) 88%, #000);\n  --success-color-readable: color-mix(in srgb, var(--success-color) 72%, #000);\n  --warning-color-readable: color-mix(in srgb, var(--warning-color) 66%, #000);\n  --danger-color-readable: color-mix(in srgb, var(--danger-color) 84%, #000);\n  --info-color-readable: color-mix(in srgb, var(--info-color) 64%, #000);\n}\n\n:root[data-theme='DARK'] {\n  /* dark theme: toward white */\n  --primary-color-readable: color-mix(in srgb, var(--primary-color) 92%, #fff);\n  --success-color-readable: color-mix(in srgb, var(--success-color) 92%, #fff);\n  --warning-color-readable: color-mix(in srgb, var(--warning-color) 92%, #fff);\n  --danger-color-readable: color-mix(in srgb, var(--danger-color) 92%, #fff);\n  --info-color-readable: color-mix(in srgb, var(--info-color) 80%, #fff);\n}",
@@ -43,6 +58,111 @@ export default class BadgeDocumentation extends HTMLElement {
                container.appendChild(label);
             }
             container.appendChild(code);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>The <code>-readable</code> tokens are <strong>optional for a light theme</strong>: <code>Badge.css</code> carries the light values as fallbacks, so a fresh app's theme already passes. They are <strong>needed for a dark theme</strong>, where the fallbacks would be too dark. The specs measure every tone in every variant, in both themes, against 4.5:1.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>--primary-color-shade</code> is a different token: a border and surface tone of the brand. <code>--primary-color-readable</code> is the text tone. The <code>-readable</code> suffix keeps the two apart.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Map your statuses to badges in one place (<code>const STATUS = { paid: { label, tone, icon } }</code>) and pass <code>STATUS[row.status]</code>. Every screen then shows the same state the same way.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use <code>filled</code> only for what must be seen before anything else (Overdue, Down, a count of unread messages). If everything is filled, nothing stands out.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>On top of a button or an avatar, position the badge in your own layout (<code>position: absolute</code>). <code>Badge</code> styles itself, not its place next to a sibling. <span data-inline-link=\"5\"></span> already does it with its <code>badge</code> prop.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Colour alone is not enough. Keep a <code>label</code> or a <code>value</code>: red and green look different to most people, but only the word tells a colour-blind user which is which. A <code>dot</code> needs a <code>label</code> too, for screen readers.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-14"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not show a live <code>pulse</code> the app cannot keep up to date. A green \"● Online\" that stays on after the server went down is worse than no badge.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
          }
       }
       {
@@ -64,7 +184,9 @@ export default class BadgeDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

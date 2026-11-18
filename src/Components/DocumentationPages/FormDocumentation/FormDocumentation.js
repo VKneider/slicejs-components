@@ -77,6 +77,16 @@ export default class FormDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -107,6 +117,21 @@ export default class FormDocumentation extends HTMLElement {
       {
          const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Use a Modal for two or three short steps, and a route per step for anything longer. A Modal has no URL, so there is nothing to link to and nothing for the back button to go back to.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "schema: [{\n  kind: 'group',\n  name: 'phones',\n  label: 'Phone numbers',\n  itemLabel: 'Phone',       // singular, used in the item tag and buttons\n  min: 1,\n  max: 3,\n  fields: [                  // the repeated sub-schema\n    { name: 'number', label: 'Number', component: 'Input', required: true },\n    { name: 'note',   label: 'Note',   component: 'Input' },\n  ],\n}]",
                language: "javascript"
@@ -121,7 +146,7 @@ export default class FormDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
             const lines = ["| Prop | Default | What it does |","| --- | --- | --- |","| `variant` | `'card'` | `'card'` draws a raised surface. `'plain'` is rhythm only - use it when the form already sits inside one, such as a Modal body or a Card. |","| `columns` | `1` | Field grid columns. `2` is what makes a form read as designed rather than dumped. |","| `maxWidth` | `'40rem'` | Caps the form's width, so a single text field is not as wide as its container. |"];
             const clean = (line) => {
@@ -183,6 +208,16 @@ export default class FormDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -195,7 +230,7 @@ export default class FormDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "await slice.build('Form', {\n  columns: 2,\n  schema: [\n    { kind: 'field', name: 'first', label: 'First name', component: 'Input' },\n    { kind: 'field', name: 'last',  label: 'Last name',  component: 'Input' },\n    // full width - an address or a textarea reads badly at half width\n    { kind: 'field', name: 'bio', label: 'Bio', component: 'Textarea', full: true },\n  ],\n});",
@@ -211,7 +246,22 @@ export default class FormDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>The container owns the spacing, not the controls. <code>Input</code>, <code>Select</code> and <code>Textarea</code> carry no vertical margin of their own, so a form's rhythm is decided in one place. If you need the old standalone spacing, set <code>--control-margin-block</code> on the host.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
          if (container) {
             const lines = ["| Method | Description |","| --- | --- |","| `submit()` | Validates every step; calls `onSubmit(values)` and returns `true` if valid. On a failure it reveals the step owning the first error and focuses the field. |","| `validate()` | Runs validation, shows errors, reveals + focuses the first invalid field, returns a boolean. |","| `getValues()` | `{ name: value }` read from each field's component. |","| `setValue(name, value)` / `setError(name, msg)` / `clearErrors()` / `reset()` | Programmatic helpers. |"];
             const clean = (line) => {
@@ -273,6 +323,16 @@ export default class FormDocumentation extends HTMLElement {
 
                output = applyBold(output);
                output = applyInlineCode(output);
+               // Internal links arrived as tokens; turn them into the same
+               // placeholders the page replaces with Link components.
+               output = output.replace(/SLICE_INLINE_LINK_(\d+)_TOKEN/g, '<span data-inline-link="$1"></span>');
+               // External/unsafe links left in the cell become plain anchors.
+               output = output.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, href) => {
+                  if (!/^(?:https?:\/\/|\/\/|\/|#|mailto:|tel:)/i.test(href)) return label;
+                  const external = /^(?:https?:\/\/|\/\/)/i.test(href);
+                  const attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
+                  return '<a href="' + href.replace(/"/g, '&quot;') + '"' + attrs + '>' + label + '</a>';
+               });
                return output;
             };
 
@@ -285,7 +345,67 @@ export default class FormDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-15"]');
+         const container = this.querySelector('[data-block-id="doc-block-17"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Let the Form own the field's <code>label</code>/<code>description</code>; don't also set the component's own <code>label</code> in <code>props</code> or it doubles up (for <code>Checkbox</code>/<code>Switch</code> you may prefer the component's inline label — then omit the field <code>label</code>).</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-18"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>validate(value, values)</code> receives <strong>all</strong> current values as its second argument — use it for cross-field rules (confirm-password, date ranges). For server-side errors, call <code>form.setError(name, message)</code> from an async <code>onSubmit</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-19"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>A field whose <code>component</code> is missing — or names something that is not registered — renders <strong>nothing</strong> where the control should be. It is left visible as a dashed marker naming the problem, and the Form logs a warning naming the field, but the field contributes <strong>no key</strong> to <code>getValues()</code>.</p><p>That is worth knowing at submit time: a broken field does not block the form, it just quietly disappears from the payload. If a field is required, the usual validation is what catches it.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-20"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>The Form <strong>builds</strong> its field + button components with <code>slice.build</code> and destroys them in <code>beforeDestroy()</code>. Components built with <code>slice.build</code> are not auto-destroyed by a parent — so destroy the <code>Form</code> itself through <code>slice.controller.destroyComponent(form)</code> / <code>destroyByContainer(node)</code> when you tear down whatever hosts it (a view). A <span data-inline-link=\"0\"></span> destroys what is in its body when it is destroyed, so a Form in a Modal with <code>destroyOnClose: true</code> is taken care of.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-21"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"schema\",\"type\":\"array\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"submitText\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"resetText\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"onSubmit\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"nextText\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"variant\",\"type\":\"string\",\"required\":false,\"default\":\"card\",\"allowedValues\":[]},{\"path\":\"columns\",\"type\":\"number\",\"required\":false,\"default\":\"1\",\"allowedValues\":[]},{\"path\":\"maxWidth\",\"type\":\"string\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {
@@ -318,7 +438,9 @@ export default class FormDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

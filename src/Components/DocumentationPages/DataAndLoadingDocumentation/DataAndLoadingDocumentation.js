@@ -143,6 +143,51 @@ export default class DataAndLoadingDocumentation extends HTMLElement {
          }
       }
       {
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<ul><li><code>init()</code> and <code>update()</code> build and return; they never <code>await</code> the network.</li><li>One set of data, one component: give it <code>load</code>.</li><li>Data several components show: a context with its state (<code>loading</code>, <code>refreshing</code>, <code>ready</code>, <code>error</code>), asked for once.</li><li>Requests start early and together; only what decides the page is awaited, with a time budget.</li><li>Every place that shows data has a skeleton, an empty state, and an error with Try again.</li><li>Changes: lists optimistic with rollback (and Undo for removals), fields commit-first; errors say what to do.</li></ul>";
+            const callout = await slice.build('Callout', {
+               tone: "success",
+               variant: "soft",
+               title: "Tip",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p><code>Promise.all</code> over requests that do not depend on each other, not a <code>for</code> with an <code>await</code> inside: five requests of 300 ms take 300 ms together, and 1.5 s in a row.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-13"]');
+         if (container) {
+            const body = document.createElement('div');
+            body.className = 'doc-callout-body';
+            body.innerHTML = "<p>Do not hide a slow request behind a longer <code>minVisibleMs</code> or a nicer welcome screen. Measure the first paint (as in the first example) and move the request out of <code>init()</code>.</p>";
+            const callout = await slice.build('Callout', {
+               tone: "warning",
+               variant: "soft",
+               title: "Warning",
+               content: Array.from(body.childNodes)
+            });
+            container.appendChild(callout || body);
+         }
+      }
+      {
          const links = [{"text":"DataList","path":"/docs/data/datalist"},{"text":"Table","path":"/docs/data/table"},{"text":"DescriptionList","path":"/docs/data/description-list"},{"text":"Alert","path":"/docs/feedback/alert"},{"text":"Loading","path":"/docs/feedback/loading"}];
          for (const [index, linkProps] of links.entries()) {
             const placeholder = this.querySelector('[data-inline-link="' + index + '"]');
@@ -161,7 +206,9 @@ export default class DataAndLoadingDocumentation extends HTMLElement {
 
    beforeDestroy() {
      for (const link of this._inlineLinks) {
-       slice.controller.destroyComponent(link);
+       if (typeof slice.isComponentAlive !== 'function' || slice.isComponentAlive(link)) {
+         slice.controller.destroyComponent(link);
+       }
      }
      this._inlineLinks = [];
    }

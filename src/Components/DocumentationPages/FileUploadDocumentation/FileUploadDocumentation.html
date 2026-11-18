@@ -1,11 +1,11 @@
 <div class="documentation-content fileuploaddocumentation">
 
- <div class="doc-title-bar">
-   <h1 id="fileupload">
-     <span class="doc-title-text">FileUpload</span>
-   </h1>
-   <span class="copy-md-slot" data-copy-md></span>
- </div>
+<div class="doc-title-bar">
+  <h1 id="fileupload">
+    <span class="doc-title-text">FileUpload</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
 <h2 id="overview">Overview</h2>
 <p><code>FileUpload</code> takes files from people: picked with the file dialog, dropped on the zone, or pasted. It checks each file and turns away the wrong ones with a reason. It then lists the accepted files with a preview and a remove button, and can upload them with progress.</p>
 <p>Underneath is a real <code>&lt;input type="file"&gt;</code> inside a <code>&lt;label&gt;</code>, so the zone opens the picker with a click, a tap, <strong>Enter</strong> or <strong>Space</strong>, and <strong>Tab</strong> reaches it like any other field.</p>
@@ -37,13 +37,9 @@
 <h3 id="memory">Memory</h3>
 <p>Image previews use object URLs, which keep the file in memory until they are revoked. FileUpload revokes each one when its file is removed, the files are replaced or the component is destroyed. Destroying it also aborts uploads in flight.</p>
 <h2 id="looks">Looks</h2>
-<ul><li><code>variant</code>:</li></ul>
-<p>- <code>'dropzone'</code> (default): a large area for dropping files;   - <code>'compact'</code>: one row with a button, for forms where space is tight. It still takes drops.</p>
-<ul><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>icon</code> is the zone's icon (<code>'upload'</code> by default, <code>''</code> for none). <code>prompt</code> replaces the zone's text, and <code>hint</code> the line under it.</li><li><code>label</code> puts a label above the zone, outside a Form.</li></ul>
+<ul><li><code>variant</code>:<ul><li><code>'dropzone'</code> (default): a large area for dropping files;</li><li><code>'compact'</code>: one row with a button, for forms where space is tight. It still takes drops.</li></ul></li><li><code>size</code>: <code>'sm'</code>, <code>'md'</code> (default) or <code>'lg'</code>.</li><li><code>icon</code> is the zone's icon (<code>'upload'</code> by default, <code>''</code> for none). <code>prompt</code> replaces the zone's text, and <code>hint</code> the line under it.</li><li><code>label</code> puts a label above the zone, outside a Form.</li></ul>
 <h2 id="language">Language</h2>
-<ul><li><code>texts</code> replaces the zone's words:</li></ul>
-<p>- <code>prompt</code> / <code>promptOne</code>, where <code>{browse}</code> marks the link;   - <code>browse</code>;   - <code>compact</code> / <code>compactOne</code>;   - <code>remove</code>, <code>retry</code>, <code>cancel</code>;   - <code>uploading</code>, with <code>{percent}</code>;   - <code>done</code>, <code>failed</code>, <code>upTo</code>, <code>maxFiles</code>.</p>
-<ul><li><code>messages</code> replaces the errors: <code>required</code>, <code>type</code>, <code>tooLarge</code> (<code>{max}</code>), <code>tooMany</code> (<code>{max}</code>), <code>uploading</code> and <code>failed</code>.</li></ul>
+<ul><li><code>texts</code> replaces the zone's words:<ul><li><code>prompt</code> / <code>promptOne</code>, where <code>{browse}</code> marks the link;</li><li><code>browse</code>;</li><li><code>compact</code> / <code>compactOne</code>;</li><li><code>remove</code>, <code>retry</code>, <code>cancel</code>;</li><li><code>uploading</code>, with <code>{percent}</code>;</li><li><code>done</code>, <code>failed</code>, <code>upTo</code>, <code>maxFiles</code>.</li></ul></li><li><code>messages</code> replaces the errors: <code>required</code>, <code>type</code>, <code>tooLarge</code> (<code>{max}</code>), <code>tooMany</code> (<code>{max}</code>), <code>uploading</code> and <code>failed</code>.</li></ul>
 <h2 id="live-preview">Live Preview</h2>
 <div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="examples">Examples</h2>
@@ -53,11 +49,11 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout callout-tip">Say what is allowed before people pick: set <code>accept</code>, <code>maxSize</code> and <code>maxFiles</code>, and the zone writes the hint for you. Finding out after a slow upload is the worst time.</div>
-<div class="callout callout-tip">Pass the <code>signal</code> to <code>fetch(url, { signal, body: file })</code>. Cancel then really stops the request, instead of hiding a file that keeps uploading.</div>
-<div class="callout callout-tip">Read files in the page when you can: <code>await file.text()</code> for a CSV, an image's object URL for a preview. Nothing needs to reach the server until the person confirms.</div>
+<div class="callout-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout callout-warning"><code>accept</code> and <code>maxSize</code> help people, but they are not security. Check the type and the size again on the server: a request can be sent without this page.</div>
-<div class="callout callout-warning">Every <code>URL.createObjectURL</code> you make yourself keeps its file in memory until you call <code>URL.revokeObjectURL</code>. FileUpload frees its own previews. Free the ones you create, as the gallery and profile examples do.</div>
-<div class="component-block" data-block-id="doc-block-7"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="callout-block" data-block-id="doc-block-11"></div>
+<div class="component-block" data-block-id="doc-block-12"></div>
 </div>
