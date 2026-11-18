@@ -217,3 +217,9 @@ Retries are only for GET and HEAD. A POST that timed out may have been saved; as
 :::warning
 Do not await requests in a component's `init()`: the app's loader waits for it. Give the request to a component's `load`, or start it without `await`. See [Data and the first load](/docs/guides/data-and-loading).
 :::
+
+:::related
+- [QueryService](/docs/services/query-service) - Cache, freshness and invalidation on top of it.
+- [Data and loading](/docs/guides/data-and-loading) - Requests that never block the page.
+- [RealtimeService](/docs/services/realtime-service) - What the server sends without being asked.
+:::

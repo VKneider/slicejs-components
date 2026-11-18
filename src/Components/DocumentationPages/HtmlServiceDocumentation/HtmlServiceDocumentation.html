@@ -23,11 +23,12 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="best-practices">Best Practices</h2>
+<p>Sanitize at the boundary, once, when the value enters — not at every render site. Then the value is just data for the rest of its life, and a new render path cannot forget to sanitize.</p>
+<p><code>sanitize()</code> already passes inline SVG through unchanged, including <code>viewBox</code> and <code>path</code>. There is no need to widen the tag or attribute allowlist to make icons work — doing so only widens the attack surface.</p>
 <div class="callout-block" data-block-id="doc-block-7"></div>
-<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
+<div class="callout-block" data-block-id="doc-block-8"></div>
 <div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="callout-block" data-block-id="doc-block-10"></div>
-<div class="callout-block" data-block-id="doc-block-11"></div>
-<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="compare-block" data-block-id="doc-block-10"></div>
+<div class="related-block" data-block-id="doc-block-11"></div>
 </div>

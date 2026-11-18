@@ -10,7 +10,7 @@ export default class LocalStorageManagerDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "local-storage-manager.md";
-    this.markdownContent = "---\ntitle: LocalStorageManager\nroute: /docs/services/local-storage-manager\nnavLabel: LocalStorageManager\nsection: Services\ngroup: Storage\norder: 10\ndescription: Service wrapper over window.localStorage with automatic JSON serialization.\ncomponent: LocalStorageManagerDocumentation\ngenerate: true\ntags: [service, storage, localstorage]\n---\n\n# LocalStorageManager\n\n## Overview\n`LocalStorageManager` is a **Service** component: a plain logic class (no DOM, no template)\nthat wraps `window.localStorage` and serializes values to/from JSON automatically. Every\nmethod is wrapped in a `try/catch` so a failure never throws — it returns `null` or `false`.\n\nBuild it like any service, with a `sliceId`:\n\n```javascript title=\"Build the service\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n```\n\n## Methods\n\n| Method | Returns | Description |\n| --- | --- | --- |\n| `getItem(key)` | parsed value, or `null` | Reads a key and `JSON.parse`s it. Returns `null` if missing or on parse error. |\n| `setItem(key, value)` | `boolean` | `JSON.stringify`s `value` and stores it. Returns `false` if storage fails (e.g. quota). |\n| `removeItem(key)` | `boolean` | Removes a single key. |\n| `clear()` | `boolean` | Clears the entire `localStorage` for the origin. |\n\n## Usage\n\n```javascript title=\"Store and read structured data\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n\nstore.setItem('user', { id: 7, name: 'Ada', roles: ['admin'] });\n\nconst user = store.getItem('user');\n// -> { id: 7, name: 'Ada', roles: ['admin'] }\n\nstore.removeItem('user');\n```\n\n```javascript title=\"Persist UI preferences\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n\nconst theme = store.getItem('theme') || 'LIGHT';\nslice.setTheme(theme);\n\n// later, when the user toggles:\nstore.setItem('theme', 'DARK');\n```\n\n## Best Practices\n:::tip\nValues are JSON-serialized, so plain objects and arrays round-trip cleanly. Always provide a\nfallback when reading (`store.getItem('key') ?? defaultValue`) since `getItem` returns `null`\nfor both \"missing\" and \"unparseable\".\n:::\n\n## Pitfalls\n:::warning\nOnly JSON-serializable values survive the round-trip — `Date`, `Map`, `Set`, and functions do\nnot. `localStorage` is synchronous and origin-scoped; for larger or structured datasets prefer\n[`IndexedDbManager`](/docs/services/indexed-db-manager).\n:::\n";
+    this.markdownContent = "---\ntitle: LocalStorageManager\nroute: /docs/services/local-storage-manager\nnavLabel: LocalStorageManager\nsection: Services\ngroup: Storage\norder: 10\ndescription: Service wrapper over window.localStorage with automatic JSON serialization.\ncomponent: LocalStorageManagerDocumentation\ngenerate: true\ntags: [service, storage, localstorage]\n---\n\n# LocalStorageManager\n\n## Overview\n`LocalStorageManager` is a **Service** component: a plain logic class (no DOM, no template)\nthat wraps `window.localStorage` and serializes values to/from JSON automatically. Every\nmethod is wrapped in a `try/catch` so a failure never throws — it returns `null` or `false`.\n\nBuild it like any service, with a `sliceId`:\n\n```javascript title=\"Build the service\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n```\n\n## Methods\n\n| Method | Returns | Description |\n| --- | --- | --- |\n| `getItem(key)` | parsed value, or `null` | Reads a key and `JSON.parse`s it. Returns `null` if missing or on parse error. |\n| `setItem(key, value)` | `boolean` | `JSON.stringify`s `value` and stores it. Returns `false` if storage fails (e.g. quota). |\n| `removeItem(key)` | `boolean` | Removes a single key. |\n| `clear()` | `boolean` | Clears the entire `localStorage` for the origin. |\n\n## Usage\n\n```javascript title=\"Store and read structured data\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n\nstore.setItem('user', { id: 7, name: 'Ada', roles: ['admin'] });\n\nconst user = store.getItem('user');\n// -> { id: 7, name: 'Ada', roles: ['admin'] }\n\nstore.removeItem('user');\n```\n\n```javascript title=\"Persist UI preferences\"\nconst store = await slice.build('LocalStorageManager', { sliceId: 'LocalStorageManager' });\n\nconst theme = store.getItem('theme') || 'LIGHT';\nslice.setTheme(theme);\n\n// later, when the user toggles:\nstore.setItem('theme', 'DARK');\n```\n\n## Best Practices\n:::tip\nValues are JSON-serialized, so plain objects and arrays round-trip cleanly. Always provide a\nfallback when reading (`store.getItem('key') ?? defaultValue`) since `getItem` returns `null`\nfor both \"missing\" and \"unparseable\".\n:::\n\n## Pitfalls\n:::warning\nOnly JSON-serializable values survive the round-trip — `Date`, `Map`, `Set`, and functions do\nnot. `localStorage` is synchronous and origin-scoped; for larger or structured datasets prefer\n[`IndexedDbManager`](/docs/services/indexed-db-manager).\n:::\n\n:::related\n- [StorageService](/docs/services/storage-service) - Namespaces, expiry and cross-tab watch.\n- [IndexedDbManager](/docs/services/indexed-db-manager) - Larger, structured data.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -174,6 +174,37 @@ export default class LocalStorageManagerDocumentation extends HTMLElement {
                content: Array.from(body.childNodes)
             });
             container.appendChild(callout || body);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         if (container) {
+            const items = [{"title":"StorageService","path":"/docs/services/storage-service","text":"Namespaces, expiry and cross-tab watch."},{"title":"IndexedDbManager","path":"/docs/services/indexed-db-manager","text":"Larger, structured data."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
          }
       }
       {

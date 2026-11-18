@@ -115,15 +115,17 @@ mount(wrap);
 
 ## Best Practices
 
-:::tip
 Sanitize at the boundary, once, when the value enters — not at every render site. Then the value is
 just data for the rest of its life, and a new render path cannot forget to sanitize.
-:::
 
-:::tip
 `sanitize()` already passes inline SVG through unchanged, including `viewBox` and `path`. There is
 no need to widen the tag or attribute allowlist to make icons work — doing so only widens the
 attack surface.
+
+:::tip
+`sanitizeRichText()` drops tags but **keeps their text**: a stripped `<img>` disappears while
+`<script>alert(1)</script>` leaves `alert(1)` visible. That is DOMPurify's `KEEP_CONTENT` behaviour,
+not a bug. When the leftover text would be noise — user comments, a chat — use `toText()`.
 :::
 
 ## Pitfalls
@@ -132,7 +134,6 @@ attack surface.
 `innerHTML = value` with an unsanitized `value` is an XSS hole even when the value "only" comes
 from your own database: anything that writes to it — a form field, an import, a support tool — turns
 it into a hole too. `sanitize()` at the boundary closes all of them at once.
-
 :::
 
 :::warning
@@ -142,17 +143,17 @@ and User-Agent the moment the page renders, with nothing visible on screen. Use
 `sanitizeRichText()`, which drops images entirely. Links are kept on purpose: an `<a href>` only
 reaches its destination when the reader deliberately clicks it, and the destination is visible
 first.
-
 :::
 
-:::warning
-`sanitizeRichText()` drops tags but **keeps their text**, so a stripped `<img>` simply disappears
-while `<script>alert(1)</script>` leaves `alert(1)` as visible text. That is DOMPurify's
-`KEEP_CONTENT` behaviour, not a bug — but if you are rendering user comments, use `toText()`.
-
+:::compare left="Safe to render" right="Correct content"
+`sanitize()` guarantees the string is safe to become markup, and nothing else.
+---
+Whether the content has the shape the app expects is validation, a separate check on the data.
 :::
 
-:::warning
-Sanitizing is not the same as validating. `sanitize()` guarantees the string is safe to become
-markup; it says nothing about whether the content is *correct*. Check the shape of the data too.
+:::related
+- [DomService](/docs/services/dom-service) - Building DOM from data without `innerHTML`.
+- [FetchManager](/docs/services/fetch-manager) - Where the untrusted JSON arrives.
+- [CodeVisualizer](/docs/display/code-visualizer) - Showing code as text, not as markup.
 :::
+

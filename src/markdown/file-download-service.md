@@ -106,3 +106,9 @@ For a file larger than a few tens of MB, `Blob` + `URL.createObjectURL` is the o
 works: a base64 `data:` URL has to fit in a string, and browser string limits are far below what
 that sounds like. Past that size, stream it from a server instead.
 :::
+
+:::related
+- [Table](/docs/data/table) - Exporting the rows as CSV or JSON.
+- [FileUpload](/docs/input/file-upload) - The other direction.
+- [IndexedDbManager](/docs/services/indexed-db-manager) - Keeping the blob until it is saved.
+:::

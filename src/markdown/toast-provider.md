@@ -241,3 +241,9 @@ mount(container);
 - Use `clear()` before changing routes or views to avoid stale notifications.
 - Use `duration: 0` for toasts that require user action to dismiss.
 - All six positions work with the stack layout — toasts never overlap.
+
+:::related
+- [Toast](/docs/feedback/toast) - The visual component behind it.
+- [Alert](/docs/feedback/alert) - Messages that stay on the page.
+- [Modal](/docs/feedback/modal) - When the message needs an answer.
+:::

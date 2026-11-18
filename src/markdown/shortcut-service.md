@@ -392,3 +392,9 @@ Do not take keys the browser or the screen reader relies on (Tab, Ctrl+L, Ctrl+F
 :::warning
 A single-letter shortcut fires anywhere on the page that is not a text field. In pages with many custom widgets, give it a `scope` or a `within`, or use a sequence.
 :::
+
+:::related
+- [Modal](/docs/feedback/modal) - Focus and scopes while a dialog is open.
+- [Tooltip](/docs/display/tooltip) - Showing the key next to the action.
+- [TreeView](/docs/navigation/treeview) - The keyboard model to copy.
+:::

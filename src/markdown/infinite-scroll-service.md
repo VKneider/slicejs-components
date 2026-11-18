@@ -163,19 +163,21 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Call `feed.reset()` whenever the query changes (search, filters, sort). It cancels the old request, so results of two queries never mix.
-:::
 
 :::tip
-Pass the `signal` to `fetch`. A reset then cancels the network request itself, not only its answer.
+Call `feed.reset()` whenever the query changes (search, filters, sort), and pass the `signal` to `fetch`. Reset cancels the old request, so the results of two queries never mix — and the network request itself is cancelled, not only its answer.
 :::
 
 ## Pitfalls
+
 :::warning
 Detach the sentinel when your component is destroyed (`beforeDestroy`), or the service keeps watching an element that is gone.
 :::
 
-:::warning
 Infinite scrolling hides the footer. If the page has one, set `autoLimit` so a "Load more" button appears after a few pages.
+
+:::related
+- [DataList](/docs/data/datalist) - A list that uses it for `pagination: 'infinite'`.
+- [Pagination](/docs/data/pagination) - Explicit pages, when the end should be reachable.
+- [QueryService](/docs/services/query-service) - The data behind each page.
 :::

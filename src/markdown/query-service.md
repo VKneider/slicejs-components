@@ -309,3 +309,10 @@ Do not copy query data into a context to share it. The query **is** the shared c
 :::warning
 A key must contain everything the function depends on. A function that reads `page` from outside, with a key that does not include it, returns page 1's cached data for page 2.
 :::
+
+:::related
+- [FetchManager](/docs/services/fetch-manager) - The HTTP client underneath.
+- [RealtimeService](/docs/services/realtime-service) - Messages that make a query stale.
+- [Data and loading](/docs/guides/data-and-loading) - The whole first-load story.
+- [Data components](/docs/guides/data-components) - The contract a server-backed component follows.
+:::

@@ -28,11 +28,12 @@
 <h2 id="composing-with-your-own-router-guard">Composing with your own router guard</h2>
 <p>The router keeps guards in a <strong>single slot</strong> (<code>router._beforeEachGuard</code>), so registering a second one replaces the first. This service composes with whatever was already there at the moment it was built — but an app that registers a guard <em>afterwards</em> replaces this one. If that is you, compose explicitly:</p>
 <div class="code-block" data-block-id="doc-block-5"></div>
-<div class="callout-block" data-block-id="doc-block-6"></div>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="compare-block" data-block-id="doc-block-6"></div>
 <div class="callout-block" data-block-id="doc-block-7"></div>
 <div class="callout-block" data-block-id="doc-block-8"></div>
-<h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="callout-block" data-block-id="doc-block-10"></div>
-<div class="callout-block" data-block-id="doc-block-11"></div>
+<p>Use a different key per form. Two forms on one page then warn independently, instead of one saving silently switching the other's guard off.</p>
+<p>Arming is not validating. The guard warns about leaving; it does not check that what the user typed is worth keeping.</p>
+<p><code>beforeunload</code> cannot be styled or worded. If the confirmation must be your own design, you cannot cover page close with it — only in-app navigation, through <code>confirmLeave()</code> or <code>setDialog()</code>.</p>
+<div class="related-block" data-block-id="doc-block-9"></div>
 </div>

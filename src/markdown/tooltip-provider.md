@@ -165,19 +165,25 @@ return row;
 :::
 
 ## Best Practices
-:::tip
-Use one provider for the whole app (`{ singleton: true }`) and `scope()` the containers that hold tooltips: the toolbar, the table, the sidebar. Rows and buttons added later are covered with no extra code.
-:::
 
 :::tip
-Give truncated text a tooltip with the full text. Make the element focusable (`tabIndex = 0`) or let `scope()` do it, so keyboard users can read it too.
+Use one provider for the whole app (`{ singleton: true }`) and `scope()` the containers that hold tooltips: the toolbar, the table, the sidebar. Rows and buttons added later are covered with no extra code. Give truncated text a tooltip with the full text, and make the element focusable (`tabIndex = 0`, or let `scope()` do it) so keyboard users can read it too.
 :::
 
 ## Pitfalls
-:::warning
-One provider shows one tooltip at a time, and so does ToolTip: opening one closes any other. A comparison that needs two explanations side by side belongs on the page, not in tooltips.
-:::
 
 :::warning
 An element added after `scope()` does not get the automatic `tabindex`. If it is not focusable on its own (a `<span>`), set `tabIndex = 0` on it, or call `attach()` for it.
+:::
+
+:::compare left="In a tooltip" right="On the page"
+One short explanation of the control the reader is pointing at. Opening one closes the previous one.
+---
+Two explanations that must be read together — a comparison, a before/after, a diff — belong in the content, not in tooltips.
+:::
+
+:::related
+- [Tooltip](/docs/display/tooltip) - The single-tooltip component.
+- [Table](/docs/data/table) - Truncated cells that need the full text.
+- [SideMenu](/docs/navigation/side-menu) - Narrow items with an explanation.
 :::

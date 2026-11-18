@@ -199,3 +199,9 @@ Storage is not private: any script on the page can read it. Do not keep long-liv
 :::warning
 `watch()` reports changes made **through StorageService** in this page, and any change in other tabs. A `localStorage.setItem` written directly in this same tab is not seen until something reads the key again.
 :::
+
+:::related
+- [LocalStorageManager](/docs/services/local-storage-manager) - The raw wrapper.
+- [IndexedDbManager](/docs/services/indexed-db-manager) - Structured data in the browser.
+- [RealtimeService](/docs/services/realtime-service) - Resuming a stream with `lastEventId`.
+:::

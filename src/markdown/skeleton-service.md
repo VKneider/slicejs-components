@@ -194,19 +194,23 @@ return box;
 :::
 
 ## Best Practices
+
 :::tip
 Cover what you are about to replace, then set the data after `during()` returns. The skeleton shows the old shapes; the new content lands in the same place.
 :::
 
-:::tip
 For a first load, build the component with placeholder text of a realistic length. The shapes are only as good as the text they are made from.
-:::
 
 ## Pitfalls
-:::warning
-A covered element is `inert`: nothing inside it can be clicked or focused until `done()`. Do not cover a form the user is typing in — cover the part that is loading.
-:::
 
 :::warning
-Always call `done()` (or use `during()`, which does it even when the work fails). A forgotten cover leaves the element busy and inert.
+A covered element is `inert`: nothing inside it can be clicked or focused until `done()`. Cover the part that is loading, never a form the user is typing in, and always call `done()` — or use `during()`, which does it even when the work fails.
 :::
+
+:::related
+- [Loading](/docs/feedback/loading) - The spinner and the overlay for the whole page.
+- [EmptyState](/docs/display/empty-state) - The other end of the same wait.
+- [QueryService](/docs/services/query-service) - Where the data usually comes from.
+- [Data and loading](/docs/guides/data-and-loading) - Bringing data in without blocking the page.
+:::
+

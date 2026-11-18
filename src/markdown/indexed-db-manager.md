@@ -262,3 +262,9 @@ Inside `transaction`, do not await anything but the stores' own calls. A `fetch`
 :::warning
 Once you set `version`, never lower it: a browser that already has a higher version refuses to open (`VersionError`).
 :::
+
+:::related
+- [LocalStorageManager](/docs/services/local-storage-manager) - Small values, the simple case.
+- [StorageService](/docs/services/storage-service) - Preferences with namespaces and expiry.
+- [QueryService](/docs/services/query-service) - Cached server data, in memory.
+:::

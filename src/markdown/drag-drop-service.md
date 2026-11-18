@@ -404,3 +404,9 @@ As an app-lifetime singleton, its global listeners, ghost, and registrations are
 - Sortables ignore presses that land on an interactive descendant (`button`, `input`, `select`,
   `textarea`, `a`, `[contenteditable]`, `[data-act]`, and the Slice form controls), so a button
   inside a sortable card still works.
+
+:::related
+- [TreeView](/docs/navigation/treeview) - Dragging rows into a branch.
+- [FileUpload](/docs/input/file-upload) - The drop target people expect.
+- [TransferList](/docs/input/transfer-list) - Moving items between two lists.
+:::

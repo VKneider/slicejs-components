@@ -209,3 +209,9 @@ Messages sent while the app was disconnected are lost. That is why `invalidates(
 :::warning
 A token in the URL lives in server logs. Prefer a cookie, or a short-lived token from a function `url` (called on every connect, so it is always fresh).
 :::
+
+:::related
+- [QueryService](/docs/services/query-service) - What `invalidates()` refreshes.
+- [FetchManager](/docs/services/fetch-manager) - The HTTP side.
+- [StorageService](/docs/services/storage-service) - Keeping `lastEventId` across visits.
+:::

@@ -142,15 +142,18 @@ slice.router.beforeEach(async (to, from, next) => {
 });
 ```
 
+## Pitfalls
+
+:::compare left="Throw to cancel" right="next(false) does not"
+Raising from the guard reaches the router's `catch`, which returns `{ path: false }` and the navigation stops.
+---
+In Slice.js 4.x `Router._executeBeforeEachGuard` ends with `redirectPath ? … : null`, and `false` is falsy, so the cancellation branch is unreachable: the router proceeds with a warning-free "success". `next('/some/path')` redirects correctly.
+:::
+
 :::warning
-In Slice.js 4.x, **`next(false)` does not cancel the navigation.** `Router._executeBeforeEachGuard`
-ends with `return redirectPath ? { path: redirectPath, … } : null`, and `false` is falsy, so the
-cancellation branch is unreachable — the router proceeds with a warning-free "success". If you need to
-cancel a navigation, throw from the guard instead: the router's `catch` returns `{ path: false }`,
-which does cancel. `next('/some/path')` redirects correctly and is unaffected.
-
-## Best Practices
-
+Do not arm for trivial state — a collapsed panel, a ticked checkbox, a search filter. A guard that
+fires on things nobody would mourn is a guard the user learns to dismiss without reading, which
+costs you the warning you wanted for the one case that mattered.
 :::
 
 :::tip
@@ -158,27 +161,18 @@ Disarm on **save success**, not on save click. Disarming optimistically loses th
 save fails.
 :::
 
-:::tip
 Use a different key per form. Two forms on one page then warn independently, instead of one saving
 silently switching the other's guard off.
-:::
 
-## Pitfalls
+Arming is not validating. The guard warns about leaving; it does not check that what the user typed
+is worth keeping.
 
-:::warning
-Arming is not the same as validating. The guard warns about leaving; it does not check that what the
-user typed is worth keeping.
-
-:::
-
-:::warning
-Do not arm for trivial state — a collapsed panel, a ticked checkbox, a search filter. A guard that
-fires on things nobody would mourn is a guard the user learns to dismiss without reading, which
-costs you the warning you wanted for the one case that mattered.
-
-:::
-
-:::warning
 `beforeunload` cannot be styled or worded. If the confirmation must be your own design, you cannot
 cover page close with it — only in-app navigation, through `confirmLeave()` or `setDialog()`.
+
+:::related
+- [Form](/docs/input/form) - Where the guard usually goes.
+- [Modal](/docs/feedback/modal) - The dialog `setDialog()` uses.
+- [Route](/docs/routing/route) - Guards and the router's `beforeEach`.
 :::
+

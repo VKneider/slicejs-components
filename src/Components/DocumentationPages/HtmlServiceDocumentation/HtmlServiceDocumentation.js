@@ -10,7 +10,7 @@ export default class HtmlServiceDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "html-service.md";
-    this.markdownContent = "---\ntitle: HtmlService\nroute: /docs/services/html-service\nnavLabel: HtmlService\nsection: Services\ngroup: Security\norder: 12\ndescription: Escape, sanitize and strip HTML at the boundary where untrusted markup becomes real DOM.\ncomponent: HtmlServiceDocumentation\ngenerate: true\ntags: [service, html, sanitize, xss, security, dompurify, escape]\n---\n\n# HtmlService\n\n## Overview\n\n`HtmlService` is a **Service** component: a plain logic class (no DOM, no template) that makes it\nsafe to turn an HTML **string** into real markup.\n\nMost of the library never needs it, and that is the point — every visual component here assigns\n`textContent`, so it cannot produce markup injection at all. Reach for this service only at the\n**boundary where HTML you did not write enters your app**: a CMS field, a markdown renderer, a\ntemplate someone imports, a comment left by another user.\n\n## Requires an npm dependency\n\nThis is the one component in the library that is not dependency-free:\n\n```bash\npnpm add dompurify\n```\n\n`slice get HtmlService` prints a warning naming the package if it is missing.\n\n## Three layers, in increasing paranoia\n\n| Method | Use for | Allowlist |\n| --- | --- | --- |\n| `esc(value)` | each dynamic token as you interpolate it | encodes 5 characters |\n| `sanitize(html, options?)` | HTML **you** built | DOMPurify's defaults: structure, links, images, tables, forms |\n| `sanitizeRichText(html, options?)` | HTML **someone else** wrote | bold/italic/lists/paragraphs/links only. No images. |\n| `toText(html)` | you want the words, not the markup | none — tags stripped, text kept |\n\n`sanitize()` is the net *underneath* `esc()`, not a replacement for it. Encode as you interpolate,\nsanitize as the final gate before the `innerHTML` assignment.\n\n## Usage\n\n```javascript title=\"Sanitizing HTML you built\"\nconst html = slice.getComponent('HtmlService');\nthis.$root.innerHTML = html.sanitize(`<p>${html.esc(user.bio)}</p>`);\n```\n\n```javascript title=\"Sanitizing HTML someone else wrote\"\nconst html = slice.getComponent('HtmlService');\nthis.$banner.innerHTML = html.sanitizeRichText(importedTemplate.bienvenida);\n```\n\n## Prop Scenarios\n\n:::script label=\"What each layer keeps\" expected=\"three renderings of the same hostile input; the tracker pixel and the onerror handler do not survive\"\nconst html = await slice.build('HtmlService', { singleton: true });\n\n// Deliberately hostile input: a tracking pixel, an event handler, and a\n// javascript: link — the three things that actually show up in real payloads.\nconst hostile = '<p>Hi <b>there</b></p>'\n   + '<img src=\"https://tracker.example/pixel.gif\">'\n   + '<span onclick=\"alert(1)\">click</span>'\n   + '<a href=\"javascript:alert(2)\">link</a>';\n\nconst render = (label, value) => {\n   const box = document.createElement('div');\n   box.style.cssText = 'font-family:system-ui,sans-serif;margin-bottom:14px;';\n\n   const h = document.createElement('strong');\n   h.textContent = label;\n   box.appendChild(h);\n\n   const out = document.createElement('div');\n   out.style.cssText = 'padding:8px;border:1px dashed var(--medium-color);border-radius:6px;margin-top:4px;font-size:.85rem;';\n   out.innerHTML = value;\n   box.appendChild(out);\n\n   const raw = document.createElement('code');\n   raw.style.cssText = 'display:block;margin-top:4px;font-size:.7rem;color:var(--font-secondary-color);word-break:break-all;';\n   raw.textContent = value;\n   box.appendChild(raw);\n\n   return box;\n};\n\nconst wrap = document.createElement('div');\nwrap.appendChild(render('sanitize() — HTML you built', html.sanitize(hostile)));\nwrap.appendChild(render('sanitizeRichText() — HTML someone else wrote', html.sanitizeRichText(hostile)));\nwrap.appendChild(render('toText() — just the words', html.toText(hostile)));\nmount(wrap);\n:::\n\n:::script label=\"Links in foreign content are forced open safely\" expected=\"the link opens in a new tab with rel=noopener, so shared content cannot reach back into this tab\"\nconst html = await slice.build('HtmlService', { singleton: true });\n\nconst out = document.createElement('div');\nout.innerHTML = html.sanitizeRichText('<p>Read the <a href=\"https://example.com\">docs</a>.</p>');\n\nconst note = document.createElement('p');\nnote.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\nnote.textContent = 'Every anchor gets target=\"_blank\" and rel=\"noopener noreferrer nofollow\".';\n\nconst wrap = document.createElement('div');\nwrap.appendChild(out);\nwrap.appendChild(note);\nmount(wrap);\n:::\n\n## Best Practices\n\n:::tip\nSanitize at the boundary, once, when the value enters — not at every render site. Then the value is\njust data for the rest of its life, and a new render path cannot forget to sanitize.\n:::\n\n:::tip\n`sanitize()` already passes inline SVG through unchanged, including `viewBox` and `path`. There is\nno need to widen the tag or attribute allowlist to make icons work — doing so only widens the\nattack surface.\n:::\n\n## Pitfalls\n\n:::warning\n`innerHTML = value` with an unsanitized `value` is an XSS hole even when the value \"only\" comes\nfrom your own database: anything that writes to it — a form field, an import, a support tool — turns\nit into a hole too. `sanitize()` at the boundary closes all of them at once.\n\n:::\n\n:::warning\nDo not use `sanitize()` on content written by someone else. It allows `<img>`, so\n`<img src=\"https://tracker.example/pixel.gif\">` survives — and that leaks the reader's IP address\nand User-Agent the moment the page renders, with nothing visible on screen. Use\n`sanitizeRichText()`, which drops images entirely. Links are kept on purpose: an `<a href>` only\nreaches its destination when the reader deliberately clicks it, and the destination is visible\nfirst.\n\n:::\n\n:::warning\n`sanitizeRichText()` drops tags but **keeps their text**, so a stripped `<img>` simply disappears\nwhile `<script>alert(1)</script>` leaves `alert(1)` as visible text. That is DOMPurify's\n`KEEP_CONTENT` behaviour, not a bug — but if you are rendering user comments, use `toText()`.\n\n:::\n\n:::warning\nSanitizing is not the same as validating. `sanitize()` guarantees the string is safe to become\nmarkup; it says nothing about whether the content is *correct*. Check the shape of the data too.\n:::\n";
+    this.markdownContent = "---\ntitle: HtmlService\nroute: /docs/services/html-service\nnavLabel: HtmlService\nsection: Services\ngroup: Security\norder: 12\ndescription: Escape, sanitize and strip HTML at the boundary where untrusted markup becomes real DOM.\ncomponent: HtmlServiceDocumentation\ngenerate: true\ntags: [service, html, sanitize, xss, security, dompurify, escape]\n---\n\n# HtmlService\n\n## Overview\n\n`HtmlService` is a **Service** component: a plain logic class (no DOM, no template) that makes it\nsafe to turn an HTML **string** into real markup.\n\nMost of the library never needs it, and that is the point — every visual component here assigns\n`textContent`, so it cannot produce markup injection at all. Reach for this service only at the\n**boundary where HTML you did not write enters your app**: a CMS field, a markdown renderer, a\ntemplate someone imports, a comment left by another user.\n\n## Requires an npm dependency\n\nThis is the one component in the library that is not dependency-free:\n\n```bash\npnpm add dompurify\n```\n\n`slice get HtmlService` prints a warning naming the package if it is missing.\n\n## Three layers, in increasing paranoia\n\n| Method | Use for | Allowlist |\n| --- | --- | --- |\n| `esc(value)` | each dynamic token as you interpolate it | encodes 5 characters |\n| `sanitize(html, options?)` | HTML **you** built | DOMPurify's defaults: structure, links, images, tables, forms |\n| `sanitizeRichText(html, options?)` | HTML **someone else** wrote | bold/italic/lists/paragraphs/links only. No images. |\n| `toText(html)` | you want the words, not the markup | none — tags stripped, text kept |\n\n`sanitize()` is the net *underneath* `esc()`, not a replacement for it. Encode as you interpolate,\nsanitize as the final gate before the `innerHTML` assignment.\n\n## Usage\n\n```javascript title=\"Sanitizing HTML you built\"\nconst html = slice.getComponent('HtmlService');\nthis.$root.innerHTML = html.sanitize(`<p>${html.esc(user.bio)}</p>`);\n```\n\n```javascript title=\"Sanitizing HTML someone else wrote\"\nconst html = slice.getComponent('HtmlService');\nthis.$banner.innerHTML = html.sanitizeRichText(importedTemplate.bienvenida);\n```\n\n## Prop Scenarios\n\n:::script label=\"What each layer keeps\" expected=\"three renderings of the same hostile input; the tracker pixel and the onerror handler do not survive\"\nconst html = await slice.build('HtmlService', { singleton: true });\n\n// Deliberately hostile input: a tracking pixel, an event handler, and a\n// javascript: link — the three things that actually show up in real payloads.\nconst hostile = '<p>Hi <b>there</b></p>'\n   + '<img src=\"https://tracker.example/pixel.gif\">'\n   + '<span onclick=\"alert(1)\">click</span>'\n   + '<a href=\"javascript:alert(2)\">link</a>';\n\nconst render = (label, value) => {\n   const box = document.createElement('div');\n   box.style.cssText = 'font-family:system-ui,sans-serif;margin-bottom:14px;';\n\n   const h = document.createElement('strong');\n   h.textContent = label;\n   box.appendChild(h);\n\n   const out = document.createElement('div');\n   out.style.cssText = 'padding:8px;border:1px dashed var(--medium-color);border-radius:6px;margin-top:4px;font-size:.85rem;';\n   out.innerHTML = value;\n   box.appendChild(out);\n\n   const raw = document.createElement('code');\n   raw.style.cssText = 'display:block;margin-top:4px;font-size:.7rem;color:var(--font-secondary-color);word-break:break-all;';\n   raw.textContent = value;\n   box.appendChild(raw);\n\n   return box;\n};\n\nconst wrap = document.createElement('div');\nwrap.appendChild(render('sanitize() — HTML you built', html.sanitize(hostile)));\nwrap.appendChild(render('sanitizeRichText() — HTML someone else wrote', html.sanitizeRichText(hostile)));\nwrap.appendChild(render('toText() — just the words', html.toText(hostile)));\nmount(wrap);\n:::\n\n:::script label=\"Links in foreign content are forced open safely\" expected=\"the link opens in a new tab with rel=noopener, so shared content cannot reach back into this tab\"\nconst html = await slice.build('HtmlService', { singleton: true });\n\nconst out = document.createElement('div');\nout.innerHTML = html.sanitizeRichText('<p>Read the <a href=\"https://example.com\">docs</a>.</p>');\n\nconst note = document.createElement('p');\nnote.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\nnote.textContent = 'Every anchor gets target=\"_blank\" and rel=\"noopener noreferrer nofollow\".';\n\nconst wrap = document.createElement('div');\nwrap.appendChild(out);\nwrap.appendChild(note);\nmount(wrap);\n:::\n\n## Best Practices\n\nSanitize at the boundary, once, when the value enters — not at every render site. Then the value is\njust data for the rest of its life, and a new render path cannot forget to sanitize.\n\n`sanitize()` already passes inline SVG through unchanged, including `viewBox` and `path`. There is\nno need to widen the tag or attribute allowlist to make icons work — doing so only widens the\nattack surface.\n\n:::tip\n`sanitizeRichText()` drops tags but **keeps their text**: a stripped `<img>` disappears while\n`<script>alert(1)</script>` leaves `alert(1)` visible. That is DOMPurify's `KEEP_CONTENT` behaviour,\nnot a bug. When the leftover text would be noise — user comments, a chat — use `toText()`.\n:::\n\n## Pitfalls\n\n:::warning\n`innerHTML = value` with an unsanitized `value` is an XSS hole even when the value \"only\" comes\nfrom your own database: anything that writes to it — a form field, an import, a support tool — turns\nit into a hole too. `sanitize()` at the boundary closes all of them at once.\n:::\n\n:::warning\nDo not use `sanitize()` on content written by someone else. It allows `<img>`, so\n`<img src=\"https://tracker.example/pixel.gif\">` survives — and that leaks the reader's IP address\nand User-Agent the moment the page renders, with nothing visible on screen. Use\n`sanitizeRichText()`, which drops images entirely. Links are kept on purpose: an `<a href>` only\nreaches its destination when the reader deliberately clicks it, and the destination is visible\nfirst.\n:::\n\n:::compare left=\"Safe to render\" right=\"Correct content\"\n`sanitize()` guarantees the string is safe to become markup, and nothing else.\n---\nWhether the content has the shape the app expects is validation, a separate check on the data.\n:::\n\n:::related\n- [DomService](/docs/services/dom-service) - Building DOM from data without `innerHTML`.\n- [FetchManager](/docs/services/fetch-manager) - Where the untrusted JSON arrives.\n- [CodeVisualizer](/docs/display/code-visualizer) - Showing code as text, not as markup.\n:::\n\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -151,7 +151,7 @@ export default class HtmlServiceDocumentation extends HTMLElement {
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Sanitize at the boundary, once, when the value enters — not at every render site. Then the value is just data for the rest of its life, and a new render path cannot forget to sanitize.</p>";
+            body.innerHTML = "<p><code>sanitizeRichText()</code> drops tags but <strong>keeps their text</strong>: a stripped <code>&lt;img&gt;</code> disappears while <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> leaves <code>alert(1)</code> visible. That is DOMPurify's <code>KEEP_CONTENT</code> behaviour, not a bug. When the leftover text would be noise — user comments, a chat — use <code>toText()</code>.</p>";
             const callout = await slice.build('Callout', {
                tone: "success",
                variant: "soft",
@@ -166,21 +166,6 @@ export default class HtmlServiceDocumentation extends HTMLElement {
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
-            body.innerHTML = "<p><code>sanitize()</code> already passes inline SVG through unchanged, including <code>viewBox</code> and <code>path</code>. There is no need to widen the tag or attribute allowlist to make icons work — doing so only widens the attack surface.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "success",
-               variant: "soft",
-               title: "Tip",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-9"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
             body.innerHTML = "<p><code>innerHTML = value</code> with an unsanitized <code>value</code> is an XSS hole even when the value \"only\" comes from your own database: anything that writes to it — a form field, an import, a support tool — turns it into a hole too. <code>sanitize()</code> at the boundary closes all of them at once.</p>";
             const callout = await slice.build('Callout', {
                tone: "warning",
@@ -192,7 +177,7 @@ export default class HtmlServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
@@ -207,33 +192,62 @@ export default class HtmlServiceDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
          if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p><code>sanitizeRichText()</code> drops tags but <strong>keeps their text</strong>, so a stripped <code>&lt;img&gt;</code> simply disappears while <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> leaves <code>alert(1)</code> as visible text. That is DOMPurify's <code>KEEP_CONTENT</code> behaviour, not a bug — but if you are rendering user comments, use <code>toText()</code>.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
+            const buildSide = async (side) => {
+               const body = document.createElement('div');
+               body.className = 'doc-callout-body';
+               body.innerHTML = side.html;
+               const callout = await slice.build('Callout', {
+                  tone: side.tone,
+                  title: side.title,
+                  content: Array.from(body.childNodes)
+               });
+               return callout || body;
+            };
+            const left = await buildSide({"title":"Safe to render","tone":"success","html":"<p><code>sanitize()</code> guarantees the string is safe to become markup, and nothing else.</p>"});
+            const right = await buildSide({"title":"Correct content","tone":"danger","html":"<p>Whether the content has the shape the app expects is validation, a separate check on the data.</p>"});
+            const grid = await slice.build('Grid', {
+               columns: 2,
+               gap: '14px',
+               items: [left, right]
             });
-            container.appendChild(callout || body);
+            if (grid) container.appendChild(grid);
+            else {
+               container.appendChild(left);
+               container.appendChild(right);
+            }
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
          if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Sanitizing is not the same as validating. <code>sanitize()</code> guarantees the string is safe to become markup; it says nothing about whether the content is <em>correct</em>. Check the shape of the data too.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
+            const items = [{"title":"DomService","path":"/docs/services/dom-service","text":"Building DOM from data without innerHTML."},{"title":"FetchManager","path":"/docs/services/fetch-manager","text":"Where the untrusted JSON arrives."},{"title":"CodeVisualizer","path":"/docs/display/code-visualizer","text":"Showing code as text, not as markup."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
             });
-            container.appendChild(callout || body);
+            if (grid) container.appendChild(grid);
          }
       }
     await this.renderScriptScenarios();

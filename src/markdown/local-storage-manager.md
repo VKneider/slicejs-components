@@ -69,3 +69,8 @@ Only JSON-serializable values survive the round-trip — `Date`, `Map`, `Set`, a
 not. `localStorage` is synchronous and origin-scoped; for larger or structured datasets prefer
 [`IndexedDbManager`](/docs/services/indexed-db-manager).
 :::
+
+:::related
+- [StorageService](/docs/services/storage-service) - Namespaces, expiry and cross-tab watch.
+- [IndexedDbManager](/docs/services/indexed-db-manager) - Larger, structured data.
+:::

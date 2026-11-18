@@ -197,3 +197,9 @@ Set CSS variables on `slice-tour-overlay` (or its `.slice-tour-overlay` layer): 
 ## TourOverlay integration
 
 Install/register `TourService`, `TourOverlay`, `Button`, and `Icon`. TourOverlay is the service's renderer; normally let the service build it. Its `view` object has `step`, `index`, `total`, `preparing`, `missing`, `texts`, `maxCardWidth`, and `focusTrap`. Its handler props are `onNext`, `onPrev`, `onSkip`, `onClose`. `show()` connects and opens its manual popover (fixed-position fallback); `track(rect)` accepts `{ left, top, right, bottom, width, height, radius }` or `null` for a centered card. Rect updates do not reannounce content. The service owns modal focus and page inertness.
+
+:::related
+- [Tooltip](/docs/display/tooltip) - The small, in-place explanation.
+- [Modal](/docs/feedback/modal) - The step that needs a real dialog.
+- [Stepper](/docs/display/stepper) - A multi-step flow inside the page.
+:::
