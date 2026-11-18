@@ -42,20 +42,21 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <div class="script-block" data-block-id="doc-block-6"></div>
 <div class="script-block" data-block-id="doc-block-7"></div>
-<div class="callout-block" data-block-id="doc-block-8"></div>
+<p>Cells holding a built component are <strong>owned by the table</strong>. A re-render — sorting, paging, or new <code>rows</code> — destroys the components it replaces, so they never pile up in memory, and re-passing the same node is safe. That also means your own reference to a cell component does not survive a re-render: build a fresh node per render, which is what a <code>render(row)</code> callback naturally does.</p>
 <h2 id="header-style">Header style</h2>
 <p>The header is a quiet tint by default, so it does not compete with the page's primary actions. <code>headerVariant: 'solid'</code> restores the older saturated fill, <code>'none'</code> removes the fill entirely:</p>
-<div class="script-block" data-block-id="doc-block-9"></div>
+<div class="script-block" data-block-id="doc-block-8"></div>
 <h2 id="match-the-column-not-just-the-cell">Match the column, not just the cell</h2>
 <p>A numeric column right-aligns and uses tabular figures on its own, header included:</p>
-<div class="script-block" data-block-id="doc-block-10"></div>
+<div class="script-block" data-block-id="doc-block-9"></div>
 <h2 id="search">Search</h2>
 <p><code>searchable: true</code> adds a search box above the table.</p>
 <ul><li>It matches every column whose <code>searchable</code> is not <code>false</code>, ignoring case and accents: "jose" finds "José".</li><li>Several words must all match, each in any column: "ana caracas" finds Ana in Caracas.</li><li>The search reads the <strong>data</strong> (<code>row[key]</code>), not what <code>render</code> draws. Give a column <code>searchValue</code> (a function or a path such as <code>'user.name'</code>) to search something else.</li><li>Typing is debounced; <strong>Enter</strong> applies at once and <strong>Escape</strong> clears the box.</li><li><code>search</code> sets the query from code. That does not fire <code>onFilterChange</code>.</li></ul>
 <h2 id="filters">Filters</h2>
 <p><code>filterable: true</code> adds a <strong>Filters</strong> button that opens a panel with one editor per column. The editor's type comes from the column's <code>filter</code>, or is inferred from the data:</p>
-<div class="table-block" data-block-id="doc-block-11"></div>
+<div class="table-block" data-block-id="doc-block-10"></div>
 <ul><li>Inference: all numbers → <code>number</code>, all booleans → <code>boolean</code>, all <code>Date</code>s or <code>YYYY-MM-DD</code> strings → <code>date</code>, a few repeated strings → <code>select</code>, anything else → <code>text</code>.</li><li>A column sets its own: <code>filter: 'number'</code>, or <code>filter: { type: 'select', options: [{ value, label }], label }</code>. <code>filter: false</code> removes its editor. Without <code>filterable</code>, only columns that declare <code>filter</code> get one.</li><li><code>filterValue</code> (function or path) reads a different value than <code>row[key]</code>, e.g. a nested field.</li><li>Every active filter, and the search, combine with AND.</li><li>Active filters show as <strong>chips</strong> under the toolbar; × removes one and <strong>Clear all</strong> removes everything. The button shows how many filters are active, filtered columns get a dot in their header, and the toolbar reads "12 of 200 rows".</li><li>When nothing matches, the table says so and offers a button to clear the filters.</li><li>Dates are compared by local calendar day, so a <code>Date</code> at 23:30 and the string <code>'2024-03-10'</code> are the same day.</li><li>A half-typed filter (an empty value, a <code>between</code> with no bounds) is ignored instead of emptying the table.</li><li><code>filters</code> sets them from code (<code>[{ key, type, op, value }]</code>). Methods: <code>setFilter(key, filter | null)</code>, <code>clearFilters()</code>, <code>getFilteredRows()</code>. <code>el.filters</code> returns the active ones.</li><li><code>onFilterChange({ search, filters })</code> fires on every user change. With <code>dataSource: 'remote'</code> nothing is filtered locally: use it to fetch the matching page.</li><li><code>labels</code> translates every string, partially: <code>{ filters: 'Filtros', showing: '{shown} de {total}', operators: { gt: 'mayor que' } }</code>.</li></ul>
+<div class="compare-block" data-block-id="doc-block-11"></div>
 <h2 id="selection-and-row-clicks">Selection and row clicks</h2>
 <ul><li><code>selection: 'multiple'</code> adds a checkbox per row and a select-all checkbox (indeterminate when some are selected). Select-all takes every row that passes the filters, across pages (only the current page in remote mode). <strong>Shift+click</strong> selects a range.</li><li><code>selection: 'single'</code> uses radio buttons.</li><li>Give <code>rowKey</code> (a key, a path or a function) so the selection survives new data. Without it, row objects are identified by reference.</li><li><code>selected</code> sets the selected keys from code; <code>el.selected</code> and <code>getSelectedRows()</code> read them. <code>onSelectionChange(keys, rows)</code> fires on user changes.</li><li><code>onRowClick(row, event)</code> fires on a click anywhere in the row, except on links, buttons and inputs inside it. Rows become focusable, and <strong>Enter</strong> activates them.</li></ul>
 <h2 id="sticky-header-sticky-columns-and-virtual-scrolling">Sticky header, sticky columns and virtual scrolling</h2>
@@ -97,16 +98,14 @@
 <div class="script-block" data-block-id="doc-block-19"></div>
 <div class="script-block" data-block-id="doc-block-20"></div>
 <h2 id="best-practices">Best Practices</h2>
+<p>Editable tables save each cell on its own. Keep row data uniform in length, and give <code>rowKey</code> whenever rows have an id: selection, expanded rows and the row menu then follow the row through sorting and filtering instead of its position.</p>
 <div class="callout-block" data-block-id="doc-block-21"></div>
+<h2 id="pitfalls">Pitfalls</h2>
 <div class="callout-block" data-block-id="doc-block-22"></div>
 <div class="callout-block" data-block-id="doc-block-23"></div>
-<h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-24"></div>
-<div class="callout-block" data-block-id="doc-block-25"></div>
-<div class="callout-block" data-block-id="doc-block-26"></div>
-<div class="callout-block" data-block-id="doc-block-27"></div>
-<div class="callout-block" data-block-id="doc-block-28"></div>
+<p><code>stateKey</code> state lives in the user's browser. Change the key when you rename or remove columns, or the saved state may hide a column under its old meaning.</p>
+<div class="related-block" data-block-id="doc-block-24"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.table.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>labels</code> still wins over the dictionary. Keys: <code>searchPlaceholder</code>, <code>searchLabel</code>, <code>filters</code>, <code>clearAll</code>, <code>clearFilters</code>, <code>showing</code>, <code>selected</code>, <code>noResults</code>, <code>removeFilter</code>, <code>searchChip</code>, <code>any</code>, <code>yes</code>, <code>no</code>, <code>from</code>, <code>to</code>, <code>value</code>, <code>operator</code>, <code>selectAll</code>, <code>selectRow</code>, <code>sortBy</code>, <code>sortNone</code>, <code>ascending</code>, <code>descending</code>, <code>export</code>, <code>exportCsv</code>, <code>exportJson</code>, <code>exportCopy</code>, <code>exportScopeFiltered</code>, <code>exportScopeSelected</code>, <code>copied</code>, <code>copyFailed</code>, <code>exported</code>, <code>view</code>, <code>columns</code>, <code>density</code>, <code>densityCompact</code>, <code>densityComfortable</code>, <code>densitySpacious</code>, <code>totals</code>, <code>actions</code>, <code>rowActions</code>, <code>details</code>, <code>showDetails</code>, <code>hideDetails</code>, <code>copyRow</code>, <code>selectRowAction</code>, <code>deselectRow</code>, <code>detailEmpty</code>, <code>undo</code>, <code>dismiss</code>, <code>removed</code>, <code>removedOne</code>, <code>saveError</code>, <code>loadError</code>, <code>retry</code>, <code>editCell</code>, <code>copiedCell</code>, <code>operators.*</code>.</p>
-<div class="component-block" data-block-id="doc-block-29"></div>
+<div class="component-block" data-block-id="doc-block-25"></div>
 </div>

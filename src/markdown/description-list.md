@@ -451,29 +451,31 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Keep the order people read in: what it is (number, status), who it belongs to, then the details. Put the two or three things people look for first in the first rows.
-:::
 
-:::tip
-Use `sections` once there are more than eight or nine fields. A heading every few rows makes a long record scannable; `collapsible` hides the parts people rarely open.
-:::
+Keep the order people read in: what it is (number, status), who it belongs to, then the details. Put the two or three things people look for first in the first rows. Use `sections` once there are more than eight or nine fields: a heading every few rows makes a long record scannable, and `collapsible` hides the parts people rarely open.
 
 :::tip
 Save each field through `commit` and let it throw on failure. The editor keeps what was typed and shows the message, so nothing is lost and nobody has to read a toast to know what failed.
 :::
 
-:::tip
-Choose `variant: 'sheet'` when people will edit many values in a row at the keyboard. For a record people mostly read, the default looks are calmer and show the copy and edit buttons a mouse user expects.
+:::compare left="Editing a sheet" right="Mostly reading"
+`variant: 'sheet'` when people will edit many values in a row at the keyboard: one grid, nothing else asking for attention.
+---
+The default looks when the record is mostly read: they are calmer, and they show the copy and edit buttons a mouse user expects.
 :::
 
 ## Pitfalls
-:::warning
-Do not use it as a form to create a record. It edits the fields of a record that exists, one at a time; a new record needs a [Form](/docs/input/form) that validates and saves everything together.
-:::
 
 :::warning
 `percent` takes a fraction: `0.25` shows as 25%. Pass `25` and it shows 2,500%. If your data is already in percent, use `type: 'number'` with `unit: '%'`.
+:::
+
+Do not use it as a form to create a record. It edits the fields of a record that exists, one at a time; a new record needs a [Form](/docs/input/form) that validates and saves everything together.
+
+:::related
+- [Form](/docs/input/form) - Creating a record with validation and one save.
+- [Card](/docs/layout/card) - The record as a card with a banner and actions.
+- [Table](/docs/data/table) - Many records, one row each.
 :::
 
 ## Language

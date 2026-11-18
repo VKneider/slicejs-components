@@ -462,26 +462,22 @@ return grid;
 :::
 
 ## Best Practices
-:::tip
-Give every item a stable key (`itemKey`, `'id'` by default). Selection, updates and removals find items by it, and rows that did not change are not redrawn.
-:::
+
+Give every item a stable key (`itemKey`, `'id'` by default): selection, updates and removals find items by it, and rows that did not change are not redrawn.
+
+Put the one or two actions people use most on the row (`inline: true`) and the rest in the menu. A row full of buttons is hard to scan.
 
 :::tip
 Use `commit` for every change that goes to a server. People see the change at once, and a failure undoes it by itself, instead of leaving the list out of step with the server.
 :::
 
-:::tip
-Prefer `removeItem(…, { undo: true })` to a confirmation for things that can be brought back. Undo is faster for the nine times people meant it, and safe for the tenth. Keep `confirm` for what cannot be undone.
-:::
-
-:::tip
-Put the one or two actions people use most on the row (`inline: true`) and the rest in the menu. A row full of buttons is hard to scan.
+:::compare left="Reversible" right="Irreversible"
+`removeItem(key, { undo: true })` — the row leaves with an Undo bar. Undo is faster for the nine times people meant it, and safe for the tenth.
+---
+`confirm: 'Delete this order?'` — asks first. Keep it for what cannot be brought back, and for actions nobody expects to be undoable.
 :::
 
 ## Pitfalls
-:::warning
-With `load`, filter options and view counts do not come from the data, because the list only holds one page. Give filters their `options`, and views a `count` if you want one.
-:::
 
 :::warning
 Do not change item objects in place (`item.done = true`) and expect the list to notice. Use `updateItem`, or set `items` (or the context) to a new array, the way you would in React or Vue.
@@ -489,4 +485,13 @@ Do not change item objects in place (`item.done = true`) and expect the list to 
 
 :::warning
 A list inside a flex or grid item needs `min-width: 0` on that item, or long titles push it wider than the screen.
+:::
+
+With `load`, filter options and view counts do not come from the data, because the list only holds one page. Give filters their `options`, and views a `count` if you want one.
+
+:::related
+- [Table](/docs/data/table) - When records are compared column by column.
+- [Pagination](/docs/data/pagination) - Pages, ranges and controlled paging.
+- [Infinite scroll](/docs/services/infinite-scroll) - Loading the next slice as the end comes into view.
+- [Data components](/docs/guides/data-components) - The contract a server-backed component follows.
 :::

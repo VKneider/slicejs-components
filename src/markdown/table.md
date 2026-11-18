@@ -294,11 +294,10 @@ const table = await slice.build('Table', {
 return table;
 :::
 
-:::tip
 Cells holding a built component are **owned by the table**. A re-render — sorting, paging, or new `rows`
-— destroys the components it replaces, so they never pile up in memory. The table never destroys a node
-it is about to show again, so re-passing the same node on every render is safe too.
-:::
+— destroys the components it replaces, so they never pile up in memory, and re-passing the same node
+is safe. That also means your own reference to a cell component does not survive a re-render: build a
+fresh node per render, which is what a `render(row)` callback naturally does.
 
 ## Header style
 The header is a quiet tint by default, so it does not compete with the page's primary actions.
@@ -372,6 +371,12 @@ return table;
 - `filters` sets them from code (`[{ key, type, op, value }]`). Methods: `setFilter(key, filter | null)`, `clearFilters()`, `getFilteredRows()`. `el.filters` returns the active ones.
 - `onFilterChange({ search, filters })` fires on every user change. With `dataSource: 'remote'` nothing is filtered locally: use it to fetch the matching page.
 - `labels` translates every string, partially: `{ filters: 'Filtros', showing: '{shown} de {total}', operators: { gt: 'mayor que' } }`.
+
+:::compare left="Formatted" right="Raw"
+The column renders `money.format(row.total)`, so give the filter and the search the same value: `filterValue: (row) => row.total` and `searchValue: (row) => money.format(row.total)`.
+---
+Filters and search fall back to `row[key]`. A column whose `render` shows something else — a formatted date, a label for a code — is then filtered and searched by the raw value, not by what the reader sees.
+:::
 
 ## Selection and row clicks
 - `selection: 'multiple'` adds a checkbox per row and a select-all checkbox (indeterminate when some are selected). Select-all takes every row that passes the filters, across pages (only the current page in remote mode). **Shift+click** selects a range.
@@ -733,39 +738,33 @@ return table;
 :::
 
 ## Best Practices
-:::tip
-Editable tables save each cell on its own. Let `commit` throw with a message people can act on ("Prices over 1,000 need approval."): it shows on the cell and on the bar.
-:::
+
+Editable tables save each cell on its own. Keep row data uniform in length, and give `rowKey` whenever
+rows have an id: selection, expanded rows and the row menu then follow the row through sorting and
+filtering instead of its position.
 
 :::tip
-Keep row data uniform in length. Mismatched columns may produce uneven layout.
-:::
-
-:::tip
-Give `rowKey` whenever rows have an id: selection, expanded rows and the row menu follow the row through sorting and filtering instead of its position.
+Let `commit` throw with a message people can act on ("Prices over 1,000 need approval."): it shows on the cell and on the bar.
 :::
 
 ## Pitfalls
-:::warning
-Plain string cells are escaped, so user data is safe by default. Only the explicit `{ html: '...' }` form is injected as raw HTML — never pass unsanitized user input through it.
-:::
 
 :::warning
-Do not keep your own reference to a component you hand to a cell and then expect it to survive a
-re-render: the table destroys what it replaces. Build a fresh node per render instead (that is what a
-`render(row)` callback naturally does).
+Plain string cells are escaped, so user data is safe by default. Only the explicit `{ html: '...' }` form is injected as raw HTML — never pass unsanitized user input through it.
 :::
 
 :::warning
 In `virtual` mode every row has the same height (`rowHeight`, or the one `density` gives). Cells that need to wrap, or rich components taller than the row, belong in a paginated table instead.
 :::
 
-:::warning
-`stateKey` state lives in the user's browser. Change the key when you rename or remove columns, or the saved state may hide a column under its old meaning.
-:::
+`stateKey` state lives in the user's browser. Change the key when you rename or remove columns, or the
+saved state may hide a column under its old meaning.
 
-:::warning
-Filters and search read the row DATA. A column whose `render` shows something different from `row[key]` (a formatted date, a label for a code) should give `filterValue` / `searchValue`, or the filter will compare against the raw value.
+:::related
+- [DataList](/docs/data/datalist) - The same records as rows or cards, one line each.
+- [Pagination](/docs/data/pagination) - Pages and ranges outside a table.
+- [Data components](/docs/guides/data-components) - The contract a server-backed component follows.
+- [Data and loading](/docs/guides/data-and-loading) - Fetching a page without blocking the page.
 :::
 
 ## Language

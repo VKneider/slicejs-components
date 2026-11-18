@@ -280,23 +280,25 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Show the range ("41–60 of 342") whenever you know the total. It tells people how much there is, and where they are in it, better than page numbers alone.
-:::
+
+Show the range ("41–60 of 342") whenever you know the total: it tells people how much there is, and where they are in it, better than page numbers alone. For pages people share or come back to (search, a blog, a catalog), use `hrefTemplate` so the page has an address that can be bookmarked, opened in a tab and found by search engines.
 
 :::tip
 Use `controlled: true` when the data comes from a server, and set `currentPage` once the response arrives. The pager then never shows a page whose results are not on screen yet.
 :::
 
 :::tip
-Use `hrefTemplate` for pages people share or come back to (search, a blog, a catalog). A page with an address can be bookmarked, opened in a tab, and found by search engines.
-:::
-
-## Pitfalls
-:::warning
 After a page change, bring the start of the list into view (`scrollIntoView`). Otherwise people press Next at the bottom and land at the bottom of the next page.
 :::
 
+## Pitfalls
+
 :::warning
 When the filters or the search change, go back to page 1. Page 7 of the old results may not exist in the new ones.
+:::
+
+:::related
+- [DataList](/docs/data/datalist) - Paging built into a list of records.
+- [Table](/docs/data/table) - Paging, sorting and filtering in one component.
+- [Data components](/docs/guides/data-components) - The contract a server-backed component follows.
 :::

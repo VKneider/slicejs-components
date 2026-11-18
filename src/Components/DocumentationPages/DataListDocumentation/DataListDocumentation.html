@@ -64,13 +64,14 @@
 <div class="script-block" data-block-id="doc-block-14"></div>
 <div class="script-block" data-block-id="doc-block-15"></div>
 <h2 id="best-practices">Best Practices</h2>
+<p>Give every item a stable key (<code>itemKey</code>, <code>'id'</code> by default): selection, updates and removals find items by it, and rows that did not change are not redrawn.</p>
+<p>Put the one or two actions people use most on the row (<code>inline: true</code>) and the rest in the menu. A row full of buttons is hard to scan.</p>
 <div class="callout-block" data-block-id="doc-block-16"></div>
-<div class="callout-block" data-block-id="doc-block-17"></div>
+<div class="compare-block" data-block-id="doc-block-17"></div>
+<h2 id="pitfalls">Pitfalls</h2>
 <div class="callout-block" data-block-id="doc-block-18"></div>
 <div class="callout-block" data-block-id="doc-block-19"></div>
-<h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-20"></div>
-<div class="callout-block" data-block-id="doc-block-21"></div>
-<div class="callout-block" data-block-id="doc-block-22"></div>
-<div class="component-block" data-block-id="doc-block-23"></div>
+<p>With <code>load</code>, filter options and view counts do not come from the data, because the list only holds one page. Give filters their <code>options</code>, and views a <code>count</code> if you want one.</p>
+<div class="related-block" data-block-id="doc-block-20"></div>
+<div class="component-block" data-block-id="doc-block-21"></div>
 </div>
