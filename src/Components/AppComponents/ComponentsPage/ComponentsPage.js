@@ -3,32 +3,6 @@ import docRoutes from './docRoutes.generated.js';
 import docsIndex from './docsIndex.js';
 import { buildVisualRoutes, filterNavigationItems, toTreeViewItems, resolveInitialDocsPath } from './visualComponentRoutes.js';
 
-// Keep the sidebar where the reader left it when they click a tree row. The
-// page scrolls to the top; the tree's own scroll containers do not.
-const captureScrollableAncestors = (node) => {
-   const entries = [];
-   const add = (element) => {
-      if (element && element.scrollHeight > element.clientHeight + 1) {
-         entries.push([element, element.scrollTop]);
-      }
-   };
-
-   // The registry TreeView scrolls its own .simple_treeview in some shells;
-   // docs scrolls the surrounding menu. Capture both.
-   add(node.querySelector?.('.simple_treeview'));
-
-   let current = node;
-   while (current && current !== document.body && current !== document.documentElement) {
-      add(current);
-      current = current.parentElement;
-   }
-   return entries;
-};
-
-const restoreScroll = (entries) => {
-   for (const [element, top] of entries) element.scrollTop = top;
-};
-
 const scrollContentToTop = () => {
    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
    window.scrollTo({ top: 0, behavior });
@@ -78,6 +52,8 @@ export default class ComponentsPage extends HTMLElement {
            const treeView = await slice.build('TreeView', {
               items: treeItems,
               activePath: slice.path,
+              // Keep the sidebar scroll position when a row navigates.
+              preserveScroll: true,
               // Remember the open sections between visits.
               stateKey: 'docs-nav',
               ariaLabel: 'Documentation',
@@ -86,14 +62,9 @@ export default class ComponentsPage extends HTMLElement {
                onClick: async (/** @type {any} */ item) => {
                   if (!item.path) return;
 
-                  const treeScroll = captureScrollableAncestors(treeView);
-                  try {
-                     treeView.setActiveTreeItem(item);
-                     await slice.router.navigate(item.path);
-                  } finally {
-                     scrollContentToTop();
-                     requestAnimationFrame(() => requestAnimationFrame(() => restoreScroll(treeScroll)));
-                  }
+                  treeView.setActiveTreeItem(item);
+                  await slice.router.navigate(item.path);
+                  scrollContentToTop();
                },
            });
 

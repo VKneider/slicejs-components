@@ -33,6 +33,7 @@ The tree never changes your objects, except when you drag a row: then the item r
 - `navigate: true` routes a row with a `path` through `slice.router` by itself.
 - `activePath` marks the current page and opens its branch. With `followRoute` (on by default) it keeps up with router navigations and with back / forward.
 - `expanded: 'all'` starts with every branch open. `stateKey` remembers which branches were open between visits, in `localStorage`; without a `stateKey` nothing is stored.
+- The list keeps its own scroll position. When a row navigates, `preserveScroll: true` stops it from scrolling to the marked row, and the position also survives a router that re-mounts the page (moving the tree out of the document and back would otherwise reset it to the top).
 - `onToggle(item, open)` fires when a branch opens or closes.
 - From code: `expand(key)`, `collapse(key)`, `toggle(key)`, `expandAll()`, `collapseAll()`, `focusNode(key)`, `keyOf(item)`, `getSelectedItems()`, `clearSelection()` and `activateByPath(path)`. Wherever a key is expected, you can also pass a path or the item itself.
 

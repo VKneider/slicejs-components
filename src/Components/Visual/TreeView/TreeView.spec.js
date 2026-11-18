@@ -204,6 +204,33 @@ test.describe('TreeView — keyboard', () => {
 });
 
 test.describe('TreeView — remembered state', () => {
+   test('keeps its scroll position when the host is moved out and back in (router re-mount)', async ({ mountHtml, page }) => {
+      await mountHtml('<div id="host"></div>');
+      const items = Array.from({ length: 60 }, (_, i) => ({ value: `Row ${i}`, path: `/t/${i}` }));
+      await build(page, { items, expanded: 'all' });
+      expect(await page.evaluate(() => {
+         const view = window.__tree.querySelector('.simple_treeview');
+         view.style.height = '120px';
+         view.style.overflow = 'auto';
+         view.scrollTop = 160;
+         return view.scrollTop;
+      })).toBe(160);
+      await page.waitForTimeout(50);
+
+      // A router that re-inserts the page moves the whole subtree; the browser
+      // zeroes every scroll position inside it when that happens.
+      const afterMove = await page.evaluate(() => {
+         const view = window.__tree.querySelector('.simple_treeview');
+         const parent = window.__tree.parentElement;
+         const next = window.__tree.nextSibling;
+         parent.removeChild(window.__tree);
+         parent.insertBefore(window.__tree, next);
+         return view.scrollTop;
+      });
+      expect(afterMove).toBe(160);
+      expect(await page.evaluate(() => window.__tree.querySelector('.simple_treeview').scrollTop)).toBe(160);
+   });
+
    test('stateKey remembers open branches; without it nothing is stored', async ({ mountHtml, page }) => {
       await mountHtml('<div id="host"></div>');
       await page.evaluate(() => localStorage.removeItem('slice-tree:spec'));
