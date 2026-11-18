@@ -1,0 +1,53 @@
+slice-overflow-list {
+   display: block;
+   position: relative;
+   width: 100%;
+   min-width: 0;
+}
+slice-overflow-list[hidden] {
+   display: none;
+}
+slice-overflow-list > .slice-overflow-list__rail {
+   display: flex;
+   align-items: center;
+   gap: var(--slice-overflow-list-gap, 8px);
+   overflow-x: auto;
+   min-width: 0;
+}
+slice-overflow-list .slice-overflow-list__item {
+   display: inline-flex;
+   align-items: center;
+   flex: 0 0 auto;
+   width: max-content;
+   max-width: none;
+}
+slice-overflow-list .slice-overflow-list__more {
+   display: inline-flex;
+   flex: 0 0 auto;
+   font-variant-numeric: tabular-nums;
+}
+slice-overflow-list .slice-overflow-list__more[hidden] {
+   display: none;
+}
+slice-overflow-list .slice-overflow-list__more > slice-dropdown {
+   width: 100%;
+}
+slice-overflow-list .slice-overflow-list__more > slice-dropdown > button {
+   width: 100%;
+}
+slice-overflow-list > .slice-overflow-list__measure {
+   position: absolute;
+   width: 0;
+   height: 0;
+   overflow: hidden;
+   visibility: hidden;
+   pointer-events: none;
+}
+slice-overflow-list .slice-overflow-list__overflow {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap: var(--slice-overflow-list-gap, 8px);
+   width: max-content;
+   padding: 4px;
+}

@@ -1058,6 +1058,22 @@ export interface NotFoundDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface OverflowListProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  collapseFrom?: 'end' | 'start';
+  disabled?: boolean;
+  gap?: unknown;
+  items?: { id: string; node: unknown; pinned?: boolean; priority?: number; }[];
+  minVisible?: number;
+  onChange?: (...args: unknown[]) => unknown;
+  texts?: Record<string, unknown>;
+}
+
+export interface OverflowListDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface PaginationProps {
   [key: string]: unknown;
   align?: string;
@@ -1660,6 +1676,25 @@ export interface TourServiceDocumentationProps {
   [key: string]: unknown;
 }
 
+export interface TransferListProps {
+  [key: string]: unknown;
+  ariaLabel?: string;
+  disabled?: boolean;
+  error?: string;
+  items?: { content?: unknown; description?: string; disabled?: boolean; group?: string; label?: string; locked?: boolean; value: unknown; }[];
+  loading?: boolean;
+  onChange?: (...args: unknown[]) => unknown;
+  onRetry?: (...args: unknown[]) => unknown;
+  searchable?: boolean;
+  showSelectAll?: boolean;
+  texts?: Record<string, unknown>;
+  value?: unknown[];
+}
+
+export interface TransferListDocumentationProps {
+  [key: string]: unknown;
+}
+
 export interface TreeItemProps {
   [key: string]: unknown;
   items?: unknown[];
@@ -1842,6 +1877,8 @@ export interface SliceComponentPropsMap {
   NavbarDocumentation: NavbarDocumentationProps;
   NotFound: NotFoundProps;
   NotFoundDocumentation: NotFoundDocumentationProps;
+  OverflowList: OverflowListProps;
+  OverflowListDocumentation: OverflowListDocumentationProps;
   Pagination: PaginationProps;
   PaginationDocumentation: PaginationDocumentationProps;
   Playground: PlaygroundProps;
@@ -1909,6 +1946,8 @@ export interface SliceComponentPropsMap {
   TourOverlay: TourOverlayProps;
   TourService: TourServiceProps;
   TourServiceDocumentation: TourServiceDocumentationProps;
+  TransferList: TransferListProps;
+  TransferListDocumentation: TransferListDocumentationProps;
   TreeItem: TreeItemProps;
   TreeView: TreeViewProps;
   TreeViewDocumentation: TreeViewDocumentationProps;

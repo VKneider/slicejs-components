@@ -281,6 +281,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://components.slicejs.com/docs/input/transfer-list</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://components.slicejs.com/docs/internal/css-conventions</loc>
     <lastmod>2026-10-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -288,7 +293,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/internal/markdown-parser-rules</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -325,6 +330,11 @@
   <url>
     <loc>https://components.slicejs.com/docs/layout/layout</loc>
     <lastmod>2026-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://components.slicejs.com/docs/layout/overflow-list</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

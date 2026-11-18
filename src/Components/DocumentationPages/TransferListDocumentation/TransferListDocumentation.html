@@ -1,0 +1,30 @@
+<div class="documentation-content transferlistdocumentation">
+
+<div class="doc-title-bar">
+  <h1 id="transferlist">
+    <span class="doc-title-text">TransferList</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
+<p><code>TransferList</code> separates <strong>available</strong> items from <strong>assigned</strong> items. Each row has a labelled checkbox, optional description/rich content and an explicit Assign or Remove action. Search is independent on each side. Bulk actions operate on the checked visible items, without the ambiguity of a pair of arrow buttons.</p>
+<p>Use it for role permissions, project membership, resources or feature assignment. Use Select with multiple selection for a short compact field and TreeView for browsing a hierarchy. This version supports flat catalogs grouped into categories; it does not implement hierarchical permission inheritance or a tree transfer.</p>
+<h2 id="value-and-selection">Value and selection</h2>
+<p><code>items</code> contains <code>{ value, label, description?, group?, content?, disabled?, locked? }</code>. Keys are unique nonempty strings or finite numbers; <code>1</code> and <code>'1'</code> are distinct. <code>value</code> is the array of assigned keys. Checking a checkbox is temporary selection; only Assign/Remove changes <code>value</code>.</p>
+<p>Assigned keys missing from the catalog are retained and announced. An unrelated edit never silently revokes those assignments. Load a fuller catalog to reveal them, or explicitly replace <code>value</code> from the application. The array returned by the getter and handler is a copy.</p>
+<p><code>locked</code> and <code>disabled</code> items cannot be moved by user actions or <code>assign</code>/<code>remove</code>. Locked rows show a policy label. Programmatic <code>value</code> assignments remain authoritative and silent, so the app can switch between roles or restore server state.</p>
+<h2 id="role-permissions">Role permissions</h2>
+<div class="script-block" data-block-id="doc-block-1"></div>
+<h2 id="app-owned-catalog-loading-and-team-assignment">App-owned catalog loading and team assignment</h2>
+<p>Fetch the catalog with your app's data layer and pass <code>items</code>, <code>loading</code> and <code>error</code>. The component does not start network work in init. While loading it blocks edits; with no catalog it shows skeleton rows, and with existing data it keeps the old rows visible and busy. <code>onRetry</code> lets the app retry a failed request.</p>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<h2 id="props">Props</h2>
+<div class="table-block" data-block-id="doc-block-3"></div>
+<h2 id="methods-and-behavior">Methods and behavior</h2>
+<ul><li><code>assign(values?)</code> / <code>remove(values?)</code>: explicit keys, or the checked visible items on that side. Returns whether anything moved. Filters disabled/locked, unknown and already-on-target keys. No-op calls do not emit.</li><li><code>setSearch('available' | 'assigned', query)</code>: update one query. Matching ignores accents/case and includes label, description and group. Changing a query clears only that side's temporary selection.</li><li><code>getSelection(side)</code>: a copied array of checked keys. <code>clearSelection(side?)</code> clears one or both sides.</li><li>Prop assignments update the view asynchronously through Slice update serialization; native action value changes and <code>onChange</code> are synchronous. Browser tests should wait for the relevant DOM state.</li></ul>
+<p>The component groups rows by the first appearance of each category, retaining catalog order within it. Empty categories disappear from search results. Select-visible and bulk actions exclude policy/unavailable items. The list uses actual native checkboxes through Checkbox, Input searches and Button actions, rather than placing checkboxes inside ARIA listbox options.</p>
+<h2 id="rich-content-and-lifecycle">Rich content and lifecycle</h2>
+<p><code>content</code> accepts text, a live Node/Slice component or an array. DocumentFragment content is consumed into its child nodes when mounted. Content nodes cannot be shared between rows. It sits outside the checkbox label and may contain its own controls. Moving a row retains its check/action components, rich content, supported focus/selection and scroll offsets. Use stable keys and immutable content arrays when changing descriptors.</p>
+<p>The component owns rich nodes and composed controls. Removing an item or destroying TransferList destroys that content, including components inside plain wrappers and never-mounted content queued during an update. Build app-lifetime services outside the supplied row content and manage their lifetime in the app.</p>
+<p>The panels respond to their <strong>container width</strong>, stacking below 640px. Set <code>--slice-transfer-list-height</code> (default <code>340px</code>) for the scrolling list height. No decorative animation is required.</p>
+<div class="component-block" data-block-id="doc-block-4"></div>
+</div>

@@ -495,6 +495,17 @@ const docsIndex = [
     tags: ['color', 'colour', 'picker', 'swatch', 'theme', 'hex', 'form']
   },
   {
+    title: 'TransferList',
+    route: '/docs/input/transfer-list',
+    description: 'Assign permissions, members and resources between searchable collections, with grouped rich rows, visible selection and locked policy items.',
+    section: 'Input Components',
+    group: 'Selection',
+    order: 28,
+    navLabel: 'TransferList',
+    component: 'TransferListDocumentation',
+    tags: ['transfer', 'assignment', 'permissions', 'members', 'selection', 'search']
+  },
+  {
     title: 'Markdown Parser Rules',
     route: '/docs/internal/markdown-parser-rules',
     description: 'Contract, template, and generation rules for Slice.js documentation pages.',
@@ -592,6 +603,17 @@ const docsIndex = [
     navLabel: 'DockLayout',
     component: 'DockLayoutDocumentation',
     tags: ['dock', 'docking', 'workspace', 'tabs', 'splitpane', 'panels', 'drag', 'editor']
+  },
+  {
+    title: 'OverflowList',
+    route: '/docs/layout/overflow-list',
+    description: 'Fit live controls into the container width and collect the rest under More, with priorities, pinned items and preserved component instances.',
+    section: 'Layout',
+    group: 'Containers',
+    order: 26,
+    navLabel: 'OverflowList',
+    component: 'OverflowListDocumentation',
+    tags: ['overflow', 'responsive', 'toolbar', 'actions', 'chips', 'layout']
   },
   {
     title: 'Navbar',

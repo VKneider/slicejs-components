@@ -1060,6 +1060,27 @@
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/not-found.md"
     },
     {
+      "id": "overflow-list",
+      "title": "OverflowList",
+      "kind": "Visual",
+      "component": "OverflowList",
+      "sourcePath": "src/markdown/overflow-list.md",
+      "route": "/docs/layout/overflow-list",
+      "section": "Layout",
+      "group": "Containers",
+      "order": 26,
+      "description": "Fit live controls into the container width and collect the rest under More, with priorities, pinned items and preserved component instances.",
+      "tags": [
+        "overflow",
+        "responsive",
+        "toolbar",
+        "actions",
+        "chips",
+        "layout"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/overflow-list.md"
+    },
+    {
       "id": "pagination",
       "title": "Pagination",
       "kind": "Visual",
@@ -1706,6 +1727,27 @@
         "service"
       ],
       "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/tour-service.md"
+    },
+    {
+      "id": "transfer-list",
+      "title": "TransferList",
+      "kind": "Visual",
+      "component": "TransferList",
+      "sourcePath": "src/markdown/transfer-list.md",
+      "route": "/docs/input/transfer-list",
+      "section": "Input Components",
+      "group": "Selection",
+      "order": 28,
+      "description": "Assign permissions, members and resources between searchable collections, with grouped rich rows, visible selection and locked policy items.",
+      "tags": [
+        "transfer",
+        "assignment",
+        "permissions",
+        "members",
+        "selection",
+        "search"
+      ],
+      "rawUrl": "https://raw.githubusercontent.com/VKneider/slicejs-components/master/src/markdown/transfer-list.md"
     },
     {
       "id": "treeview",

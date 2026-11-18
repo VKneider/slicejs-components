@@ -201,6 +201,10 @@
       "component": "NotFoundDocumentation"
     },
     {
+      "filePath": "src/markdown/overflow-list.md",
+      "component": "OverflowListDocumentation"
+    },
+    {
       "filePath": "src/markdown/pagination.md",
       "component": "PaginationDocumentation"
     },
@@ -319,6 +323,10 @@
     {
       "filePath": "src/markdown/tour-service.md",
       "component": "TourServiceDocumentation"
+    },
+    {
+      "filePath": "src/markdown/transfer-list.md",
+      "component": "TransferListDocumentation"
     },
     {
       "filePath": "src/markdown/treeview.md",

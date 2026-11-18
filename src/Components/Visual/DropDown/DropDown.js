@@ -37,6 +37,7 @@
 // The enumerated props are LITERAL arrays inside `static props`, and the setters
 // read them back from `DropDown.props` (COMPONENT_API_STANDARDS.md §10).
 
+import { destroyNodes } from '../../shared/content/nodes.js';
 import { texts } from '../../shared/text/texts.js';
 
 const TEXTS = {
@@ -245,7 +246,9 @@ export default class DropDown extends HTMLElement {
    }
 
    beforeDestroy() {
+      this._retired = true;
       this._closeAll(false, false);
+      this._detachBorrowed(this.$box);
       clearTimeout(this._hoverTimer);
       clearTimeout(this._typeaheadTimer);
       if (this._frame) cancelAnimationFrame(this._frame);
@@ -483,7 +486,17 @@ export default class DropDown extends HTMLElement {
       return panel;
    }
 
+   _detachBorrowed(panel) {
+      for (const box of panel.querySelectorAll('.slice_dropdown_custom')) {
+         const content = box._borrowedContent;
+         if (content?.nodeType === 11) {
+            for (const node of box._borrowedNodes || []) if (node.parentNode === box) content.appendChild(node);
+         } else if (content?.parentNode === box) box.removeChild(content);
+      }
+   }
+
    async _renderPanel(panel, entries, level) {
+      this._detachBorrowed(panel);
       slice.controller.destroyByContainer(panel);
       panel.dataset.level = String(level);
       const hasIcons = entries.some((entry) => entry.item?.icon);
@@ -503,8 +516,19 @@ export default class DropDown extends HTMLElement {
       if (entry.kind === 'label') return this._el('div', 'slice_dropdown_group_label', { role: 'presentation', text: entry.label });
       if (entry.kind === 'custom') {
          const box = this._el('div', 'slice_dropdown_custom', { role: 'presentation' });
+         const token = this._openToken;
          const content = await entry.item.render(this._ctx(entry));
-         if (content instanceof Node) box.appendChild(content);
+         if (this._retired || token !== this._openToken) {
+            if (content instanceof Node && entry.item.owned !== false) destroyNodes([content]);
+            return box;
+         }
+         if (content instanceof Node) {
+            if (entry.item.owned === false) {
+               box._borrowedContent = content;
+               box._borrowedNodes = content.nodeType === 11 ? [...content.childNodes] : [content];
+            }
+            box.appendChild(content);
+         }
          else if (content !== null && content !== undefined) box.textContent = String(content);
          return box;
       }
@@ -686,6 +710,7 @@ export default class DropDown extends HTMLElement {
          const record = this._levels[i];
          if (!record) continue;
          this._hidePanel(record.panel);
+         this._detachBorrowed(record.panel);
          slice.controller.destroyByContainer(record.panel);
          if (record.button) {
             record.button.setAttribute('aria-expanded', 'false');

@@ -496,3 +496,22 @@ test.describe('DropDown — in a Navbar', () => {
       await expect(legacy.getByRole('menuitem', { name: 'Old' })).toHaveAttribute('href', '#old');
    });
 });
+test('DropDown retains caller-owned custom nodes across close/reopen and destroys ordinary owned content',async({mount})=>{
+ const c=await mount('DropDown');
+ expect(await c.component.evaluate(async el=>{
+   const retained=await slice.build('Button',{value:'Retained'});el.items=[{owned:false,render:()=>retained}];
+   await el.open();el.close();const live=slice.controller.activeComponents.has(retained.sliceId);await el.open();const same=el.contains(retained);el.close();
+   const owned=await slice.build('Button',{value:'Owned'});el.items=[{render:()=>owned}];await el.open();el.close();const removed=!slice.controller.activeComponents.has(owned.sliceId);
+   slice.controller.destroyComponent(retained);return{live,same,removed};
+ })).toEqual({live:true,same:true,removed:true});
+});
+
+test('DropDown returns borrowed fragments and does not acquire content when destroyed during an async render',async({mount})=>{
+ const c=await mount('DropDown');
+ expect(await c.component.evaluate(async el=>{
+   const child=await slice.build('Button',{value:'Borrowed'});const fragment=document.createDocumentFragment();fragment.append(child);el.items=[{owned:false,render:()=>fragment}];
+   await el.open();el.close();const returned=fragment.firstChild===child;
+   let finish;el.items=[{owned:false,render:()=>new Promise(resolve=>{finish=resolve;})}];const pending=el.open();slice.controller.destroyComponent(el);finish(child);await pending;
+   const live=slice.controller.activeComponents.has(child.sliceId);slice.controller.destroyComponent(child);return{returned,live};
+ })).toEqual({returned:true,live:true});
+});

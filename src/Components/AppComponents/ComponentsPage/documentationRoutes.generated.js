@@ -280,6 +280,11 @@ const documentationRoutes = {
         path: '/docs/input/color-picker',
         component: 'ColorPickerDocumentation'
       },
+      {
+        title: 'TransferList',
+        path: '/docs/input/transfer-list',
+        component: 'TransferListDocumentation'
+      },
     ]
   },
   Layout: {
@@ -320,6 +325,11 @@ const documentationRoutes = {
         title: 'DockLayout',
         path: '/docs/layout/dock-layout',
         component: 'DockLayoutDocumentation'
+      },
+      {
+        title: 'OverflowList',
+        path: '/docs/layout/overflow-list',
+        component: 'OverflowListDocumentation'
       },
     ]
   },

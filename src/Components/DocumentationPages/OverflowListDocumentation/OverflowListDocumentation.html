@@ -1,0 +1,25 @@
+<div class="documentation-content overflowlistdocumentation">
+
+<div class="doc-title-bar">
+  <h1 id="overflowlist">
+    <span class="doc-title-text">OverflowList</span>
+  </h1>
+  <span class="copy-md-slot" data-copy-md></span>
+</div>
+<p><code>OverflowList</code> measures live items against its own container and moves the ones that do not fit into a <span data-inline-link="0"></span> disclosure. Buttons, chips, links and custom content keep their existing instances and handlers. Closing More parks the hidden controls without destroying them.</p>
+<p>Use it for compact action bars, active filters and navigation shortcuts, especially inside resizable panels. Use CSS wrapping when multiple lines are welcome. Tabs already manages its own strip; OverflowList does not replace Tabs or build a new menu vocabulary.</p>
+<h2 id="contract">Contract</h2>
+<div class="table-block" data-block-id="doc-block-1"></div>
+<p>Higher <code>priority</code> values are preferred when they fit. All visible and overflow items retain their input order; priorities determine membership, not visual sorting. <code>pinned</code> and <code>minVisible</code> are mandatory. If they and the More trigger cannot fit, <code>data-constrained="true"</code> marks the result and the rail scrolls horizontally to keep them reachable.</p>
+<p>The component reserves the maximum count-label width for the current item set, avoiding oscillation around counts such as 9 and 10. It can leave a small amount of unused space as a result.</p>
+<p>Read-only <code>visibleItems</code> and <code>overflowItems</code> return descriptors. <code>reflow()</code> measures immediately when connected and visible, returning the partition or null when measurement is unavailable. <code>update()</code> refreshes a cached/reconnected view. Normal container/item size changes are observed automatically.</p>
+<h2 id="responsive-document-actions">Responsive document actions</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
+<h2 id="active-filters-with-live-removal">Active filters with live removal</h2>
+<div class="script-block" data-block-id="doc-block-3"></div>
+<h2 id="measurement-focus-and-ownership">Measurement, focus and ownership</h2>
+<p>Items need intrinsic widths. Use content-sized controls or explicit pixel/rem widths; a child whose width depends on a percentage of this same row is outside the sizing contract. Reserve images' natural dimensions while loading. ResizeObserver handles item width changes, fonts and parent resizing. Hidden containers are measured when revealed; <code>reflow()</code> can be called after custom layout work.</p>
+<p>The measurement lane is invisible, inert and clipped. Overflow controls keep their original keyboard behavior inside the disclosure. Escape and outside dismissal use DropDown; when a focused visible control becomes hidden, focus goes to More. No new controls are cloned or synthesized from labels.</p>
+<p>Assignments to <code>items</code> reconcile live nodes, and removed nodes are destroyed. Reuse stable IDs and node references to retain state. The dropdown receives <code>owned: false</code> custom content: OverflowList remains responsible for its nodes. Destroying OverflowList destroys the nodes, its menu, observers and scheduled work. Native resources whose state depends on DOM attachment, such as iframe browsing contexts, can still react to reparenting.</p>
+<div class="component-block" data-block-id="doc-block-4"></div>
+</div>

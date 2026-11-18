@@ -2677,6 +2677,64 @@
         }
       ]
     },
+    "/docs/input/transfer-list": {
+      "title": "TransferList | Slice.js",
+      "description": "Assign permissions, members and resources between searchable collections, with grouped rich rows, visible selection and locked policy items.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "TransferList | Slice.js",
+          "description": "Assign permissions, members and resources between searchable collections, with grouped rich rows, visible selection and locked policy items.",
+          "url": "https://components.slicejs.com/docs/input/transfer-list",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "input",
+              "item": "https://components.slicejs.com/docs/input"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "transfer-list",
+              "item": "https://components.slicejs.com/docs/input/transfer-list"
+            }
+          ]
+        }
+      ]
+    },
     "/docs/internal/css-conventions": {
       "title": "CSS Conventions | Slice.js",
       "description": "Three rules to write component CSS that never leaks — host scope, explicit display, and prefixed keyframes.",
@@ -2743,7 +2801,7 @@
         "follow": true
       },
       "sitemap": {
-        "lastmod": "2026-10-27",
+        "lastmod": "2026-11-17",
         "priority": "0.7",
         "changefreq": "monthly"
       },
@@ -3136,6 +3194,64 @@
               "position": 4,
               "name": "layout",
               "item": "https://components.slicejs.com/docs/layout/layout"
+            }
+          ]
+        }
+      ]
+    },
+    "/docs/layout/overflow-list": {
+      "title": "OverflowList | Slice.js",
+      "description": "Fit live controls into the container width and collect the rest under More, with priorities, pinned items and preserved component instances.",
+      "robots": {
+        "index": true,
+        "follow": true
+      },
+      "sitemap": {
+        "lastmod": null,
+        "priority": "0.7",
+        "changefreq": "monthly"
+      },
+      "jsonLd": [
+        {
+          "@type": "TechArticle",
+          "headline": "OverflowList | Slice.js",
+          "description": "Fit live controls into the container width and collect the rest under More, with priorities, pinned items and preserved component instances.",
+          "url": "https://components.slicejs.com/docs/layout/overflow-list",
+          "author": {
+            "@type": "Organization",
+            "name": "vkneider.dev"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Slice.js"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://components.slicejs.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Components Library",
+              "item": "https://components.slicejs.com/docs"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "layout",
+              "item": "https://components.slicejs.com/docs/layout"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "overflow-list",
+              "item": "https://components.slicejs.com/docs/layout/overflow-list"
             }
           ]
         }

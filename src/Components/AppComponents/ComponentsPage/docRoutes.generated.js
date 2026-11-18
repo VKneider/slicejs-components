@@ -52,6 +52,7 @@ const docRoutes = [
   { path: '/docs/routing/multi-route', component: 'MultiRouteDocumentation' },
   { path: '/docs/navigation/navbar', component: 'NavbarDocumentation' },
   { path: '/docs/navigation/not-found', component: 'NotFoundDocumentation' },
+  { path: '/docs/layout/overflow-list', component: 'OverflowListDocumentation' },
   { path: '/docs/data/pagination', component: 'PaginationDocumentation' },
   { path: '/docs/internal/markdown-parser-rules', component: 'MarkdownParserRulesDocumentation' },
   { path: '/docs/display/progress-bar', component: 'ProgressBarDocumentation' },
@@ -82,6 +83,7 @@ const docRoutes = [
   { path: '/docs/services/tooltip-provider', component: 'ToolTipProviderDocumentation' },
   { path: '/docs/display/tooltip', component: 'ToolTipDocumentation' },
   { path: '/docs/services/tour-service', component: 'TourServiceDocumentation' },
+  { path: '/docs/input/transfer-list', component: 'TransferListDocumentation' },
   { path: '/docs/navigation/treeview', component: 'TreeViewDocumentation' },
   { path: '/docs/services/unsaved-changes-guard', component: 'UnsavedChangesGuardDocumentation' },
 ];
