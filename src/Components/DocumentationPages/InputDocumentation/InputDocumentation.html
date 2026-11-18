@@ -34,13 +34,14 @@
 <div class="script-block" data-block-id="doc-block-7"></div>
 <h2 id="best-practices">Best Practices</h2>
 <div class="callout-block" data-block-id="doc-block-8"></div>
+<p>Use the right <code>type</code> and <code>autocomplete</code>: <code>type: 'email'</code> brings the email keyboard on phones and the format check for free; <code>autocomplete: 'current-password'</code> lets password managers fill it.</p>
 <div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="callout-block" data-block-id="doc-block-10"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-11"></div>
-<div class="callout-block" data-block-id="doc-block-12"></div>
-<div class="callout-block" data-block-id="doc-block-13"></div>
+<p>Inputs no longer carry a 20px margin. Spacing belongs to whatever holds them (a Form, a grid, a flex column with a <code>gap</code>); to get the old spacing back on one field, set <code>--control-margin-block: 20px</code> on it.</p>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="compare-block" data-block-id="doc-block-11"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.input.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>clear</code>, <code>togglePassword</code>.</p>
-<div class="component-block" data-block-id="doc-block-14"></div>
+<div class="related-block" data-block-id="doc-block-12"></div>
+<div class="component-block" data-block-id="doc-block-13"></div>
 </div>

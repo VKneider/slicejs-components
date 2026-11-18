@@ -148,3 +148,9 @@ The component groups rows by the first appearance of each category, retaining ca
 The component owns rich nodes and composed controls. Removing an item or destroying TransferList destroys that content, including components inside plain wrappers and never-mounted content queued during an update. Build app-lifetime services outside the supplied row content and manage their lifetime in the app.
 
 The panels respond to their **container width**, stacking below 640px. Set `--slice-transfer-list-height` (default `340px`) for the scrolling list height. No decorative animation is required.
+
+:::related
+- [Checkbox](/docs/input/checkbox) - Selecting several items.
+- [DataList](/docs/data/datalist) - The same records as rows.
+- [Drag drop](/docs/services/drag-drop) - Moving items with the pointer.
+:::

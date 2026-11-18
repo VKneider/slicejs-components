@@ -25,10 +25,11 @@
 <div class="table-block" data-block-id="doc-block-6"></div>
 <p>Named colours and <code>oklch()</code> / <code>color-mix()</code> cannot be rendered in a swatch at all, so they fall back rather than going black in silence.</p>
 <h2 id="best-practices">Best Practices</h2>
+<p>Use <code>hint</code> for whatever the label cannot say in a couple of words — a CSS custom property name in a theme editor, a token key in a design system. It is rendered in the code font for exactly that kind of identifier.</p>
 <div class="callout-block" data-block-id="doc-block-7"></div>
-<div class="callout-block" data-block-id="doc-block-8"></div>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="callout-block" data-block-id="doc-block-10"></div>
-<div class="component-block" data-block-id="doc-block-11"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<p>The hex readout is <code>aria-hidden</code> on purpose: screen readers already announce the value through the input itself, and <code>&lt;output&gt;</code> has an implicit <code>role="status"</code> that would announce every intermediate value during a drag.</p>
+<div class="related-block" data-block-id="doc-block-9"></div>
+<div class="component-block" data-block-id="doc-block-10"></div>
 </div>

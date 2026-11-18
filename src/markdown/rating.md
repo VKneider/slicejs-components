@@ -173,19 +173,27 @@ return box;
 :::
 
 ## Best Practices
+
 :::tip
 Give each value a word with `labels` and turn on `showValue`. "4 · Very good" is clearer than four stars, and the word is read out with the number.
 :::
 
-:::tip
 Show the count next to an average: "4.6 · 128 reviews". Five stars from two people and five stars from two thousand are not the same.
-:::
 
 ## Pitfalls
+
 :::warning
 Do not round an average to whole stars when showing it. Use `allowHalf` with `readOnly`, and write the exact number next to it.
 :::
 
-:::warning
-A read-only rating is not a control: it has no Tab stop. To let people change a score they gave, show the editable one.
+:::compare left="Showing a score" right="Letting people change it"
+`readOnly`, with `allowHalf` and the exact number next to it. It is not a control: it has no Tab stop.
+---
+The editable rating, when the score a person gave can be changed.
+:::
+
+:::related
+- [Slider](/docs/input/slider) - A number on a scale, with a step.
+- [DataList](/docs/data/datalist) - Reviews as rows or cards.
+- [Badge](/docs/display/badge) - The score as a small status.
 :::

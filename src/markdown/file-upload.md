@@ -280,23 +280,25 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Say what is allowed before people pick: set `accept`, `maxSize` and `maxFiles`, and the zone writes the hint for you. Finding out after a slow upload is the worst time.
-:::
 
 :::tip
-Pass the `signal` to `fetch(url, { signal, body: file })`. Cancel then really stops the request, instead of hiding a file that keeps uploading.
+Pass the `signal` to `fetch(url, { signal, body: file })` so cancelling really stops the request, and read files in the page when you can: `await file.text()` for a CSV, an object URL for a preview. Nothing needs to reach the server until the person confirms.
 :::
 
-:::tip
-Read files in the page when you can: `await file.text()` for a CSV, an image's object URL for a preview. Nothing needs to reach the server until the person confirms.
+:::compare left="Help the person" right="Protect the server"
+`accept`, `maxSize` and `maxFiles` write the hint in the zone and catch the obvious mistake before a slow upload.
+---
+They are not security: a request can be sent without this page. Check the type and the size again on the server.
 :::
 
 ## Pitfalls
-:::warning
-`accept` and `maxSize` help people, but they are not security. Check the type and the size again on the server: a request can be sent without this page.
-:::
 
 :::warning
-Every `URL.createObjectURL` you make yourself keeps its file in memory until you call `URL.revokeObjectURL`. FileUpload frees its own previews. Free the ones you create, as the gallery and profile examples do.
+Every `URL.createObjectURL` you make yourself keeps its file in memory until you call `URL.revokeObjectURL`. FileUpload frees its own previews; free the ones you create, as the gallery and profile examples do.
+:::
+
+:::related
+- [File download](/docs/services/file-download-service) - The other direction.
+- [Table](/docs/data/table) - Exporting what was uploaded.
+- [IndexedDbManager](/docs/services/indexed-db-manager) - Keeping a file in the browser until it is sent.
 :::

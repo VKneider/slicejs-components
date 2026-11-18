@@ -10,7 +10,7 @@ export default class ColorPickerDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "color-picker.md";
-    this.markdownContent = "---\ntitle: ColorPicker\nroute: /docs/input/color-picker\nnavLabel: ColorPicker\nsection: Input Components\ngroup: Basic\norder: 17\ndescription: A labelled colour swatch with a hex readout that normalizes any CSS colour before the browser can silently black it out.\ncomponent: ColorPickerDocumentation\ngenerate: true\ntags: [color, colour, picker, swatch, theme, hex, form]\n---\n\n# ColorPicker\n\n## Overview\n\n`ColorPicker` is a labelled colour control: a native swatch, the current hex value, and an\noptional hint line underneath.\n\nIt wraps `<input type=\"color\">` rather than replacing it. The native control carries the OS\ncolour dialog, touch behaviour and keyboard support that a hand-rolled swatch grid never gets\nright for free — what it does not carry is a label, a readable value, or any way to report that\nit could not understand the colour you gave it.\n\n## Core Behavior\n- `label` names the control through a real `<label for>` association, so it appears as the\n  accessible name. Each instance generates its own input id, so several pickers on one page never\n  cross-wire.\n- `value` is always normalized to lowercase `#rrggbb`. `#rgb` is expanded and `rgb()` / `rgba()`\n  (comma or space syntax) are converted.\n- The hex readout mirrors the value. A native colour input shows nothing, so a colour table\n  cannot tell you what it is actually holding.\n- `hint` renders a small monospace line under the control — a CSS variable name, a usage note.\n- `onChange(value)` fires on every `input` event with the normalized hex, so it follows a drag\n  rather than waiting for the dialog to close.\n- `size` (`md` | `sm`) comes from the shared recipe every control validates against.\n- `customColor.accent` tints the swatch **border** only. Filling the swatch would fight the\n  colour the user actually picked, which is the one thing the control exists to show.\n- `disabled` removes the control from interaction.\n\n## Why not a bare `<input type=\"color\">`\n\nThe failure this component exists to absorb is silent. Hand a native colour input `rgb(0 128 0)`,\n`var(--brand)` or `rebeccapurple` and it renders **black** and reports nothing. The result looks\nlike a rendering bug, not a bad argument — so `ColorPicker` normalizes on the way in and shows\nyou the fallback it actually landed on.\n\n## Live Preview\n:::component name=\"ColorPicker\"\n{\n  \"label\": \"Primary color\",\n  \"value\": \"#9333ea\",\n  \"hint\": \"--primary-color\"\n}\n:::\n\n## Prop Scenarios\n:::script label=\"plain picker\" expected=\"a labelled swatch showing its hex value\"\nconst picker = await slice.build('ColorPicker', {\n  label: 'Primary color',\n  value: '#9333ea'\n});\nreturn picker;\n:::\n\n:::script label=\"with a CSS variable hint\" expected=\"the variable name under the control\"\nconst picker = await slice.build('ColorPicker', {\n  label: 'Danger',\n  value: '#dc2626',\n  hint: '--danger-color'\n});\n\nconst host = document.createElement('div');\nhost.style.maxWidth = '280px';\nhost.appendChild(picker);\nreturn host;\n:::\n\n:::script label=\"colour table\" expected=\"a row of independent swatches, each with its own value\"\nconst tokens = [\n  { label: 'Primary', value: '#9333ea' },\n  { label: 'Secondary', value: '#0891b2' },\n  { label: 'Success', value: '#059669' },\n  { label: 'Warning', value: '#d97706' },\n  { label: 'Danger', value: '#dc2626' }\n];\n\nconst host = document.createElement('div');\nhost.style.display = 'grid';\nhost.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';\nhost.style.gap = '0.75rem';\n\nfor (const token of tokens) {\n  host.appendChild(await slice.build('ColorPicker', {\n    label: token.label,\n    value: token.value,\n    hint: '--' + token.label.toLowerCase() + '-color'\n  }));\n}\nreturn host;\n:::\n\n:::script label=\"onChange on every edit\" expected=\"the swatch updates as the value is dragged\"\nconst readout = document.createElement('p');\nreadout.style.fontFamily = 'var(--font-family-code, monospace)';\nreadout.style.marginTop = '0.5rem';\n\nconst picker = await slice.build('ColorPicker', {\n  label: 'Pick a colour',\n  value: '#059669',\n  onChange: (hex) => {\n    readout.textContent = 'onChange -> ' + hex;\n  }\n});\n\nconst host = document.createElement('div');\nhost.style.maxWidth = '280px';\nhost.appendChild(picker);\nhost.appendChild(readout);\nreturn host;\n:::\n\n## Normalization\n`value` accepts the three spellings that actually reach a UI, and falls back for the rest.\n\n| Input | Result |\n| --- | --- |\n| `#9333ea` | `#9333ea` |\n| `#0f8` | `#00ff88` |\n| `rgb(147, 51, 234)` | `#9333ea` |\n| `rgb(147 51 234 / 0.5)` | `#9333ea` |\n| `var(--brand)` | `#000000` (documented fallback) |\n| `rebeccapurple` | `#000000` (documented fallback) |\n\nNamed colours and `oklch()` / `color-mix()` cannot be rendered in a swatch at all, so they fall\nback rather than going black in silence.\n\n## Best Practices\n:::tip\nUse `hint` for whatever the label cannot say in a couple of words — a CSS custom property name\nin a theme editor, a token key in a design system. It is rendered in the code font for exactly\nthat kind of identifier.\n:::\n\n:::tip\nPair `onChange` with `value` rather than only `onChange`. `onChange` fires on every input event\nduring a drag, so a consumer that does expensive work per call should debounce it.\n:::\n\n## Pitfalls\n:::warning\n`customColor` tints the border only. Setting `accent` to the same colour as `value` does not fill\nthe swatch — the whole point of the control is to show the value the user picked.\n:::\n\n:::warning\nThe hex readout is `aria-hidden`. Screen readers already announce the value through the input\nitself, and `<output>` has an implicit `role=\"status\"`, which would otherwise announce every\nintermediate value during a drag.\n:::";
+    this.markdownContent = "---\ntitle: ColorPicker\nroute: /docs/input/color-picker\nnavLabel: ColorPicker\nsection: Input Components\ngroup: Basic\norder: 17\ndescription: A labelled colour swatch with a hex readout that normalizes any CSS colour before the browser can silently black it out.\ncomponent: ColorPickerDocumentation\ngenerate: true\ntags: [color, colour, picker, swatch, theme, hex, form]\n---\n\n# ColorPicker\n\n## Overview\n\n`ColorPicker` is a labelled colour control: a native swatch, the current hex value, and an\noptional hint line underneath.\n\nIt wraps `<input type=\"color\">` rather than replacing it. The native control carries the OS\ncolour dialog, touch behaviour and keyboard support that a hand-rolled swatch grid never gets\nright for free — what it does not carry is a label, a readable value, or any way to report that\nit could not understand the colour you gave it.\n\n## Core Behavior\n- `label` names the control through a real `<label for>` association, so it appears as the\n  accessible name. Each instance generates its own input id, so several pickers on one page never\n  cross-wire.\n- `value` is always normalized to lowercase `#rrggbb`. `#rgb` is expanded and `rgb()` / `rgba()`\n  (comma or space syntax) are converted.\n- The hex readout mirrors the value. A native colour input shows nothing, so a colour table\n  cannot tell you what it is actually holding.\n- `hint` renders a small monospace line under the control — a CSS variable name, a usage note.\n- `onChange(value)` fires on every `input` event with the normalized hex, so it follows a drag\n  rather than waiting for the dialog to close.\n- `size` (`md` | `sm`) comes from the shared recipe every control validates against.\n- `customColor.accent` tints the swatch **border** only. Filling the swatch would fight the\n  colour the user actually picked, which is the one thing the control exists to show.\n- `disabled` removes the control from interaction.\n\n## Why not a bare `<input type=\"color\">`\n\nThe failure this component exists to absorb is silent. Hand a native colour input `rgb(0 128 0)`,\n`var(--brand)` or `rebeccapurple` and it renders **black** and reports nothing. The result looks\nlike a rendering bug, not a bad argument — so `ColorPicker` normalizes on the way in and shows\nyou the fallback it actually landed on.\n\n## Live Preview\n:::component name=\"ColorPicker\"\n{\n  \"label\": \"Primary color\",\n  \"value\": \"#9333ea\",\n  \"hint\": \"--primary-color\"\n}\n:::\n\n## Prop Scenarios\n:::script label=\"plain picker\" expected=\"a labelled swatch showing its hex value\"\nconst picker = await slice.build('ColorPicker', {\n  label: 'Primary color',\n  value: '#9333ea'\n});\nreturn picker;\n:::\n\n:::script label=\"with a CSS variable hint\" expected=\"the variable name under the control\"\nconst picker = await slice.build('ColorPicker', {\n  label: 'Danger',\n  value: '#dc2626',\n  hint: '--danger-color'\n});\n\nconst host = document.createElement('div');\nhost.style.maxWidth = '280px';\nhost.appendChild(picker);\nreturn host;\n:::\n\n:::script label=\"colour table\" expected=\"a row of independent swatches, each with its own value\"\nconst tokens = [\n  { label: 'Primary', value: '#9333ea' },\n  { label: 'Secondary', value: '#0891b2' },\n  { label: 'Success', value: '#059669' },\n  { label: 'Warning', value: '#d97706' },\n  { label: 'Danger', value: '#dc2626' }\n];\n\nconst host = document.createElement('div');\nhost.style.display = 'grid';\nhost.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';\nhost.style.gap = '0.75rem';\n\nfor (const token of tokens) {\n  host.appendChild(await slice.build('ColorPicker', {\n    label: token.label,\n    value: token.value,\n    hint: '--' + token.label.toLowerCase() + '-color'\n  }));\n}\nreturn host;\n:::\n\n:::script label=\"onChange on every edit\" expected=\"the swatch updates as the value is dragged\"\nconst readout = document.createElement('p');\nreadout.style.fontFamily = 'var(--font-family-code, monospace)';\nreadout.style.marginTop = '0.5rem';\n\nconst picker = await slice.build('ColorPicker', {\n  label: 'Pick a colour',\n  value: '#059669',\n  onChange: (hex) => {\n    readout.textContent = 'onChange -> ' + hex;\n  }\n});\n\nconst host = document.createElement('div');\nhost.style.maxWidth = '280px';\nhost.appendChild(picker);\nhost.appendChild(readout);\nreturn host;\n:::\n\n## Normalization\n`value` accepts the three spellings that actually reach a UI, and falls back for the rest.\n\n| Input | Result |\n| --- | --- |\n| `#9333ea` | `#9333ea` |\n| `#0f8` | `#00ff88` |\n| `rgb(147, 51, 234)` | `#9333ea` |\n| `rgb(147 51 234 / 0.5)` | `#9333ea` |\n| `var(--brand)` | `#000000` (documented fallback) |\n| `rebeccapurple` | `#000000` (documented fallback) |\n\nNamed colours and `oklch()` / `color-mix()` cannot be rendered in a swatch at all, so they fall\nback rather than going black in silence.\n\n## Best Practices\n\nUse `hint` for whatever the label cannot say in a couple of words — a CSS custom property name in a theme editor, a token key in a design system. It is rendered in the code font for exactly that kind of identifier.\n\n:::tip\nPair `onChange` with `value` rather than only `onChange`. `onChange` fires on every input event during a drag, so a consumer that does expensive work per call should debounce it.\n:::\n\n## Pitfalls\n\n:::warning\n`customColor` tints the border only. Setting `accent` to the same colour as `value` does not fill the swatch — the whole point of the control is to show the value the user picked.\n:::\n\nThe hex readout is `aria-hidden` on purpose: screen readers already announce the value through the input itself, and `<output>` has an implicit `role=\"status\"` that would announce every intermediate value during a drag.\n\n:::related\n- [Theme selector](/docs/input/theme-selector) - Picking one of the app themes.\n- [Input](/docs/input/input) - The plain text field, including hex values.\n- [Theme creator](/docs/developer/mini-inspector) - Editing tokens live with the inspector.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -118,7 +118,7 @@ export default class ColorPickerDocumentation extends HTMLElement {
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Use <code>hint</code> for whatever the label cannot say in a couple of words — a CSS custom property name in a theme editor, a token key in a design system. It is rendered in the code font for exactly that kind of identifier.</p>";
+            body.innerHTML = "<p>Pair <code>onChange</code> with <code>value</code> rather than only <code>onChange</code>. <code>onChange</code> fires on every input event during a drag, so a consumer that does expensive work per call should debounce it.</p>";
             const callout = await slice.build('Callout', {
                tone: "success",
                variant: "soft",
@@ -133,21 +133,6 @@ export default class ColorPickerDocumentation extends HTMLElement {
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Pair <code>onChange</code> with <code>value</code> rather than only <code>onChange</code>. <code>onChange</code> fires on every input event during a drag, so a consumer that does expensive work per call should debounce it.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "success",
-               variant: "soft",
-               title: "Tip",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-9"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
             body.innerHTML = "<p><code>customColor</code> tints the border only. Setting <code>accent</code> to the same colour as <code>value</code> does not fill the swatch — the whole point of the control is to show the value the user picked.</p>";
             const callout = await slice.build('Callout', {
                tone: "warning",
@@ -159,22 +144,38 @@ export default class ColorPickerDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-10"]');
+         const container = this.querySelector('[data-block-id="doc-block-9"]');
          if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>The hex readout is <code>aria-hidden</code>. Screen readers already announce the value through the input itself, and <code>&lt;output&gt;</code> has an implicit <code>role=\"status\"</code>, which would otherwise announce every intermediate value during a drag.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
+            const items = [{"title":"Theme selector","path":"/docs/input/theme-selector","text":"Picking one of the app themes."},{"title":"Input","path":"/docs/input/input","text":"The plain text field, including hex values."},{"title":"Theme creator","path":"/docs/developer/mini-inspector","text":"Editing tokens live with the inspector."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
             });
-            container.appendChild(callout || body);
+            if (grid) container.appendChild(grid);
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-11"]');
+         const container = this.querySelector('[data-block-id="doc-block-10"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"label\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"value\",\"type\":\"string\",\"required\":false,\"default\":\"DEFAULT_COLOR\",\"allowedValues\":[]},{\"path\":\"hint\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"size\",\"type\":\"string\",\"required\":false,\"default\":\"md\",\"allowedValues\":[]},{\"path\":\"className\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"disabled\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"customColor\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"onChange\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {

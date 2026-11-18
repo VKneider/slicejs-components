@@ -192,19 +192,27 @@ return host;
 :::
 
 ## Best Practices
+
 :::tip
 Always pass `formatValue` when the number has a unit. It is what a screen reader announces, so "40%" is understood where "0.4" is not.
 :::
 
-:::tip
-Use `onInput` for cheap live feedback (a preview) and `onChange` for anything expensive (a request, saving), so dragging does not fire a hundred requests.
+:::compare left="Cheap live feedback" right="Anything expensive"
+`onInput` — a preview, a label that follows the thumb.
+---
+`onChange` — a request, saving. Dragging then does not fire a hundred requests.
 :::
 
 ## Pitfalls
+
 :::warning
 A slider has no intrinsic width. It reserves a minimum of `12rem` so it never collapses; give it a real width in tight rows.
 :::
 
-:::warning
 In range mode, when both thumbs sit on the same value, dragging grabs the top one, which can only move away from the other in one direction. Use the keyboard (Tab to the other thumb) or click the track on the side you want.
+
+:::related
+- [Rating](/docs/input/rating) - A score people read at a glance.
+- [Input](/docs/input/input) - The exact number, typed.
+- [Form](/docs/input/form) - The slider as one field of many.
 :::

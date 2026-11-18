@@ -196,3 +196,9 @@ const checkbox = await slice.build('Checkbox', {
 
 return checkbox;
 :::
+
+:::related
+- [Switch](/docs/input/switch) - A setting that applies at once, not on submit.
+- [Radio group](/docs/input/radio-group) - One pick out of a few.
+- [Form](/docs/input/form) - Many fields saved together.
+:::

@@ -18,7 +18,7 @@
 <div class="code-block" data-block-id="doc-block-2"></div>
 <ul><li><strong>Values live in one Form.</strong> Every step's controls stay built, so what you typed on step 1 is still there after three Nexts. That is the thing wizards usually get wrong.</li><li><strong>Next validates the steps behind you</strong>, not just the current one, and refuses to move while any of them is invalid — painting the errors in place.</li><li><strong>Back never validates.</strong> Leaving a half-filled step is allowed; only moving on is gated.</li><li><strong>The progress indicator cannot skip validation.</strong> Clicking a step ahead is refused exactly as Next would be, so the indicator is a shortcut and not a hole.</li><li>The last step's button is the <strong>Submit</strong> button, and says <code>submitText</code>.</li><li><strong>A failed Submit cannot strand you.</strong> Submit checks every step; if the first problem is on a step you already left, the form goes back to that step and focuses the field instead of printing its message on a hidden one.</li><li>A schema with no <code>step</code> is one implicit step: no progress bar, no Back, no Next.</li></ul>
 <p><code>stepIndex</code>, <code>stepCount</code>, <code>isStepped</code>, <code>nextStep()</code>, <code>prevStep()</code> and <code>gotoStep(i)</code> are public. <code>nextText</code> sets the label of the advance button.</p>
-<div class="callout-block" data-block-id="doc-block-3"></div>
+<div class="compare-block" data-block-id="doc-block-3"></div>
 <h2 id="groups">Groups</h2>
 <p>A <code>group</code> is a set of fields the user can add as many of as they need — phone numbers, addresses, team members. Without it, no flat schema can express "however many of these do you have?".</p>
 <div class="code-block" data-block-id="doc-block-4"></div>
@@ -29,28 +29,29 @@
 <div class="table-block" data-block-id="doc-block-6"></div>
 <div class="code-block" data-block-id="doc-block-7"></div>
 <p><code>full: true</code> on a <strong>field</strong> keeps it out of a shared grid row. Sections and separators always span the full row.</p>
-<div class="callout-block" data-block-id="doc-block-8"></div>
+<p>The container owns the spacing, not the controls. <code>Input</code>, <code>Select</code> and <code>Textarea</code> carry no vertical margin of their own, so a form's rhythm is decided in one place; set <code>--control-margin-block</code> on the host if you need the old standalone spacing.</p>
 <h2 id="text-fields">Text fields</h2>
 <p><code>Input</code> and <code>Textarea</code> know they are inside a Form and step aside for it:</p>
 <ul><li><strong>The label is the Form's.</strong> The field is set to <code>labelPlacement: 'above'</code> with no label of its own, so the Form's label is the only one. The field takes it as its accessible name, and clicking the label focuses the field.</li><li><strong>The error is the Form's.</strong> The field does not show its own messages (<code>validateOn: 'manual'</code>); the Form prints one message under it, in the same style for every kind of control. The field still draws its own red border, so there is one red edge in the field's own shape.</li><li><strong>Its rules count.</strong> After the schema's <code>required</code> and <code>validate</code>, the Form asks the field for its own verdict, so <code>type: 'email'</code>, <code>min</code>, <code>max</code>, <code>minlength</code> or a field <code>validator</code> set in <code>props</code> work without repeating them in the schema.</li><li><strong>Errors follow the value.</strong> A field with an error on screen is checked again as it is edited, so the message goes away as soon as it is fixed instead of waiting for the next Submit.</li><li><strong>A failed Submit takes you there.</strong> Focus moves to the first field with a problem.</li></ul>
 <p>Anything you pass in a field's <code>props</code> wins over these defaults.</p>
 <h2 id="methods">Methods</h2>
-<div class="table-block" data-block-id="doc-block-9"></div>
+<div class="table-block" data-block-id="doc-block-8"></div>
 <h2 id="prop-scenarios">Prop Scenarios</h2>
+<div class="script-block" data-block-id="doc-block-9"></div>
 <div class="script-block" data-block-id="doc-block-10"></div>
 <div class="script-block" data-block-id="doc-block-11"></div>
 <div class="script-block" data-block-id="doc-block-12"></div>
 <div class="script-block" data-block-id="doc-block-13"></div>
 <div class="script-block" data-block-id="doc-block-14"></div>
 <div class="script-block" data-block-id="doc-block-15"></div>
-<div class="script-block" data-block-id="doc-block-16"></div>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout-block" data-block-id="doc-block-17"></div>
-<div class="callout-block" data-block-id="doc-block-18"></div>
+<p>Let the Form own the field's <code>label</code>/<code>description</code>; don't also set the component's own <code>label</code> in <code>props</code> or it doubles up (for <code>Checkbox</code>/<code>Switch</code> you may prefer the component's inline label — then omit the field <code>label</code>).</p>
+<p><code>validate(value, values)</code> receives <strong>all</strong> current values as its second argument — use it for cross-field rules (confirm-password, date ranges). For server-side errors, call <code>form.setError(name, message)</code> from an async <code>onSubmit</code>.</p>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-19"></div>
-<div class="callout-block" data-block-id="doc-block-20"></div>
+<div class="callout-block" data-block-id="doc-block-16"></div>
+<div class="callout-block" data-block-id="doc-block-17"></div>
 <h2 id="language">Language</h2>
 <p>The built-in texts are <code>slice.form.*</code> keys with English and Spanish defaults, registered by <code>shared/text/texts.js</code> in the translator's lowest layer: an app dictionary always wins, and the component keeps its English text when the translator is off. The text prop <code>texts</code> still wins over the dictionary. Keys: <code>submit</code>, <code>next</code>, <code>back</code>, <code>remove</code>, <code>removeItem</code>, <code>add</code>, <code>item</code>, <code>itemNumber</code>, <code>required</code>, <code>progress</code>, <code>step</code>, <code>stepOf</code>.</p>
-<div class="component-block" data-block-id="doc-block-21"></div>
+<div class="related-block" data-block-id="doc-block-18"></div>
+<div class="component-block" data-block-id="doc-block-19"></div>
 </div>

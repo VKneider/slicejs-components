@@ -68,9 +68,10 @@ schema: [
 `stepIndex`, `stepCount`, `isStepped`, `nextStep()`, `prevStep()` and `gotoStep(i)`
 are public. `nextText` sets the label of the advance button.
 
-:::tip
-Use a Modal for two or three short steps, and a route per step for anything longer. A Modal
-has no URL, so there is nothing to link to and nothing for the back button to go back to.
+:::compare left="Two or three short steps" right="Anything longer"
+A Modal with one group of fields per step. It has no URL, so there is nothing to link to and nothing for the back button to go back to.
+---
+A route per step: each step has an address, the back button works, and a reload lands on the step people were on.
 :::
 
 ## Groups
@@ -159,12 +160,9 @@ await slice.build('Form', {
 `full: true` on a **field** keeps it out of a shared grid row. Sections and
 separators always span the full row.
 
-:::tip
-The container owns the spacing, not the controls. `Input`, `Select` and
-`Textarea` carry no vertical margin of their own, so a form's rhythm is
-decided in one place. If you need the old standalone spacing, set
-`--control-margin-block` on the host.
-:::
+The container owns the spacing, not the controls. `Input`, `Select` and `Textarea` carry no vertical
+margin of their own, so a form's rhythm is decided in one place; set `--control-margin-block` on the
+host if you need the old standalone spacing.
 
 ## Text fields
 `Input` and `Textarea` know they are inside a Form and step aside for it:
@@ -382,17 +380,14 @@ return wrap;
 :::
 
 ## Best Practices
-:::tip
+
 Let the Form own the field's `label`/`description`; don't also set the component's own `label` in
 `props` or it doubles up (for `Checkbox`/`Switch` you may prefer the component's inline label — then omit
 the field `label`).
-:::
 
-:::tip
 `validate(value, values)` receives **all** current values as its second argument — use it for cross-field
 rules (confirm-password, date ranges). For server-side errors, call `form.setError(name, message)` from an
 async `onSubmit`.
-:::
 
 ## Pitfalls
 
@@ -420,3 +415,10 @@ The built-in texts are `slice.form.*` keys with English and Spanish defaults, re
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `submit`, `next`, `back`, `remove`, `removeItem`, `add`, `item`, `itemNumber`, `required`, `progress`, `step`, `stepOf`.
+
+:::related
+- [Input](/docs/input/input) - The field used most.
+- [Select](/docs/input/select) - Picking from a list.
+- [Unsaved changes guard](/docs/services/unsaved-changes-guard) - Warning before the work is lost.
+- [Modal](/docs/feedback/modal) - A form in a dialog, and its destroy lifecycle.
+:::

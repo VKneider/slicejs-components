@@ -137,25 +137,23 @@ Named colours and `oklch()` / `color-mix()` cannot be rendered in a swatch at al
 back rather than going black in silence.
 
 ## Best Practices
-:::tip
-Use `hint` for whatever the label cannot say in a couple of words — a CSS custom property name
-in a theme editor, a token key in a design system. It is rendered in the code font for exactly
-that kind of identifier.
-:::
+
+Use `hint` for whatever the label cannot say in a couple of words — a CSS custom property name in a theme editor, a token key in a design system. It is rendered in the code font for exactly that kind of identifier.
 
 :::tip
-Pair `onChange` with `value` rather than only `onChange`. `onChange` fires on every input event
-during a drag, so a consumer that does expensive work per call should debounce it.
+Pair `onChange` with `value` rather than only `onChange`. `onChange` fires on every input event during a drag, so a consumer that does expensive work per call should debounce it.
 :::
 
 ## Pitfalls
-:::warning
-`customColor` tints the border only. Setting `accent` to the same colour as `value` does not fill
-the swatch — the whole point of the control is to show the value the user picked.
-:::
 
 :::warning
-The hex readout is `aria-hidden`. Screen readers already announce the value through the input
-itself, and `<output>` has an implicit `role="status"`, which would otherwise announce every
-intermediate value during a drag.
+`customColor` tints the border only. Setting `accent` to the same colour as `value` does not fill the swatch — the whole point of the control is to show the value the user picked.
+:::
+
+The hex readout is `aria-hidden` on purpose: screen readers already announce the value through the input itself, and `<output>` has an implicit `role="status"` that would announce every intermediate value during a drag.
+
+:::related
+- [Theme selector](/docs/input/theme-selector) - Picking one of the app themes.
+- [Input](/docs/input/input) - The plain text field, including hex values.
+- [Theme creator](/docs/developer/mini-inspector) - Editing tokens live with the inspector.
 :::

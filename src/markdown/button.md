@@ -216,3 +216,9 @@ Prefer explicit `onClickCallback` instead of manually attaching listeners outsid
 :::warning
 Do not pass non-object values into `customColor` or `icon`. Static props validation reports type warnings.
 :::
+
+:::related
+- [Form](/docs/input/form) - The submit button and its validation.
+- [Confirm action modal](/docs/display/confirm-action-modal) - The destructive variant, with a question first.
+- [Loading](/docs/feedback/loading) - The busy state of the button that was pressed.
+:::

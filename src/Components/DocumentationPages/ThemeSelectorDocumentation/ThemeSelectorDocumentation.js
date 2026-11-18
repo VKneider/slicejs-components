@@ -10,7 +10,7 @@ export default class ThemeSelectorDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "theme-selector.md";
-    this.markdownContent = "---\ntitle: ThemeSelector\nroute: /docs/input/theme-selector\nnavLabel: ThemeSelector\nsection: Input Components\ngroup: Basic\norder: 15\ndescription: A binary LIGHT/DARK toggle with sun and moon icons that switches the app theme and keeps every theme control in sync.\ncomponent: ThemeSelectorDocumentation\ngenerate: true\ntags: [theme, selector, toggle, dark-mode, settings, light]\n---\n\n# ThemeSelector\n\n## Overview\n`ThemeSelector` is a compact icon-only toggle that switches between **LIGHT** and **DARK**\nthemes. It renders a pill-shaped button with a sun icon for LIGHT and a moon icon for DARK;\nthe active option is highlighted with the `--primary-color` background.\n\nIt is the visual counterpart to [`ThemeSwitcher`](/docs/input/theme-switcher): use\n`ThemeSelector` when you want an icon-based binary control in a topbar or navbar, and\n`ThemeSwitcher` when you need a text-based control that cycles through an arbitrary list\nof themes.\n\n## Core Behavior\n- Reads the current theme from `slice.stylesManager.themeManager.currentTheme` on init and\n  marks the matching option as `.active`.\n- Clicking the button calls `slice.setTheme(next)`, toggling between `'LIGHT'` and `'DARK'`.\n- After setting the theme it dispatches a global `themeChanged` `CustomEvent` with\n  `{ detail: { themeName } }` so every other theme control on the page stays in sync.\n- It also **listens** for `themeChanged`, so changing the theme from another control (e.g.\n  `ThemeSwitcher`) updates the active option automatically.\n- A `.loading` class is applied during the async `slice.setTheme` call; the button becomes\n  non-interactive and visually dimmed until the theme finishes applying.\n\n## Live Preview\n:::component name=\"ThemeSelector\"\n{}\n:::\n\n## Example\n```javascript title=\"Build a theme selector and append it to a toolbar\"\nconst selector = await slice.build('ThemeSelector');\ntoolbar.appendChild(selector);\n```\n\n## Props\n`ThemeSelector` has no configurable props — it is a self-contained, single-purpose toggle\nthat reads the current theme directly from the framework's `themeManager`.\n\n## Best Practices\n:::tip\nPlace `ThemeSelector` in a persistent shell element (navbar, topbar, sidebar) so the user\ncan switch themes from any page. The component auto-syncs with other theme controls via the\n`themeChanged` event, so you can safely use multiple selectors and switchers on the same\npage.\n:::\n\n## Pitfalls\n:::warning\n`ThemeSelector` is hardcoded to the `'LIGHT'` / `'DARK'` pair. If your app uses additional\nthemes (e.g. `'SOLARIZED'`), use [`ThemeSwitcher`](/docs/input/theme-switcher) instead,\nwhich accepts a custom `themes` array.\n:::\n\n## Language\n\nThe built-in texts are `slice.themeSelector.*` keys with English and Spanish defaults, registered by\n`shared/text/texts.js` in the translator's lowest layer: an app dictionary always wins, and the\ncomponent keeps its English text when the translator is off.\nThe text prop `texts` still wins over the dictionary.\nKeys: `label`.\n";
+    this.markdownContent = "---\ntitle: ThemeSelector\nroute: /docs/input/theme-selector\nnavLabel: ThemeSelector\nsection: Input Components\ngroup: Basic\norder: 15\ndescription: A binary LIGHT/DARK toggle with sun and moon icons that switches the app theme and keeps every theme control in sync.\ncomponent: ThemeSelectorDocumentation\ngenerate: true\ntags: [theme, selector, toggle, dark-mode, settings, light]\n---\n\n# ThemeSelector\n\n## Overview\n`ThemeSelector` is a compact icon-only toggle that switches between **LIGHT** and **DARK**\nthemes. It renders a pill-shaped button with a sun icon for LIGHT and a moon icon for DARK;\nthe active option is highlighted with the `--primary-color` background.\n\nIt is the visual counterpart to [`ThemeSwitcher`](/docs/input/theme-switcher): use\n`ThemeSelector` when you want an icon-based binary control in a topbar or navbar, and\n`ThemeSwitcher` when you need a text-based control that cycles through an arbitrary list\nof themes.\n\n## Core Behavior\n- Reads the current theme from `slice.stylesManager.themeManager.currentTheme` on init and\n  marks the matching option as `.active`.\n- Clicking the button calls `slice.setTheme(next)`, toggling between `'LIGHT'` and `'DARK'`.\n- After setting the theme it dispatches a global `themeChanged` `CustomEvent` with\n  `{ detail: { themeName } }` so every other theme control on the page stays in sync.\n- It also **listens** for `themeChanged`, so changing the theme from another control (e.g.\n  `ThemeSwitcher`) updates the active option automatically.\n- A `.loading` class is applied during the async `slice.setTheme` call; the button becomes\n  non-interactive and visually dimmed until the theme finishes applying.\n\n## Live Preview\n:::component name=\"ThemeSelector\"\n{}\n:::\n\n## Example\n```javascript title=\"Build a theme selector and append it to a toolbar\"\nconst selector = await slice.build('ThemeSelector');\ntoolbar.appendChild(selector);\n```\n\n## Props\n`ThemeSelector` has no configurable props — it is a self-contained, single-purpose toggle\nthat reads the current theme directly from the framework's `themeManager`.\n\n## Best Practices\n:::tip\nPlace `ThemeSelector` in a persistent shell element (navbar, topbar, sidebar) so the user\ncan switch themes from any page. The component auto-syncs with other theme controls via the\n`themeChanged` event, so you can safely use multiple selectors and switchers on the same\npage.\n:::\n\n## Pitfalls\n:::warning\n`ThemeSelector` is hardcoded to the `'LIGHT'` / `'DARK'` pair. If your app uses additional\nthemes (e.g. `'SOLARIZED'`), use [`ThemeSwitcher`](/docs/input/theme-switcher) instead,\nwhich accepts a custom `themes` array.\n:::\n\n## Language\n\nThe built-in texts are `slice.themeSelector.*` keys with English and Spanish defaults, registered by\n`shared/text/texts.js` in the translator's lowest layer: an app dictionary always wins, and the\ncomponent keeps its English text when the translator is off.\nThe text prop `texts` still wins over the dictionary.\nKeys: `label`.\n\n:::related\n- [Theme switcher](/docs/input/theme-switcher) - The compact toggle.\n- [Color picker](/docs/input/color-picker) - Choosing an arbitrary colour.\n- [Card](/docs/layout/card) - Rendered with the chosen theme.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -77,6 +77,37 @@ export default class ThemeSelectorDocumentation extends HTMLElement {
       }
       {
          const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const items = [{"title":"Theme switcher","path":"/docs/input/theme-switcher","text":"The compact toggle."},{"title":"Color picker","path":"/docs/input/color-picker","text":"Choosing an arbitrary colour."},{"title":"Card","path":"/docs/layout/card","text":"Rendered with the chosen theme."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"texts\",\"type\":\"object\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {

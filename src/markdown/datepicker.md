@@ -333,26 +333,20 @@ return box;
 :::
 
 ## Best Practices
-:::tip
-Keep the value as ISO text all the way to the server. `'2026-10-21'` sorts, compares and stores as it is, and it means the same day in every time zone. Turn it into a `Date` only to do date arithmetic: `new Date(day + 'T00:00')` is local midnight, and `toLocaleDateString('en-CA')` turns it back into ISO text.
-:::
 
 :::tip
-Use `months: 2` for ranges. Most stays, trips and report periods cross a month boundary, and seeing both months saves paging back and forth.
+Use `months: 2` for ranges, and give report filters presets ("Last 7 days", "This month"): most stays, trips and report periods cross a month boundary, and a function preset stays right tomorrow.
 :::
 
-:::tip
-Give report filters presets ("Last 7 days", "This month"). They are what people pick most of the time, and a function preset stays right tomorrow.
-:::
-
-:::tip
 For a birth date or another date far in the past, people type faster than they page. Leave the field typeable, set the placeholder order with `locale`, and let the year view handle the rest.
+
+:::compare left="ISO text" right="Date object"
+`'2026-10-21'` sorts, compares and stores as it is, and means the same day in every time zone.
+---
+`new Date('2026-10-21')` is read as UTC midnight — still the 20th in the Americas. Only arithmetic needs a `Date`: `new Date(day + 'T00:00')` is local midnight.
 :::
 
 ## Pitfalls
-:::warning
-Do not build the value with `new Date('2026-10-21')` and then `getDate()`. That string is read as UTC midnight, which is still the 20th in the Americas. Use `valueAsDate` (local midnight) or work with the ISO text.
-:::
 
 :::warning
 `disabledDates` as a function runs for every day drawn, which is 42 times per month shown. Keep it to a lookup (a `Set`, a comparison) and fetch what it needs beforehand, not inside it.
@@ -360,4 +354,10 @@ Do not build the value with `new Date('2026-10-21')` and then `getDate()`. That 
 
 :::warning
 Disabling days does not validate what the server receives. A date can still be typed, sent from code or posted by hand. Check `min`, `max` and availability on the server too.
+:::
+
+:::related
+- [Form](/docs/input/form) - A date as one field of many.
+- [Select](/docs/input/select) - A fixed list of options instead of a calendar.
+- [Data components](/docs/guides/data-components) - Dates from a server, formatted and filtered.
 :::

@@ -143,3 +143,9 @@ The built-in texts are `slice.themeSwitcher.*` keys with English and Spanish def
 component keeps its English text when the translator is off.
 `label` and `texts` still win over the dictionary.
 Keys: `label`.
+
+:::related
+- [Theme selector](/docs/input/theme-selector) - The full list, with previews.
+- [Navbar](/docs/navigation/navbar) - Where the toggle usually sits.
+- [Color picker](/docs/input/color-picker) - Custom colours for one theme.
+:::

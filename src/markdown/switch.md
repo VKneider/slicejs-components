@@ -169,3 +169,9 @@ host.appendChild(await slice.build('Checkbox', { label: 'Remember me', checked: 
 
 return host;
 :::
+
+:::related
+- [Checkbox](/docs/input/checkbox) - A choice that waits for submit.
+- [Form](/docs/input/form) - Settings saved together.
+- [Theme switcher](/docs/input/theme-switcher) - The light/dark toggle in a header.
+:::

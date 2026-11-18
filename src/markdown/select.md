@@ -166,21 +166,19 @@ return select;
 :::
 
 ## Best Practices
-:::tip
-Use `selected` and `onChange(selected)` in new code: you work with plain values (`'ve'`, `[1, 2]`) instead of option objects.
+
+:::compare left="`selected`" right="`value`"
+Plain values (`'ve'`, `[1, 2]`) in and out, with `onChange(selected)`. This is the API to write new code against.
+---
+Kept for compatibility: it returns option **objects**, so `select.value.value` works for a single select but not for a multiple one.
 :::
 
-:::tip
 Turn on `searchable` once a list has more than about ten options; nobody wants to scroll through 200 countries.
-:::
 
 ## Pitfalls
-:::warning
-`loadOptions` replaces the options on every query. Keep your option values stable between queries (a database id, not an index), or a picked value will not be recognised when it comes back.
-:::
 
 :::warning
-`value` keeps returning option objects for compatibility. Reading `select.value.value` works for a single select but not for a multiple one; `selected` has no such trap.
+`loadOptions` replaces the options on every query. Keep your option values stable between queries (a database id, not an index), or a picked value will not be recognised when it comes back.
 :::
 
 ## Language
@@ -190,3 +188,9 @@ The built-in texts are `slice.select.*` keys with English and Spanish defaults, 
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `noResultsText`, `loadingText`, `remove`, `selectAll`, `clearSelection`, `create`.
+
+:::related
+- [Radio group](/docs/input/radio-group) - All the options visible at once.
+- [Input](/docs/input/input) - When the value is typed, not picked.
+- [Form](/docs/input/form) - The select as one field of many.
+:::

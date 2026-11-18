@@ -385,27 +385,23 @@ return host;
 :::
 
 ## Best Practices
-:::tip
-Order options in a meaningful way (cheapest first, most common first) and pre-select a sensible
-default when one exists — a group with nothing selected forces an extra decision.
-:::
 
 :::tip
-Inside a `Form`, use `variant: 'plain'` and let the Form field's `label` name the group: the Form passes
-it to the group as `ariaLabel`. A `label` on the RadioGroup itself (its legend) is only needed outside a Form.
+Order options in a meaningful way (cheapest first, most common first) and pre-select a sensible default when one exists — a group with nothing selected forces an extra decision.
 :::
 
-:::tip
-Keep `buttons` labels to a word or two, and to two–five options. Longer lists wrap badly in a bar: use `card` or the default look.
-:::
+Inside a `Form`, use `variant: 'plain'` and let the Form field's `label` name the group: the Form passes it as `ariaLabel`. A `label` on the RadioGroup itself (its legend) is only needed outside a Form. Keep `buttons` labels to a word or two and to two–five options; longer lists wrap badly in a bar, so use `card` or the default look.
 
 ## Pitfalls
-:::warning
-`value` is compared strictly. If your options use numbers (`value: 1`), set `value: 1`, not `'1'` —
-otherwise nothing is selected and a warning is logged.
-:::
 
 :::warning
-Do not use a RadioGroup for actions. Selecting an option should only change a value; if picking it
-should immediately trigger an action, use buttons instead.
+`value` is compared strictly. If your options use numbers (`value: 1`), set `value: 1`, not `'1'` — otherwise nothing is selected and a warning is logged.
+:::
+
+Do not use a RadioGroup for actions. Selecting an option should only change a value; if picking it should trigger something, use buttons instead.
+
+:::related
+- [Select](/docs/input/select) - The same choice, collapsed into a menu.
+- [Checkbox](/docs/input/checkbox) - Several answers at once.
+- [Form](/docs/input/form) - The group as one field of many.
 :::

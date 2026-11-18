@@ -272,29 +272,29 @@ return grid;
 :::
 
 ## Best Practices
+
 :::tip
 Give every field a `label`. A placeholder disappears as soon as someone types, so it cannot be the only thing that says what the field is for. Use `placeholder` for an example of the format ("you@company.com").
 :::
 
-:::tip
-Use the right `type` and `autocomplete`. `type: 'email'` brings the email keyboard on phones and the format check for free; `autocomplete: 'current-password'` lets password managers fill it.
-:::
+Use the right `type` and `autocomplete`: `type: 'email'` brings the email keyboard on phones and the format check for free; `autocomplete: 'current-password'` lets password managers fill it.
 
 :::tip
 For a server check (a username, a coupon), set `error` from your own code and clear it on the next change, as in the availability example. Keep the format rules in `validator` so they answer instantly.
 :::
 
 ## Pitfalls
-:::warning
-Inputs no longer carry a 20px margin. Spacing belongs to whatever holds them (a Form, a grid, a flex column with a `gap`). To get the old spacing back on one field, set `--control-margin-block: 20px` on it.
-:::
+
+Inputs no longer carry a 20px margin. Spacing belongs to whatever holds them (a Form, a grid, a flex column with a `gap`); to get the old spacing back on one field, set `--control-margin-block: 20px` on it.
 
 :::warning
 Inside a [Form](/docs/input/form), the Form owns the label and the error: it sets `labelPlacement: 'above'`, turns off the field's own validation display and prints the message itself. Give the label to the schema item (`label: 'Email'`), not to the Input's `props`, or it shows twice.
 :::
 
-:::warning
-`maxlength` stops typing at the limit. If you would rather let people type past it and show the error, use a `validator` that checks the length, with `showCount` to show how far over they are.
+:::compare left="Stop at the limit" right="Let them type"
+`maxlength` refuses the keystroke once the limit is reached.
+---
+A `validator` that checks the length, with `showCount`, lets people type past it and read the error.
 :::
 
 ## Language
@@ -304,3 +304,9 @@ The built-in texts are `slice.input.*` keys with English and Spanish defaults, r
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `clear`, `togglePassword`.
+
+:::related
+- [Form](/docs/input/form) - Labels, errors and the submit in one place.
+- [Textarea](/docs/input/textarea) - More than one line.
+- [Select](/docs/input/select) - A value from a list.
+:::

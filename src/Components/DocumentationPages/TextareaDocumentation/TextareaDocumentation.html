@@ -25,9 +25,10 @@
 <div class="script-block" data-block-id="doc-block-5"></div>
 <h2 id="best-practices">Best Practices</h2>
 <div class="callout-block" data-block-id="doc-block-6"></div>
-<div class="callout-block" data-block-id="doc-block-7"></div>
+<p>Offer Ctrl+Enter (<code>onSubmit</code>) wherever there is a send button: people who write a lot expect it, and plain Enter still makes a new line.</p>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-8"></div>
-<div class="callout-block" data-block-id="doc-block-9"></div>
-<div class="component-block" data-block-id="doc-block-10"></div>
+<p>Textareas no longer carry a 20px margin. Spacing belongs to whatever holds them; to get it back on one field, set <code>--control-margin-block: 20px</code> on it.</p>
+<p><code>autoGrow</code> measures the text, and a field that is not on the page (or is inside something with <code>display: none</code>) has nothing to measure. It keeps its last good height and measures again as soon as it is shown, so <code>grow()</code> is never needed by hand.</p>
+<div class="related-block" data-block-id="doc-block-7"></div>
+<div class="component-block" data-block-id="doc-block-8"></div>
 </div>

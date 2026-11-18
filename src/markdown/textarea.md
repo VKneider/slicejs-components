@@ -209,19 +209,21 @@ return grid;
 :::
 
 ## Best Practices
+
 :::tip
 Use `autoGrow` with a `maxRows` for anything people write freely (comments, messages, descriptions). It starts compact, grows as they write, and stops before it pushes the rest of the page away.
 :::
 
-:::tip
-Offer Ctrl+Enter (`onSubmit`) wherever there is a send button. People who write a lot expect it, and plain Enter still makes a new line.
-:::
+Offer Ctrl+Enter (`onSubmit`) wherever there is a send button: people who write a lot expect it, and plain Enter still makes a new line.
 
 ## Pitfalls
-:::warning
-Textareas no longer carry a 20px margin. Spacing belongs to whatever holds them. To get it back on one field, set `--control-margin-block: 20px` on it.
-:::
 
-:::warning
-`autoGrow` measures the text, and a field that is not on the page (or is inside something with `display: none`) has nothing to measure. It keeps its last good height and measures again as soon as it is shown, so you do not need to call `grow()` yourself.
+Textareas no longer carry a 20px margin. Spacing belongs to whatever holds them; to get it back on one field, set `--control-margin-block: 20px` on it.
+
+`autoGrow` measures the text, and a field that is not on the page (or is inside something with `display: none`) has nothing to measure. It keeps its last good height and measures again as soon as it is shown, so `grow()` is never needed by hand.
+
+:::related
+- [Input](/docs/input/input) - One line.
+- [Form](/docs/input/form) - The textarea as one field of many.
+- [Shortcut service](/docs/services/shortcut-service) - Ctrl+Enter, registered in one place.
 :::

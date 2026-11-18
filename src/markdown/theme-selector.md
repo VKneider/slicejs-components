@@ -71,3 +71,9 @@ The built-in texts are `slice.themeSelector.*` keys with English and Spanish def
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `label`.
+
+:::related
+- [Theme switcher](/docs/input/theme-switcher) - The compact toggle.
+- [Color picker](/docs/input/color-picker) - Choosing an arbitrary colour.
+- [Card](/docs/layout/card) - Rendered with the chosen theme.
+:::
