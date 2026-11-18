@@ -8,6 +8,7 @@ order: 10
 description: Complete documentation and prop scenarios for Button.
 component: ButtonDocumentation
 generate: false
+# status: new | updated | deprecated | beta | experimental
 tags: [button, input]
 ---
 
@@ -15,6 +16,14 @@ tags: [button, input]
 
 ## Overview
 Describe what this component solves, default behavior, and when to use it.
+
+## When to use it
+
+:::compare left="Use this component" right="Reach for something else"
+The job this component owns, and the signal that it is the right choice.
+---
+The adjacent job it does not own, and the component or pattern that does.
+:::
 
 ## API and Behavior
 - Use this section for behavior contracts (events, lifecycle expectations, state transitions).
@@ -51,12 +60,16 @@ if (fired !== 1) {
 }
 :::
 
-## Best Practices
-:::tip
-Use explicit prop scenarios for each behavior your team wants to preserve.
-:::
+## Notes for authors
+Keep 1–3 callouts per page. Use `:::compare` for a contrast (this vs that) and `:::details` for
+long caveats; a wall of tips trains readers to skip them. The parser injects the props table.
 
 ## Pitfalls
 :::warning
 Do not omit required front matter fields. `docs:lint-md` fails the build.
+:::
+
+:::related
+- [Component](/docs/input/button) - A related component or guide.
+- [Guide](/docs/internal/markdown-parser-rules) - The parser rules this page follows.
 :::

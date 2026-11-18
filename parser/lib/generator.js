@@ -175,7 +175,7 @@ const generateJs = (componentClass, jsBlocks, tagName, markdownPath = '', markdo
                if (card) cards.push(card);
             }
             const grid = await slice.build('Grid', {
-               columns: Math.min(3, Math.max(1, cards.length)),
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
                gap: '14px',
                items: cards
             });
