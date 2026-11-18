@@ -154,6 +154,27 @@ test('TransferList shows loading/error/retry, disabled state and reactive text o
    ).toBeDisabled();
    expect(await c.component.evaluate((el) => el.assign(['a']))).toBe(false);
 });
+test('TransferList groups have a rule and the compact variant tightens the chrome', async ({
+   mount,
+}) => {
+   const c = await mount('TransferList', { items, variant: 'compact' });
+   await expect(c.component).toHaveAttribute('data-variant', 'compact');
+   const style = await c.component.evaluate((el) => {
+      const row = el.querySelector('.slice-transfer-list__row');
+      const group = el.querySelector('.slice-transfer-list__group');
+      return {
+         height: getComputedStyle(el).getPropertyValue('--slice-transfer-list-height').trim(),
+         rowPadding: getComputedStyle(row).paddingTop,
+         groupRule: getComputedStyle(group).borderBottomWidth,
+      };
+   });
+   expect(style).toEqual({ height: '260px', rowPadding: '4px', groupRule: '1px' });
+   await c.component.evaluate((el) => {
+      el.variant = 'unknown';
+   });
+   await expect(c.component).toHaveAttribute('data-variant', 'default');
+});
+
 test('TransferList stacked layout follows its container and destroys all composed controls', async ({
    mount,
 }) => {

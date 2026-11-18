@@ -12,6 +12,9 @@
 <p><code>items</code> contains <code>{ value, label, description?, group?, content?, disabled?, locked? }</code>. Keys are unique nonempty strings or finite numbers; <code>1</code> and <code>'1'</code> are distinct. <code>value</code> is the array of assigned keys. Checking a checkbox is temporary selection; only Assign/Remove changes <code>value</code>.</p>
 <p>Assigned keys missing from the catalog are retained and announced. An unrelated edit never silently revokes those assignments. Load a fuller catalog to reveal them, or explicitly replace <code>value</code> from the application. The array returned by the getter and handler is a copy.</p>
 <p><code>locked</code> and <code>disabled</code> items cannot be moved by user actions or <code>assign</code>/<code>remove</code>. Locked rows show a policy label. Programmatic <code>value</code> assignments remain authoritative and silent, so the app can switch between roles or restore server state.</p>
+<h2 id="density-and-section-rules">Density and section rules</h2>
+<p><code>variant: 'compact'</code> keeps the same two panels, searches and actions, but tightens the header, row, footer and default list height (260px instead of 340px). Use it inside settings panels, sidebars or dense admin tables; keep the default when the descriptions are the point, as on a permissions onboarding screen.</p>
+<p>Catalog <code>group</code> values render as uppercase section headings with a rule, so long permission or member lists stay scannable without repeating card chrome.</p>
 <h2 id="role-permissions">Role permissions</h2>
 <div class="script-block" data-block-id="doc-block-1"></div>
 <h2 id="app-owned-catalog-loading-and-team-assignment">App-owned catalog loading and team assignment</h2>
@@ -26,5 +29,4 @@
 <p><code>content</code> accepts text, a live Node/Slice component or an array. DocumentFragment content is consumed into its child nodes when mounted. Content nodes cannot be shared between rows. It sits outside the checkbox label and may contain its own controls. Moving a row retains its check/action components, rich content, supported focus/selection and scroll offsets. Use stable keys and immutable content arrays when changing descriptors.</p>
 <p>The component owns rich nodes and composed controls. Removing an item or destroying TransferList destroys that content, including components inside plain wrappers and never-mounted content queued during an update. Build app-lifetime services outside the supplied row content and manage their lifetime in the app.</p>
 <p>The panels respond to their <strong>container width</strong>, stacking below 640px. Set <code>--slice-transfer-list-height</code> (default <code>340px</code>) for the scrolling list height. No decorative animation is required.</p>
-<div class="component-block" data-block-id="doc-block-4"></div>
 </div>

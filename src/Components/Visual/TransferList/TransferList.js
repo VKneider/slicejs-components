@@ -30,7 +30,9 @@ const t = texts('slice.transferList', {
       locked: 'Managed by policy',
       disabled: 'Unavailable',
       unknown: '{count} assigned items are not in the current catalog.',
+      unknownOne: '1 assigned item is not in the current catalog.',
       moved: '{count} items {action}.',
+      movedOne: '1 item {action}.',
       assignedAction: 'assigned',
       removedAction: 'removed',
       retry: 'Try again',
@@ -57,7 +59,9 @@ const t = texts('slice.transferList', {
       locked: 'Administrado por una política',
       disabled: 'No disponible',
       unknown: '{count} elementos asignados no están en el catálogo actual.',
+      unknownOne: '1 elemento asignado no está en el catálogo actual.',
       moved: '{count} elementos {action}.',
+      movedOne: '1 elemento {action}.',
       assignedAction: 'asignados',
       removedAction: 'retirados',
       retry: 'Reintentar',
@@ -87,6 +91,8 @@ export default class TransferList extends HTMLElement {
       value: { type: 'array', default: [] },
       searchable: { type: 'boolean', default: true },
       showSelectAll: { type: 'boolean', default: true },
+      // Same idea as Table's density: keep the same controls, tighten the chrome.
+      variant: { type: 'string', default: 'default', allowedValues: ['default', 'compact'] },
       disabled: { type: 'boolean', default: false },
       loading: { type: 'boolean', default: false },
       error: { type: 'string', default: '' },
@@ -296,6 +302,14 @@ export default class TransferList extends HTMLElement {
       this._showSelectAll = v !== false;
       if (this._ready) this.update();
    }
+   get variant() {
+      return this._variant;
+   }
+   set variant(v) {
+      const { allowedValues, default: fallback } = TransferList.props.variant;
+      this._variant = allowedValues.includes(v) ? v : fallback;
+      this.dataset.variant = this._variant;
+   }
    get disabled() {
       return this._disabled;
    }
@@ -427,12 +441,14 @@ export default class TransferList extends HTMLElement {
          this._marks.available.delete(key);
          this._marks.assigned.delete(key);
       }
-      this.$status.textContent = this._t('moved', {
-         count: result.moved.length,
-         action: this._t(
-            direction === 'assign' ? 'assignedAction' : 'removedAction',
-         ),
-      });
+      this.$status.textContent = result.moved.length === 1
+         ? this._t('movedOne', {
+              action: this._t(direction === 'assign' ? 'assignedAction' : 'removedAction'),
+           })
+         : this._t('moved', {
+              count: result.moved.length,
+              action: this._t(direction === 'assign' ? 'assignedAction' : 'removedAction'),
+           });
       this.update();
       this._onChange?.(this.value, {
          direction,
@@ -581,7 +597,9 @@ export default class TransferList extends HTMLElement {
       const known = new Set(this._catalog.map((item) => item.value));
       const unknown = this._requested.filter((value) => !known.has(value));
       this.$unknown.hidden = !unknown.length || this._loading;
-      this.$unknown.textContent = this._t('unknown', { count: unknown.length });
+      this.$unknown.textContent = unknown.length === 1
+         ? this._t('unknownOne')
+         : this._t('unknown', { count: unknown.length });
       this.$error.hidden = !this._error;
       this.$error.querySelector('p').textContent = this._error || '';
       this._retryButton.value = this._t('retry');

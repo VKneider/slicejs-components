@@ -282,6 +282,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/input/transfer-list</loc>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -335,6 +336,7 @@
   </url>
   <url>
     <loc>https://components.slicejs.com/docs/layout/overflow-list</loc>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

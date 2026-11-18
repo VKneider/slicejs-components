@@ -25,9 +25,15 @@ Assigned keys missing from the catalog are retained and announced. An unrelated 
 
 `locked` and `disabled` items cannot be moved by user actions or `assign`/`remove`. Locked rows show a policy label. Programmatic `value` assignments remain authoritative and silent, so the app can switch between roles or restore server state.
 
+## Density and section rules
+
+`variant: 'compact'` keeps the same two panels, searches and actions, but tightens the header, row, footer and default list height (260px instead of 340px). Use it inside settings panels, sidebars or dense admin tables; keep the default when the descriptions are the point, as on a permissions onboarding screen.
+
+Catalog `group` values render as uppercase section headings with a rule, so long permission or member lists stay scannable without repeating card chrome.
+
 ## Role permissions
 
-:::script label="Assign a project editor's permissions" expected="Grouped permissions with explanations, a locked audit permission, a sensitive-access badge and one unavailable catalog key. Assign or remove permissions individually or with checked-visible bulk actions."
+:::script label="Assign a project editor's permissions" expected="Grouped permissions with explanations, a locked audit permission, a sensitive-access badge and one unavailable catalog key. Toggle Compact to compare densities. Assign or remove permissions individually or with checked-visible bulk actions."
 const sensitive = await slice.build('Badge', { label: 'Sensitive access', tone: 'warning', variant: 'soft' });
 const catalog = [
   { value: 'projects.read', label: 'Read projects', description: 'View projects, milestones and published reports.', group: 'Projects' },
@@ -47,7 +53,13 @@ const transfer = await slice.build('TransferList', {
   onChange: value => { summary.label = `${value.length} assigned keys`; }
 });
 const save = await slice.build('Button', { value: 'Save role', size: 'sm', onClick: () => { output.textContent = JSON.stringify({ role: 'project-editor', permissions: transfer.value }, null, 2); } });
-const box = document.createElement('div'); box.style.cssText = 'display:grid;gap:14px;width:100%'; box.append(role, transfer, save, output); return box;
+const density = await slice.build('Button', { value: 'Compact', size: 'sm', variant: 'ghost', onClick: () => {
+  transfer.variant = transfer.variant === 'compact' ? 'default' : 'compact';
+  density.value = transfer.variant === 'compact' ? 'Default density' : 'Compact';
+} });
+const bar = document.createElement('div'); bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
+bar.append(save, density);
+const box = document.createElement('div'); box.style.cssText = 'display:grid;gap:14px;width:100%'; box.append(role, transfer, bar, output); return box;
 :::
 
 ## App-owned catalog loading and team assignment
@@ -86,6 +98,7 @@ const box = document.createElement('div'); box.style.cssText = 'display:grid;gap
 | `value` | `[]` | Assigned keys, including unknown keys. Prop assignments are silent. |
 | `searchable` | `true` | Shows independent searches; disabling clears both queries and temporary selections. |
 | `showSelectAll` | `true` | Shows a native select-visible checkbox with indeterminate state. Row selection/bulk actions remain available when hidden. |
+| `variant` | `'default'` | `'compact'` tightens the header, rows, footer and list height without removing controls or descriptions. Set as `data-variant` on the host. |
 | `disabled` | `false` | Blocks selection, assignment, searches and retry controls. |
 | `loading` | `false` | Busy state; blocks assignment and selection while retaining existing rows. |
 | `error` | `''` | Text-only alert; blocks assignment until cleared. |

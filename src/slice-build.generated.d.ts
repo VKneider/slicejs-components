@@ -1689,6 +1689,7 @@ export interface TransferListProps {
   showSelectAll?: boolean;
   texts?: Record<string, unknown>;
   value?: unknown[];
+  variant?: 'default' | 'compact';
 }
 
 export interface TransferListDocumentationProps {

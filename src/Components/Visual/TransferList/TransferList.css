@@ -5,18 +5,22 @@ slice-transfer-list {
    width: 100%;
    color: var(--font-primary-color);
    --slice-transfer-list-height: 340px;
+   --slice-transfer-list-gap: 16px;
    --slice-transfer-list-border: var(
-      --slice-border,
+      --slice-border-raised,
       color-mix(in srgb, var(--font-primary-color) 18%, transparent)
    );
 }
 slice-transfer-list[hidden] {
    display: none;
 }
+
+/* Panel frame ------------------------------------------------------------- */
+
 slice-transfer-list > .slice-transfer-list__panels {
    display: grid;
    grid-template-columns: repeat(2, minmax(0, 1fr));
-   gap: 16px;
+   gap: var(--slice-transfer-list-gap);
 }
 slice-transfer-list .slice-transfer-list__panel {
    display: flex;
@@ -25,41 +29,44 @@ slice-transfer-list .slice-transfer-list__panel {
    border: 1px solid var(--slice-transfer-list-border);
    border-radius: var(--border-radius-slice, 10px);
    overflow: hidden;
+   background: var(--primary-background-color);
 }
 slice-transfer-list .slice-transfer-list__header {
    display: flex;
    align-items: baseline;
    justify-content: space-between;
    gap: 8px;
-   padding: 16px 16px 8px;
+   padding: 14px 14px 6px;
 }
 slice-transfer-list .slice-transfer-list__title {
    margin: 0;
-   font-size: 1rem;
+   font-size: 0.95rem;
    font-weight: 650;
 }
 slice-transfer-list .slice-transfer-list__count {
-   font-size: 0.8rem;
+   font-size: 0.78rem;
    color: var(--font-secondary-color);
+   font-variant-numeric: tabular-nums;
 }
 slice-transfer-list .slice-transfer-list__search {
-   padding: 0 12px 8px;
-}
-slice-transfer-list .slice-transfer-list__search[hidden] {
-   display: none;
+   padding: 0 10px 6px;
 }
 slice-transfer-list .slice-transfer-list__selection {
-   padding: 0 12px 8px;
+   padding: 0 10px 6px;
 }
+slice-transfer-list .slice-transfer-list__search[hidden],
 slice-transfer-list .slice-transfer-list__selection[hidden] {
    display: none;
 }
+
+/* List -------------------------------------------------------------------- */
+
 slice-transfer-list .slice-transfer-list__body {
    flex: 1;
-   min-height: 180px;
+   min-height: 160px;
    height: var(--slice-transfer-list-height);
    overflow: auto;
-   padding: 0 12px;
+   padding: 0 10px;
 }
 slice-transfer-list .slice-transfer-list__list {
    list-style: none;
@@ -67,17 +74,21 @@ slice-transfer-list .slice-transfer-list__list {
    margin: 0;
 }
 slice-transfer-list .slice-transfer-list__row {
-   padding: 10px 0;
+   padding: 8px 0;
    border-top: 1px solid var(--slice-transfer-list-border);
 }
 slice-transfer-list .slice-transfer-list__row[hidden] {
    display: none;
 }
+/* The heading already closes the section with its own rule. */
+slice-transfer-list .slice-transfer-list__group + .slice-transfer-list__row {
+   border-top: 0;
+}
 slice-transfer-list .slice-transfer-list__row-head {
    display: flex;
    align-items: center;
    justify-content: space-between;
-   gap: 10px;
+   gap: 8px;
 }
 slice-transfer-list .slice-transfer-list__row-head > slice-checkbox {
    min-width: 0;
@@ -87,49 +98,57 @@ slice-transfer-list .slice-transfer-list__row-head > slice-button {
    flex-shrink: 0;
 }
 slice-transfer-list .slice-transfer-list__description {
-   margin: 4px 0 0;
+   margin: 3px 0 0;
    color: var(--font-secondary-color);
-   font-size: 0.82rem;
-   line-height: 1.5;
+   font-size: 0.8rem;
+   line-height: 1.45;
 }
 slice-transfer-list .slice-transfer-list__description[hidden],
 slice-transfer-list .slice-transfer-list__lock[hidden] {
    display: none;
 }
 slice-transfer-list .slice-transfer-list__extra {
-   margin-top: 6px;
+   margin-top: 5px;
 }
 slice-transfer-list .slice-transfer-list__lock {
    display: inline-block;
-   font-size: 0.72rem;
-   margin-top: 4px;
+   font-size: 0.7rem;
+   margin-top: 2px;
    color: var(--font-secondary-color);
 }
+
+/* Section heading: a quiet rule keeps long catalogs scannable. */
 slice-transfer-list .slice-transfer-list__group {
-   padding: 12px 0 6px;
-   font-size: 0.75rem;
-   font-weight: 650;
-   letter-spacing: 0.03em;
+   padding: 9px 0 5px;
+   border-bottom: 1px solid var(--slice-transfer-list-border);
+   font-size: 0.7rem;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+   text-transform: uppercase;
    color: var(--font-secondary-color);
 }
+
+/* Footer ------------------------------------------------------------------ */
+
 slice-transfer-list .slice-transfer-list__footer {
    display: flex;
    align-items: center;
    justify-content: space-between;
    gap: 8px;
-   padding: 12px;
+   padding: 10px 12px;
    border-top: 1px solid var(--slice-transfer-list-border);
    background: var(--secondary-background-color);
 }
 slice-transfer-list .slice-transfer-list__selected {
-   font-size: 0.78rem;
+   font-size: 0.76rem;
    color: var(--font-secondary-color);
+   font-variant-numeric: tabular-nums;
 }
 slice-transfer-list .slice-transfer-list__empty {
    text-align: center;
-   padding: 24px 8px;
+   padding: 18px 8px;
    color: var(--font-secondary-color);
-   font-size: 0.9rem;
+   font-size: 0.86rem;
 }
 slice-transfer-list .slice-transfer-list__empty[hidden],
 slice-transfer-list .slice-transfer-list__clear[hidden],
@@ -137,18 +156,21 @@ slice-transfer-list .slice-transfer-list__skeleton[hidden] {
    display: none;
 }
 slice-transfer-list .slice-transfer-list__skeleton {
-   padding: 12px 0;
+   padding: 10px 0;
 }
 slice-transfer-list .slice-transfer-list__skeleton > span {
    display: block;
-   height: 44px;
-   margin-bottom: 10px;
+   height: 38px;
+   margin-bottom: 8px;
    border-radius: 8px;
    background: var(--tertiary-background-color);
 }
+
+/* Status ------------------------------------------------------------------ */
+
 slice-transfer-list .slice-transfer-list__error {
-   padding: 12px;
-   margin-bottom: 12px;
+   padding: 10px 12px;
+   margin-bottom: 10px;
    border: 1px solid var(--danger-color);
    border-radius: 8px;
 }
@@ -161,7 +183,7 @@ slice-transfer-list .slice-transfer-list__unknown[hidden] {
 }
 slice-transfer-list .slice-transfer-list__unknown {
    color: var(--font-secondary-color);
-   font-size: 0.85rem;
+   font-size: 0.8rem;
 }
 slice-transfer-list > .slice-transfer-list__status {
    position: absolute;
@@ -171,6 +193,82 @@ slice-transfer-list > .slice-transfer-list__status {
    clip-path: inset(50%);
    white-space: nowrap;
 }
+
+/* Compact variant ---------------------------------------------------------
+   Same controls and labels, tighter chrome: useful inside settings panels,
+   sidebars and dense admin tables. Density is a host attribute, per the
+   repository API standards. */
+
+slice-transfer-list[data-variant='compact'] {
+   --slice-transfer-list-height: 260px;
+   --slice-transfer-list-gap: 10px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__panel {
+   border-radius: 8px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__header {
+   padding: 8px 10px 3px;
+   gap: 6px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__title {
+   font-size: 0.86rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__count {
+   font-size: 0.72rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__search {
+   padding: 0 8px 4px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__selection {
+   padding: 0 8px 3px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__body {
+   min-height: 120px;
+   padding: 0 8px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__row {
+   padding: 4px 0;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__row-head {
+   gap: 6px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__description {
+   margin-top: 2px;
+   font-size: 0.76rem;
+   line-height: 1.35;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__extra {
+   margin-top: 3px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__lock {
+   margin-top: 1px;
+   font-size: 0.66rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__group {
+   padding: 7px 0 4px;
+   font-size: 0.64rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__footer {
+   padding: 6px 8px;
+   gap: 6px;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__selected {
+   font-size: 0.7rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__empty {
+   padding: 14px 6px;
+   font-size: 0.8rem;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__skeleton {
+   padding: 8px 0;
+}
+slice-transfer-list[data-variant='compact'] .slice-transfer-list__skeleton > span {
+   height: 30px;
+   margin-bottom: 6px;
+}
+
+/* Responsive -------------------------------------------------------------- */
+
 @media (max-width: 640px) {
    slice-transfer-list > .slice-transfer-list__panels {
       grid-template-columns: minmax(0, 1fr);
