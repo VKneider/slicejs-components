@@ -150,3 +150,9 @@ Use `dateLabel` for ranges and fuzzy dates ("2019 — 2022", "Spring 2025"); kee
 :::warning
 `upcoming` is not "disabled". It says something has not happened yet; do not use it to hide events.
 :::
+
+:::related
+- [Heatmap](/docs/display/heatmap) - The same events as a calendar.
+- [DataList](/docs/data/datalist) - A feed of entries.
+- [Card](/docs/layout/card) - One entry, expanded.
+:::

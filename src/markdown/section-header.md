@@ -138,3 +138,9 @@ Use a link for "View all" and a button for an action. A link goes somewhere (it 
 :::warning
 Keep the eyebrow to one or two words. It labels the section; it is not a second title.
 :::
+
+:::related
+- [Grid](/docs/layout/grid) - What usually goes under it.
+- [Empty state](/docs/display/empty-state) - A section with nothing yet.
+- [Card](/docs/layout/card) - Sections as cards.
+:::

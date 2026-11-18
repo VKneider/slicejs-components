@@ -10,7 +10,7 @@ export default class ChipDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "chip.md";
-    this.markdownContent = "---\ntitle: Chip\nroute: /docs/display/chip\nnavLabel: Chip\nsection: Display\ngroup: Basic\norder: 26\ndescription: Compact label for filters, tags and selections, optionally removable.\ncomponent: ChipDocumentation\ngenerate: true\ntags: [chip, tag, pill, filter, removable]\n---\n\n# Chip\n\n## Overview\n\nA `Chip` is a compact label for a filter, a tag, or a selected value in a multi-select. It sits\ninline, wraps long text with an ellipsis, and can carry an icon and a remove affordance.\n\nFor a read-only status pill, use `Badge` instead — a Badge carries state, a Chip carries a\nselection you can act on.\n\n## API\n\n- `label` (string)\n- `icon` (string) — an `Icon` name; empty renders no glyph\n- `variant` (`neutral` | `accent` | `success` | `warning` | `danger`, default `neutral`)\n- `size` (`sm` | `md`, default `md`)\n- `disabled` (boolean)\n- `removable` (boolean) — renders a real `<button>` remove affordance\n- `removeLabel` (string, default `\"Remove\"`) — used for the button's `aria-label` and tooltip\n- `onRemove` (function) — called with the chip's `label`\n\nThe remove button is labelled `\"<removeLabel>: <label>\"`, so a screen-reader user hears *which* chip\nthey are removing rather than a list of identical \"Remove\" buttons.\n\n## Prop Scenarios\n\n:::script label=\"Chips\" expected=\"plain, accent and warning chips in a row\"\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;';\n\nrow.appendChild(await slice.build('Chip', { label: 'All' }));\nrow.appendChild(await slice.build('Chip', { label: 'Active', variant: 'accent', icon: 'check' }));\nrow.appendChild(await slice.build('Chip', { label: 'Deprecated', variant: 'warning' }));\nrow.appendChild(await slice.build('Chip', { label: 'Archived', variant: 'neutral', size: 'sm' }));\nreturn row;\n:::\n\n:::script label=\"Removable chips\" expected=\"clicking the x reports which chip was removed\"\nconst log = document.createElement('p');\nlog.textContent = 'Nothing removed yet';\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';\n\nfor (const label of ['Vue', 'React', 'Svelte']) {\n   row.appendChild(await slice.build('Chip', {\n      label,\n      removable: true,\n      onRemove: (removed) => { log.textContent = `Removed: ${removed}`; },\n   }));\n}\n\nconst wrap = document.createElement('div');\nwrap.appendChild(row);\nwrap.appendChild(log);\nreturn wrap;\n:::\n\n## Best Practices\n\n:::tip\nUse `Chip` for things the user chose and can remove, `Badge` for things the system decided. Mixing\nthe two makes it unclear whether a pill is clickable.\n:::\n\n## Pitfalls\n\n:::warning\nA Chip is not draggable. To reorder a list of chips, register them with `DragDropService` yourself —\nsorting is a container concern, not something a chip should own.\n:::";
+    this.markdownContent = "---\ntitle: Chip\nroute: /docs/display/chip\nnavLabel: Chip\nsection: Display\ngroup: Basic\norder: 26\ndescription: Compact label for filters, tags and selections, optionally removable.\ncomponent: ChipDocumentation\ngenerate: true\ntags: [chip, tag, pill, filter, removable]\n---\n\n# Chip\n\n## Overview\n\nA `Chip` is a compact label for a filter, a tag, or a selected value in a multi-select. It sits\ninline, wraps long text with an ellipsis, and can carry an icon and a remove affordance.\n\nFor a read-only status pill, use `Badge` instead — a Badge carries state, a Chip carries a\nselection you can act on.\n\n## API\n\n- `label` (string)\n- `icon` (string) — an `Icon` name; empty renders no glyph\n- `variant` (`neutral` | `accent` | `success` | `warning` | `danger`, default `neutral`)\n- `size` (`sm` | `md`, default `md`)\n- `disabled` (boolean)\n- `removable` (boolean) — renders a real `<button>` remove affordance\n- `removeLabel` (string, default `\"Remove\"`) — used for the button's `aria-label` and tooltip\n- `onRemove` (function) — called with the chip's `label`\n\nThe remove button is labelled `\"<removeLabel>: <label>\"`, so a screen-reader user hears *which* chip\nthey are removing rather than a list of identical \"Remove\" buttons.\n\n## Prop Scenarios\n\n:::script label=\"Chips\" expected=\"plain, accent and warning chips in a row\"\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center;';\n\nrow.appendChild(await slice.build('Chip', { label: 'All' }));\nrow.appendChild(await slice.build('Chip', { label: 'Active', variant: 'accent', icon: 'check' }));\nrow.appendChild(await slice.build('Chip', { label: 'Deprecated', variant: 'warning' }));\nrow.appendChild(await slice.build('Chip', { label: 'Archived', variant: 'neutral', size: 'sm' }));\nreturn row;\n:::\n\n:::script label=\"Removable chips\" expected=\"clicking the x reports which chip was removed\"\nconst log = document.createElement('p');\nlog.textContent = 'Nothing removed yet';\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';\n\nfor (const label of ['Vue', 'React', 'Svelte']) {\n   row.appendChild(await slice.build('Chip', {\n      label,\n      removable: true,\n      onRemove: (removed) => { log.textContent = `Removed: ${removed}`; },\n   }));\n}\n\nconst wrap = document.createElement('div');\nwrap.appendChild(row);\nwrap.appendChild(log);\nreturn wrap;\n:::\n\n## Best Practices\n\n:::tip\nUse `Chip` for things the user chose and can remove, `Badge` for things the system decided. Mixing\nthe two makes it unclear whether a pill is clickable.\n:::\n\n## Pitfalls\n\n:::warning\nA Chip is not draggable. To reorder a list of chips, register them with `DragDropService` yourself —\nsorting is a container concern, not something a chip should own.\n:::\n\n:::related\n- [Badge](/docs/display/badge) - A state, not a word.\n- [Input](/docs/input/input) - Tags typed into a field.\n- [DataList](/docs/data/datalist) - Chips as the tags of a row.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -46,6 +46,37 @@ export default class ChipDocumentation extends HTMLElement {
       }
       {
          const container = this.querySelector('[data-block-id="doc-block-5"]');
+         if (container) {
+            const items = [{"title":"Badge","path":"/docs/display/badge","text":"A state, not a word."},{"title":"Input","path":"/docs/input/input","text":"Tags typed into a field."},{"title":"DataList","path":"/docs/data/datalist","text":"Chips as the tags of a row."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"label\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"icon\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"variant\",\"type\":\"string\",\"required\":false,\"default\":\"neutral\",\"allowedValues\":[]},{\"path\":\"size\",\"type\":\"string\",\"required\":false,\"default\":\"md\",\"allowedValues\":[]},{\"path\":\"disabled\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"removable\",\"type\":\"boolean\",\"required\":false,\"default\":\"false\",\"allowedValues\":[]},{\"path\":\"removeLabel\",\"type\":\"string\",\"required\":false,\"default\":\"Remove\",\"allowedValues\":[]},{\"path\":\"onRemove\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]}]}") {

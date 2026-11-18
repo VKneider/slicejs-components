@@ -48,9 +48,7 @@ Two separate choices, as everywhere else in the library:
 - `shape`: `'pill'` (default) for states and counts, `'rounded'` for labels that are not states (versions, categories, keys).
 - In a line of text, the badge sits on the text's optical centre at any font size.
 
-:::note
-Before tones, `variant` took the meaning (`variant: 'success'`). That still works: the badge takes it as the tone and logs one note. Change it to `tone: 'success'` when you can.
-:::
+Before tones, `variant` took the meaning (`variant: 'success'`). That still works: the badge takes it as the tone and logs one note.
 
 ## Live Preview
 :::component name="Badge"
@@ -203,34 +201,38 @@ The shade has to move in opposite directions per theme. Light darkens the colour
 }
 ```
 
-:::tip
-The `-readable` tokens are **optional for a light theme**: `Badge.css` carries the light values as fallbacks, so a fresh app's theme already passes. They are **needed for a dark theme**, where the fallbacks would be too dark. The specs measure every tone in every variant, in both themes, against 4.5:1.
-:::
+:::details title="Theming: which token goes where"
+The `-readable` tokens are **optional for a light theme**: `Badge.css` carries the light values as
+fallbacks, so a fresh app's theme already passes. They are **needed for a dark theme**, where the
+fallbacks would be too dark. The specs measure every tone in every variant, in both themes, against
+4.5:1.
 
-:::warning
-`--primary-color-shade` is a different token: a border and surface tone of the brand. `--primary-color-readable` is the text tone. The `-readable` suffix keeps the two apart.
+`--primary-color-shade` is a different token: a border and surface tone of the brand.
+`--primary-color-readable` is the text tone. The `-readable` suffix keeps the two apart.
 :::
 
 To restyle one badge or all of them, the per-badge variables are `--slice-badge-color`, `--slice-badge-ink` (text and fill), `--slice-badge-tint` (how strong the soft background is), `--slice-badge-height`, `--slice-badge-font`, `--slice-badge-pad` and `--slice-badge-dot`.
 
 ## Best Practices
+
 :::tip
 Map your statuses to badges in one place (`const STATUS = { paid: { label, tone, icon } }`) and pass `STATUS[row.status]`. Every screen then shows the same state the same way.
 :::
 
-:::tip
-Use `filled` only for what must be seen before anything else (Overdue, Down, a count of unread messages). If everything is filled, nothing stands out.
-:::
-
-:::tip
-On top of a button or an avatar, position the badge in your own layout (`position: absolute`). `Badge` styles itself, not its place next to a sibling. [Avatar](/docs/display/avatar) already does it with its `badge` prop.
-:::
+Use `filled` only for what must be seen before anything else (Overdue, Down, a count of unread messages): if everything is filled, nothing stands out. On top of a button or an avatar, position the badge in your own layout (`position: absolute`); `Badge` styles itself, not its place next to a sibling. [Avatar](/docs/display/avatar) already does it with its `badge` prop.
 
 ## Pitfalls
+
 :::warning
 Colour alone is not enough. Keep a `label` or a `value`: red and green look different to most people, but only the word tells a colour-blind user which is which. A `dot` needs a `label` too, for screen readers.
 :::
 
 :::warning
 Do not show a live `pulse` the app cannot keep up to date. A green "● Online" that stays on after the server went down is worse than no badge.
+:::
+
+:::related
+- [Avatar](/docs/display/avatar) - The status dot on a face.
+- [Chip](/docs/display/chip) - Words with a tone, not a state.
+- [DataList](/docs/data/datalist) - One badge per row.
 :::

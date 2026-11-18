@@ -157,3 +157,9 @@ In a carousel, show several quotes per view on wide screens (`perView: { 0: 1, 5
 :::warning
 Do not put links or buttons inside the quote text. If the testimonial leads somewhere (a case study), put that link after the quote.
 :::
+
+:::related
+- [Callout](/docs/display/callout) - A note from the page itself.
+- [Card](/docs/layout/card) - A testimonial with a face.
+- [Section header](/docs/display/section-header) - A quote as a section lede.
+:::

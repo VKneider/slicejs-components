@@ -27,18 +27,10 @@ const confirm = slice.getComponent('ConfirmActionModal');
 ```
 
 :::warning
-Build exactly one. Unlike a `Service`, a Visual component is **not** a
-singleton: a second instance would also subscribe to `confirm:request`, so
-every question would open two dialogs.
+It must be **in the document**. The Modal is built inside the component, and `showModal()` on a detached `<dialog>` is a silent no-op: nothing appears, the promise still settles, and it looks like the button is dead. Append it somewhere real — `document.body` is the usual choice — and the component logs a warning if you forget.
 :::
 
-:::warning
-It must be **in the document**. The Modal is built inside the component, and
-`showModal()` on a detached `<dialog>` is a silent no-op: nothing appears,
-the promise still settles, and it looks like the button is dead. Append it
-somewhere real — `document.body` is the usual choice — and the component logs
-a warning if you forget.
-:::
+Build exactly one. Unlike a `Service`, a Visual component is not a singleton: a second instance also subscribes to `confirm:request`, so every question would open two dialogs.
 
 ## The two ways in
 
@@ -247,50 +239,28 @@ mount(wrap);
 ## Best Practices
 
 :::tip
-Put the consequence in `message`, not in the title. The title says what is being asked; the
-message says what happens if the answer is yes. "This cannot be undone" is worth more than
-"Confirm".
+Put the consequence in `message`, not in the title. The title says what is being asked; the message says what happens if the answer is yes. "This cannot be undone" is worth more than "Confirm".
 :::
 
-:::tip
-Use `danger: true` for anything irreversible. It swaps the confirm button, the header mark and
-the badge behind it in one property.
-:::
+Use `danger: true` for anything irreversible: it swaps the confirm button, the header mark and the badge behind it in one property.
 
-:::tip
-Prefer the promise over the event. Reach for the event when the emitter genuinely has no
-reference to the component, not because callbacks read nicely at the call site.
+:::compare left="Await the promise" right="Listen to the event"
+`const ok = await confirm.ask({ … })` — the caller keeps the reference and reads the answer in the next line.
+---
+`confirm:request` — for an emitter that genuinely has no reference to the component. Not because callbacks read nicely at the call site.
 :::
 
 ## Pitfalls
 
 :::warning
-`required` blocks the confirm button and paints an error, but it does not disable it. That is
-deliberate: a permanently greyed-out button tells the user nothing about why. If the empty case
-should not even be reachable, validate before opening the modal.
+Do not pass `singleton: true`. That flag is only for components registered as `"Service"`, and `slice.build` returns **`null`** for a Visual component built with it — so `confirm.ask` is then "not a function". Build the modal once and share it with `slice.getComponent`.
 :::
 
-:::warning
-Do not pass `singleton: true`. That flag is only for components registered as `"Service"`, and
-`slice.build` returns **`null`** for a Visual component built with it — so `confirm.ask` is then
-"not a function". Build the modal once and share it with `slice.getComponent`.
-:::
+A prompt's field is focused when it opens, so `Enter` confirms. If the answer is not something a user should be able to submit with a single keystroke, do not put a prompt on that action.
 
-:::warning
-A prompt's field is focused when it opens, so `Enter` confirms. If the answer is not something a
-user should be able to submit with a single keystroke, do not put a prompt on that action.
-:::
+`required` blocks the confirm button and paints an error, but it does not disable it. That is deliberate: a permanently greyed-out button tells the user nothing about why. If the empty case should not even be reachable, validate before opening the modal.
 
-:::warning
-`ask()` cannot prevent the modal from being dismissed — `Escape` and the backdrop always count as
-"no". If the answer must be explicit, do not make it cancellable: leave `dismissable` on and accept
-that a stray Escape reads as a refusal.
-:::
-
-:::warning
-Every instance subscribes to `confirm:request`. Two instances means two dialogs for one question,
-so build exactly one, or give the second a different `eventName`.
-:::
+`ask()` cannot prevent the modal from being dismissed — `Escape` and the backdrop always count as "no". If the answer must be explicit, accept that a stray Escape reads as a refusal.
 
 ## Language
 
@@ -299,3 +269,9 @@ The built-in texts are `slice.confirmAction.*` keys with English and Spanish def
 component keeps its English text when the translator is off.
 `confirmLabel` and `cancelLabel` still win over the dictionary.
 Keys: `confirmLabel`, `cancelLabel`, `confirmVariant`, `eventName`.
+
+:::related
+- [Modal](/docs/feedback/modal) - The dialog underneath.
+- [Button](/docs/input/button) - The action that asks the question.
+- [Unsaved changes guard](/docs/services/unsaved-changes-guard) - The other way to ask before losing work.
+:::

@@ -145,3 +145,9 @@ The built-in texts are `slice.avatar.*` keys with English and Spanish defaults, 
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `online`, `away`, `busy`, `offline`, `unknown`.
+
+:::related
+- [Avatar group](/docs/display/avatar-group) - Several faces, one block.
+- [Badge](/docs/display/badge) - The status as a label or a dot.
+- [DataList](/docs/data/datalist) - Avatars in a member list.
+:::

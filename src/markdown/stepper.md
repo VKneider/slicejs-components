@@ -141,3 +141,9 @@ app dictionaries; `ariaLabel` names the list. Titles and descriptions belong to 
 Colors follow theme tokens; component variables use `--slice-stepper-*` (`color`, `ink`, `on-color`,
 `marker`, `gap`, `space`, `line`). Reduced-motion users get no decorative motion. The component has
 no network calls, global listeners or timer loop.
+
+:::related
+- [Form](/docs/input/form) - A multi-step form.
+- [Tabs](/docs/navigation/tabs) - Steps people can jump between.
+- [Progress bar](/docs/display/progress-bar) - Progress without steps.
+:::

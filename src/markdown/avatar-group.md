@@ -91,3 +91,9 @@ The built-in texts are `slice.avatarGroup.*` keys with English and Spanish defau
 component keeps its English text when the translator is off.
 The text prop `texts` still wins over the dictionary.
 Keys: `label`, `more`, `moreLabel`.
+
+:::related
+- [Avatar](/docs/display/avatar) - One face, with its status.
+- [DataList](/docs/data/datalist) - The group as the left mark of a row.
+- [Card](/docs/layout/card) - People as cards in a grid.
+:::

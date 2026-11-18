@@ -83,3 +83,9 @@ the two makes it unclear whether a pill is clickable.
 A Chip is not draggable. To reorder a list of chips, register them with `DragDropService` yourself —
 sorting is a container concern, not something a chip should own.
 :::
+
+:::related
+- [Badge](/docs/display/badge) - A state, not a word.
+- [Input](/docs/input/input) - Tags typed into a field.
+- [DataList](/docs/data/datalist) - Chips as the tags of a row.
+:::

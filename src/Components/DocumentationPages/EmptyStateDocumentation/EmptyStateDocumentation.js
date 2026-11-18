@@ -10,7 +10,7 @@ export default class EmptyStateDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "empty-state.md";
-    this.markdownContent = "---\ntitle: EmptyState\nroute: /docs/display/empty-state\nnavLabel: EmptyState\nsection: Display\ngroup: Basic\norder: 24\ndescription: The \"nothing here yet\" placeholder, with an optional icon, explanation and action.\ncomponent: EmptyStateDocumentation\ngenerate: true\ntags: [empty, placeholder, zero-state, onboarding]\n---\n\n# EmptyState\n\n## Overview\n\nThe block you show where content *would* be, if there were any. It carries an icon, a title, a\nsentence explaining what will appear there, and usually one action that fixes the emptiness.\n\nAn empty state is not decoration: it is the first thing a new user sees in that area, so the copy\nshould say what goes here and how to get the first one in.\n\n## API\n\n- `icon` (string, default `'inbox-full'`) — an `Icon` name. Empty renders no glyph.\n- `iconSize` (string, default `'large'`)\n- `title` (string) — the heading. Hidden when empty.\n- `description` (string) — the explanation. Hidden when empty.\n- `buttonLabel` (string) — label of the optional action `Button`\n- `buttonRoute` (string) — where the action navigates\n- `buttonOnClick` (function) — what the action does. **Wins over `buttonRoute`.**\n\n`buttonOnClick` rather than `onClick` because the click belongs to the child `Button`, not to the\nempty state itself.\n\n## Prop Scenarios\n\n:::script label=\"With an action\" expected=\"an icon, a title, a sentence and a button that logs the click\"\nconst note = document.createElement('p');\nnote.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\nnote.textContent = 'Click the button, then watch this line.';\n\nconst empty = await slice.build('EmptyState', {\n  icon: 'inbox-full',\n  title: 'No messages yet',\n  description: 'Replies from your team will show up here.',\n  buttonLabel: 'Invite a teammate',\n  buttonOnClick: () => { note.textContent = 'Teammate invited.'; },\n});\n\nmount(empty);\nmount(note);\n:::\n\n:::script label=\"Read-only\" expected=\"just the title and sentence\"\nreturn await slice.build('EmptyState', {\n  icon: 'search',\n  title: 'No results',\n  description: 'Try a different search term.',\n});\n:::\n\n:::script label=\"Minimal\" expected=\"a title with nothing else\"\nreturn await slice.build('EmptyState', { title: 'Nothing to show' });\n:::\n\n## Best Practices\n\n:::tip\nWrite the description as a promise, not an apology: \"Replies will show up here\" beats \"There are no\nreplies\". One concrete action beats a paragraph of explanation.\n:::\n\n## Pitfalls\n\n:::warning\nGive it a real empty state only where the absence is expected. A request that failed to load looks\nidentical to an empty list, and \"Nothing here\" is the wrong message for a broken endpoint — handle\nerrors separately.\n:::";
+    this.markdownContent = "---\ntitle: EmptyState\nroute: /docs/display/empty-state\nnavLabel: EmptyState\nsection: Display\ngroup: Basic\norder: 24\ndescription: The \"nothing here yet\" placeholder, with an optional icon, explanation and action.\ncomponent: EmptyStateDocumentation\ngenerate: true\ntags: [empty, placeholder, zero-state, onboarding]\n---\n\n# EmptyState\n\n## Overview\n\nThe block you show where content *would* be, if there were any. It carries an icon, a title, a\nsentence explaining what will appear there, and usually one action that fixes the emptiness.\n\nAn empty state is not decoration: it is the first thing a new user sees in that area, so the copy\nshould say what goes here and how to get the first one in.\n\n## API\n\n- `icon` (string, default `'inbox-full'`) — an `Icon` name. Empty renders no glyph.\n- `iconSize` (string, default `'large'`)\n- `title` (string) — the heading. Hidden when empty.\n- `description` (string) — the explanation. Hidden when empty.\n- `buttonLabel` (string) — label of the optional action `Button`\n- `buttonRoute` (string) — where the action navigates\n- `buttonOnClick` (function) — what the action does. **Wins over `buttonRoute`.**\n\n`buttonOnClick` rather than `onClick` because the click belongs to the child `Button`, not to the\nempty state itself.\n\n## Prop Scenarios\n\n:::script label=\"With an action\" expected=\"an icon, a title, a sentence and a button that logs the click\"\nconst note = document.createElement('p');\nnote.style.cssText = 'font-family:system-ui,sans-serif;font-size:.8rem;color:var(--font-secondary-color);margin-top:10px;';\nnote.textContent = 'Click the button, then watch this line.';\n\nconst empty = await slice.build('EmptyState', {\n  icon: 'inbox-full',\n  title: 'No messages yet',\n  description: 'Replies from your team will show up here.',\n  buttonLabel: 'Invite a teammate',\n  buttonOnClick: () => { note.textContent = 'Teammate invited.'; },\n});\n\nmount(empty);\nmount(note);\n:::\n\n:::script label=\"Read-only\" expected=\"just the title and sentence\"\nreturn await slice.build('EmptyState', {\n  icon: 'search',\n  title: 'No results',\n  description: 'Try a different search term.',\n});\n:::\n\n:::script label=\"Minimal\" expected=\"a title with nothing else\"\nreturn await slice.build('EmptyState', { title: 'Nothing to show' });\n:::\n\n## Best Practices\n\n:::tip\nWrite the description as a promise, not an apology: \"Replies will show up here\" beats \"There are no\nreplies\". One concrete action beats a paragraph of explanation.\n:::\n\n## Pitfalls\n\n:::warning\nGive it a real empty state only where the absence is expected. A request that failed to load looks\nidentical to an empty list, and \"Nothing here\" is the wrong message for a broken endpoint — handle\nerrors separately.\n:::\n\n:::related\n- [Loading](/docs/feedback/loading) - The wait before the data arrives.\n- [DataList](/docs/data/datalist) - A list that shows an empty state.\n- [Card](/docs/layout/card) - A whole screen with nothing in it.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -46,6 +46,37 @@ export default class EmptyStateDocumentation extends HTMLElement {
       }
       {
          const container = this.querySelector('[data-block-id="doc-block-6"]');
+         if (container) {
+            const items = [{"title":"Loading","path":"/docs/feedback/loading","text":"The wait before the data arrives."},{"title":"DataList","path":"/docs/data/datalist","text":"A list that shows an empty state."},{"title":"Card","path":"/docs/layout/card","text":"A whole screen with nothing in it."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
+            });
+            if (grid) container.appendChild(grid);
+         }
+      }
+      {
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
          if (container) {
             let props = {};
             if ("{\"props\":[{\"path\":\"icon\",\"type\":\"string\",\"required\":false,\"default\":\"inbox-full\",\"allowedValues\":[]},{\"path\":\"title\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"description\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"buttonLabel\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"buttonRoute\",\"type\":\"string\",\"required\":false,\"default\":\"\",\"allowedValues\":[]},{\"path\":\"buttonOnClick\",\"type\":\"function\",\"required\":false,\"default\":\"null\",\"allowedValues\":[]},{\"path\":\"iconSize\",\"type\":\"string\",\"required\":false,\"default\":\"large\",\"allowedValues\":[]}]}") {

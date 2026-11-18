@@ -149,3 +149,9 @@ Give `thumb` a small version of each image for galleries of many photos. The str
 :::warning
 Keep the links. `attach()` opens the viewer on a normal click, but the `<a href>` is what works without JavaScript, with Ctrl/⌘-click and for search engines.
 :::
+
+:::related
+- [Carrousel](/docs/layout/element-carrousel) - Several images, one after another.
+- [Card](/docs/layout/card) - A picture as the banner.
+- [File upload](/docs/input/file-upload) - The image before it is shown.
+:::

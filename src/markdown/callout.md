@@ -150,19 +150,23 @@ return grid;
 :::
 
 ## Best Practices
+
 :::tip
 Name it: a title such as "Note", "Tip" or "Before you start" is what a screen reader announces, and what a skimming reader sees first.
 :::
 
-:::tip
-Use `ghost` in long texts. A thin bar marks the passage without breaking the reading rhythm.
-:::
+Use `ghost` in long texts: a thin bar marks the passage without breaking the reading rhythm.
 
 ## Pitfalls
+
 :::warning
 A Callout is not feedback. If the text appears because something just happened (a save, an error), use an Alert so assistive technology announces it.
 :::
 
-:::warning
 Do not rely on colour. "Warning" in the title says what the yellow means to everyone.
+
+:::related
+- [Alert](/docs/feedback/alert) - Feedback that announces itself.
+- [Details](/docs/layout/details) - A long aside people open.
+- [Markdown parser rules](/docs/internal/markdown-parser-rules) - The callout budget this page follows.
 :::

@@ -10,7 +10,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
 
   async init() {
     this.markdownPath = "confirm-action-modal.md";
-    this.markdownContent = "---\ntitle: ConfirmActionModal\nroute: /docs/display/confirm-action-modal\nnavLabel: ConfirmActionModal\nsection: Display\ngroup: Feedback\norder: 32\ndescription: Promise-based \"are you sure?\" modal and single-value prompt, built on Modal, with an event-manager channel.\ncomponent: ConfirmActionModalDocumentation\ngenerate: true\ntags: [modal, confirm, alert, prompt, danger, confirmation, dialog, events]\n---\n\n# ConfirmActionModal\n\n## Overview\n\nThe \"are you sure?\" modal, and the single-value prompt. Built on\n[`Modal`](/docs/display/modal), so scroll-lock, focus, `Escape` and backdrop\ndismissal are already handled — this only owns the copy, the header mark, the\ntwo buttons and the answer.\n\nBuild it **once**, near your composition root, and recover it anywhere else:\n\n```javascript title=\"Build it once\"\nconst confirm = slice.getComponent('ConfirmActionModal');\n```\n\n:::warning\nBuild exactly one. Unlike a `Service`, a Visual component is **not** a\nsingleton: a second instance would also subscribe to `confirm:request`, so\nevery question would open two dialogs.\n:::\n\n:::warning\nIt must be **in the document**. The Modal is built inside the component, and\n`showModal()` on a detached `<dialog>` is a silent no-op: nothing appears,\nthe promise still settles, and it looks like the button is dead. Append it\nsomewhere real — `document.body` is the usual choice — and the component logs\na warning if you forget.\n:::\n\n## The two ways in\n\n### 1. A promise — when the answer decides what happens next\n\n```javascript\nif (!await confirm.ask({ title: 'Delete project?', danger: true })) return;\nawait deleteProject();\n```\n\nThis is the better default and the one to reach for first. The alternative — a\nbare event plus callbacks — makes every call site juggle two async channels and\na \"did this already fire?\" flag, and a caller that returns early leaves the\nevent unfired. With a promise the control flow is linear and cannot get wrong.\n\n### 2. The event manager — when the emitter cannot hold a reference\n\nSome call sites genuinely cannot reach the component: a deep save routine, a\nstore subscriber, a keyboard shortcut, a third-party callback. Emitting is then\nthe sane move, and `confirm:request` is subscribed for you:\n\n```javascript title=\"No reference needed\"\nslice.events.emit('confirm:request', {\n   title: 'Discard unsaved draft?',\n   message: 'Three responses have not been sent.',\n   danger: true,\n});\n```\n\nNobody is waiting on the answer, so this is fire-and-forget: it opens, the user\nanswers, the modal closes.\n\nAdd `onConfirm` / `onCancel` if the emitter does need the verdict:\n\n```javascript\nslice.events.emit('confirm:request', {\n   title: 'Publish?',\n   onConfirm: () => publish(),\n   onCancel: () => console.log('left it'),\n});\n```\n\nAn `inputLabel` in the payload makes it a **prompt**, and `onConfirm` receives\nthe typed value:\n\n```javascript\nslice.events.emit('confirm:request', {\n   title: 'Your name',\n   inputLabel: 'Name',\n   inputValue: 'Ana',\n   onConfirm: (name) => save({ name }),\n});\n```\n\nIf two independently-built modals would collide, give one of them a different\nchannel:\n\n```javascript\nconst admin = await slice.build('ConfirmActionModal', {\n   sliceId: 'admin-confirm',\n   eventName: 'admin:confirm:request',\n});\n```\n\n## API\n\n- `ask(options) -> Promise<boolean>` — `true` confirmed, `false` cancelled or dismissed.\n- `prompt(options) -> Promise<string|null>` — the value, or `null` if cancelled.\n- `isOpen` (boolean) — whether a question is currently on screen.\n\nOptions for both (all optional):\n\n| Option | Default | Notes |\n| --- | --- | --- |\n| `title` | `''` | |\n| `message` | `''` | hidden when empty |\n| `icon` | by `danger` | any Icon name; `false` hides the mark |\n| `confirmLabel` | `'Confirm'` | |\n| `cancelLabel` | `'Cancel'` | |\n| `danger` | `false` | confirm button becomes the `danger` variant |\n| `confirmVariant` | `'filled'` | used when `danger` is false |\n| `inputLabel` / `inputPlaceholder` / `inputValue` | `''` | `prompt()` only |\n| `inputType` | `'text'` | `'email'` adds native validation |\n| `required` | `false` | `prompt()` only; blocks confirm while empty |\n\nProps set once on the component and overridden per call: `confirmLabel`,\n`cancelLabel`, `confirmVariant`, `eventName`.\n\n## The header mark\n\nThe icon in the header follows `danger` so a destructive question never looks\nlike a routine one: `exclamation-circle` for danger, `question-circle`\notherwise. Override it with any Icon name, or pass `icon: false` to show no\nmark at all.\n\n## The one invariant\n\n**Every `ask()`/`prompt()` resolves exactly once.** A dialog that could be\ndismissed without settling would leave the awaiting caller hanging for the life\nof the page, so `Escape`, the backdrop, the X button, a second question arriving\nwhile one is open, and destroying the component all resolve — as cancellations.\nThere is a spec for each of those.\n\n## Prop Scenarios\n\n:::script label=\"Yes / no\" expected=\"the flow stops at the dialog until you answer; try Escape and the backdrop too\"\nconst confirm = await slice.build('ConfirmActionModal', { sliceId: 'demo-confirm' });\n\n// It has to be IN the document. The Modal is built inside this element, and\n// showModal() on a detached <dialog> is a silent no-op - nothing appears and\n// the promise still settles, so the failure looks like \"the button is dead\".\ndocument.body.appendChild(confirm);\n\nconst log = document.createElement('p');\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.85rem;color:var(--font-secondary-color);margin:0 0 10px;';\nlog.textContent = 'Nothing decided yet.';\n\nconst ask = async () => {\n   const ok = await confirm.ask({\n      title: 'Delete “Quarterly report”?',\n      message: 'It moves to trash, where it stays for 30 days.',\n      confirmLabel: 'Delete',\n      danger: true,\n   });\n   log.textContent = ok ? 'Deleted.' : 'Kept.';\n};\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';\n\nrow.appendChild(await slice.build('Button', { value: 'Delete the report', variant: 'danger', onClick: ask }));\nrow.appendChild(await slice.build('Button', {\n   value: 'Rename instead',\n   variant: 'outlined',\n   onClick: async () => {\n      const name = await confirm.prompt({\n         title: 'Rename report',\n         inputLabel: 'New name',\n         inputValue: 'Quarterly report',\n         required: true,\n      });\n      log.textContent = name === null ? 'Renaming cancelled.' : `Renamed to “${name}”.`;\n   },\n}));\n\nconst wrap = document.createElement('div');\nwrap.appendChild(log);\nwrap.appendChild(row);\nmount(wrap);\n:::\n\n:::script label=\"Through the event manager\" expected=\"the buttons never touch the component — they just emit on the channel\"\n// A different channel, because the demo above already built a modal on the\n// default one and EVERY instance subscribes. Two on one page, one channel,\n// means one question opens two dialogs — which is exactly the footgun this\n// component has.\nconst confirm = await slice.build('ConfirmActionModal', {\n   sliceId: 'demo-confirm-evt',\n   eventName: 'demo:confirm:request',\n});\ndocument.body.appendChild(confirm);\n\nconst log = document.createElement('p');\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.85rem;color:var(--font-secondary-color);margin:0 0 10px;';\nlog.textContent = 'Nothing emitted yet.';\n\n// A stand-in for a call site with no reference to the component: a save\n// routine, a store subscriber, a keyboard shortcut.\nconst emitFromAnywhere = (payload) => {\n   log.textContent = 'Asked. Answer in the dialog…';\n   slice.events.emit('demo:confirm:request', payload);\n};\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';\n\nrow.appendChild(await slice.build('Button', {\n   value: 'Emit a question',\n   variant: 'danger',\n   onClick: () => emitFromAnywhere({\n      title: 'Discard 3 unsent responses?',\n      message: 'They will not be recoverable.',\n      danger: true,\n      onConfirm: () => { log.textContent = 'Emitter heard: yes.'; },\n      onCancel: () => { log.textContent = 'Emitter heard: no.'; },\n   }),\n}));\n\nrow.appendChild(await slice.build('Button', {\n   value: 'Emit a prompt',\n   variant: 'outlined',\n   onClick: () => emitFromAnywhere({\n      title: 'Your name',\n      inputLabel: 'Name',\n      inputValue: 'Ana',\n      onConfirm: (name) => { log.textContent = `Emitter heard: “${name}”.`; },\n   }),\n}));\n\nconst wrap = document.createElement('div');\nwrap.appendChild(log);\nwrap.appendChild(row);\nmount(wrap);\n:::\n\n## Best Practices\n\n:::tip\nPut the consequence in `message`, not in the title. The title says what is being asked; the\nmessage says what happens if the answer is yes. \"This cannot be undone\" is worth more than\n\"Confirm\".\n:::\n\n:::tip\nUse `danger: true` for anything irreversible. It swaps the confirm button, the header mark and\nthe badge behind it in one property.\n:::\n\n:::tip\nPrefer the promise over the event. Reach for the event when the emitter genuinely has no\nreference to the component, not because callbacks read nicely at the call site.\n:::\n\n## Pitfalls\n\n:::warning\n`required` blocks the confirm button and paints an error, but it does not disable it. That is\ndeliberate: a permanently greyed-out button tells the user nothing about why. If the empty case\nshould not even be reachable, validate before opening the modal.\n:::\n\n:::warning\nDo not pass `singleton: true`. That flag is only for components registered as `\"Service\"`, and\n`slice.build` returns **`null`** for a Visual component built with it — so `confirm.ask` is then\n\"not a function\". Build the modal once and share it with `slice.getComponent`.\n:::\n\n:::warning\nA prompt's field is focused when it opens, so `Enter` confirms. If the answer is not something a\nuser should be able to submit with a single keystroke, do not put a prompt on that action.\n:::\n\n:::warning\n`ask()` cannot prevent the modal from being dismissed — `Escape` and the backdrop always count as\n\"no\". If the answer must be explicit, do not make it cancellable: leave `dismissable` on and accept\nthat a stray Escape reads as a refusal.\n:::\n\n:::warning\nEvery instance subscribes to `confirm:request`. Two instances means two dialogs for one question,\nso build exactly one, or give the second a different `eventName`.\n:::\n\n## Language\n\nThe built-in texts are `slice.confirmAction.*` keys with English and Spanish defaults, registered by\n`shared/text/texts.js` in the translator's lowest layer: an app dictionary always wins, and the\ncomponent keeps its English text when the translator is off.\n`confirmLabel` and `cancelLabel` still win over the dictionary.\nKeys: `confirmLabel`, `cancelLabel`, `confirmVariant`, `eventName`.\n";
+    this.markdownContent = "---\ntitle: ConfirmActionModal\nroute: /docs/display/confirm-action-modal\nnavLabel: ConfirmActionModal\nsection: Display\ngroup: Feedback\norder: 32\ndescription: Promise-based \"are you sure?\" modal and single-value prompt, built on Modal, with an event-manager channel.\ncomponent: ConfirmActionModalDocumentation\ngenerate: true\ntags: [modal, confirm, alert, prompt, danger, confirmation, dialog, events]\n---\n\n# ConfirmActionModal\n\n## Overview\n\nThe \"are you sure?\" modal, and the single-value prompt. Built on\n[`Modal`](/docs/display/modal), so scroll-lock, focus, `Escape` and backdrop\ndismissal are already handled — this only owns the copy, the header mark, the\ntwo buttons and the answer.\n\nBuild it **once**, near your composition root, and recover it anywhere else:\n\n```javascript title=\"Build it once\"\nconst confirm = slice.getComponent('ConfirmActionModal');\n```\n\n:::warning\nIt must be **in the document**. The Modal is built inside the component, and `showModal()` on a detached `<dialog>` is a silent no-op: nothing appears, the promise still settles, and it looks like the button is dead. Append it somewhere real — `document.body` is the usual choice — and the component logs a warning if you forget.\n:::\n\nBuild exactly one. Unlike a `Service`, a Visual component is not a singleton: a second instance also subscribes to `confirm:request`, so every question would open two dialogs.\n\n## The two ways in\n\n### 1. A promise — when the answer decides what happens next\n\n```javascript\nif (!await confirm.ask({ title: 'Delete project?', danger: true })) return;\nawait deleteProject();\n```\n\nThis is the better default and the one to reach for first. The alternative — a\nbare event plus callbacks — makes every call site juggle two async channels and\na \"did this already fire?\" flag, and a caller that returns early leaves the\nevent unfired. With a promise the control flow is linear and cannot get wrong.\n\n### 2. The event manager — when the emitter cannot hold a reference\n\nSome call sites genuinely cannot reach the component: a deep save routine, a\nstore subscriber, a keyboard shortcut, a third-party callback. Emitting is then\nthe sane move, and `confirm:request` is subscribed for you:\n\n```javascript title=\"No reference needed\"\nslice.events.emit('confirm:request', {\n   title: 'Discard unsaved draft?',\n   message: 'Three responses have not been sent.',\n   danger: true,\n});\n```\n\nNobody is waiting on the answer, so this is fire-and-forget: it opens, the user\nanswers, the modal closes.\n\nAdd `onConfirm` / `onCancel` if the emitter does need the verdict:\n\n```javascript\nslice.events.emit('confirm:request', {\n   title: 'Publish?',\n   onConfirm: () => publish(),\n   onCancel: () => console.log('left it'),\n});\n```\n\nAn `inputLabel` in the payload makes it a **prompt**, and `onConfirm` receives\nthe typed value:\n\n```javascript\nslice.events.emit('confirm:request', {\n   title: 'Your name',\n   inputLabel: 'Name',\n   inputValue: 'Ana',\n   onConfirm: (name) => save({ name }),\n});\n```\n\nIf two independently-built modals would collide, give one of them a different\nchannel:\n\n```javascript\nconst admin = await slice.build('ConfirmActionModal', {\n   sliceId: 'admin-confirm',\n   eventName: 'admin:confirm:request',\n});\n```\n\n## API\n\n- `ask(options) -> Promise<boolean>` — `true` confirmed, `false` cancelled or dismissed.\n- `prompt(options) -> Promise<string|null>` — the value, or `null` if cancelled.\n- `isOpen` (boolean) — whether a question is currently on screen.\n\nOptions for both (all optional):\n\n| Option | Default | Notes |\n| --- | --- | --- |\n| `title` | `''` | |\n| `message` | `''` | hidden when empty |\n| `icon` | by `danger` | any Icon name; `false` hides the mark |\n| `confirmLabel` | `'Confirm'` | |\n| `cancelLabel` | `'Cancel'` | |\n| `danger` | `false` | confirm button becomes the `danger` variant |\n| `confirmVariant` | `'filled'` | used when `danger` is false |\n| `inputLabel` / `inputPlaceholder` / `inputValue` | `''` | `prompt()` only |\n| `inputType` | `'text'` | `'email'` adds native validation |\n| `required` | `false` | `prompt()` only; blocks confirm while empty |\n\nProps set once on the component and overridden per call: `confirmLabel`,\n`cancelLabel`, `confirmVariant`, `eventName`.\n\n## The header mark\n\nThe icon in the header follows `danger` so a destructive question never looks\nlike a routine one: `exclamation-circle` for danger, `question-circle`\notherwise. Override it with any Icon name, or pass `icon: false` to show no\nmark at all.\n\n## The one invariant\n\n**Every `ask()`/`prompt()` resolves exactly once.** A dialog that could be\ndismissed without settling would leave the awaiting caller hanging for the life\nof the page, so `Escape`, the backdrop, the X button, a second question arriving\nwhile one is open, and destroying the component all resolve — as cancellations.\nThere is a spec for each of those.\n\n## Prop Scenarios\n\n:::script label=\"Yes / no\" expected=\"the flow stops at the dialog until you answer; try Escape and the backdrop too\"\nconst confirm = await slice.build('ConfirmActionModal', { sliceId: 'demo-confirm' });\n\n// It has to be IN the document. The Modal is built inside this element, and\n// showModal() on a detached <dialog> is a silent no-op - nothing appears and\n// the promise still settles, so the failure looks like \"the button is dead\".\ndocument.body.appendChild(confirm);\n\nconst log = document.createElement('p');\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.85rem;color:var(--font-secondary-color);margin:0 0 10px;';\nlog.textContent = 'Nothing decided yet.';\n\nconst ask = async () => {\n   const ok = await confirm.ask({\n      title: 'Delete “Quarterly report”?',\n      message: 'It moves to trash, where it stays for 30 days.',\n      confirmLabel: 'Delete',\n      danger: true,\n   });\n   log.textContent = ok ? 'Deleted.' : 'Kept.';\n};\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';\n\nrow.appendChild(await slice.build('Button', { value: 'Delete the report', variant: 'danger', onClick: ask }));\nrow.appendChild(await slice.build('Button', {\n   value: 'Rename instead',\n   variant: 'outlined',\n   onClick: async () => {\n      const name = await confirm.prompt({\n         title: 'Rename report',\n         inputLabel: 'New name',\n         inputValue: 'Quarterly report',\n         required: true,\n      });\n      log.textContent = name === null ? 'Renaming cancelled.' : `Renamed to “${name}”.`;\n   },\n}));\n\nconst wrap = document.createElement('div');\nwrap.appendChild(log);\nwrap.appendChild(row);\nmount(wrap);\n:::\n\n:::script label=\"Through the event manager\" expected=\"the buttons never touch the component — they just emit on the channel\"\n// A different channel, because the demo above already built a modal on the\n// default one and EVERY instance subscribes. Two on one page, one channel,\n// means one question opens two dialogs — which is exactly the footgun this\n// component has.\nconst confirm = await slice.build('ConfirmActionModal', {\n   sliceId: 'demo-confirm-evt',\n   eventName: 'demo:confirm:request',\n});\ndocument.body.appendChild(confirm);\n\nconst log = document.createElement('p');\nlog.style.cssText = 'font-family:system-ui,sans-serif;font-size:.85rem;color:var(--font-secondary-color);margin:0 0 10px;';\nlog.textContent = 'Nothing emitted yet.';\n\n// A stand-in for a call site with no reference to the component: a save\n// routine, a store subscriber, a keyboard shortcut.\nconst emitFromAnywhere = (payload) => {\n   log.textContent = 'Asked. Answer in the dialog…';\n   slice.events.emit('demo:confirm:request', payload);\n};\n\nconst row = document.createElement('div');\nrow.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;';\n\nrow.appendChild(await slice.build('Button', {\n   value: 'Emit a question',\n   variant: 'danger',\n   onClick: () => emitFromAnywhere({\n      title: 'Discard 3 unsent responses?',\n      message: 'They will not be recoverable.',\n      danger: true,\n      onConfirm: () => { log.textContent = 'Emitter heard: yes.'; },\n      onCancel: () => { log.textContent = 'Emitter heard: no.'; },\n   }),\n}));\n\nrow.appendChild(await slice.build('Button', {\n   value: 'Emit a prompt',\n   variant: 'outlined',\n   onClick: () => emitFromAnywhere({\n      title: 'Your name',\n      inputLabel: 'Name',\n      inputValue: 'Ana',\n      onConfirm: (name) => { log.textContent = `Emitter heard: “${name}”.`; },\n   }),\n}));\n\nconst wrap = document.createElement('div');\nwrap.appendChild(log);\nwrap.appendChild(row);\nmount(wrap);\n:::\n\n## Best Practices\n\n:::tip\nPut the consequence in `message`, not in the title. The title says what is being asked; the message says what happens if the answer is yes. \"This cannot be undone\" is worth more than \"Confirm\".\n:::\n\nUse `danger: true` for anything irreversible: it swaps the confirm button, the header mark and the badge behind it in one property.\n\n:::compare left=\"Await the promise\" right=\"Listen to the event\"\n`const ok = await confirm.ask({ … })` — the caller keeps the reference and reads the answer in the next line.\n---\n`confirm:request` — for an emitter that genuinely has no reference to the component. Not because callbacks read nicely at the call site.\n:::\n\n## Pitfalls\n\n:::warning\nDo not pass `singleton: true`. That flag is only for components registered as `\"Service\"`, and `slice.build` returns **`null`** for a Visual component built with it — so `confirm.ask` is then \"not a function\". Build the modal once and share it with `slice.getComponent`.\n:::\n\nA prompt's field is focused when it opens, so `Enter` confirms. If the answer is not something a user should be able to submit with a single keystroke, do not put a prompt on that action.\n\n`required` blocks the confirm button and paints an error, but it does not disable it. That is deliberate: a permanently greyed-out button tells the user nothing about why. If the empty case should not even be reachable, validate before opening the modal.\n\n`ask()` cannot prevent the modal from being dismissed — `Escape` and the backdrop always count as \"no\". If the answer must be explicit, accept that a stray Escape reads as a refusal.\n\n## Language\n\nThe built-in texts are `slice.confirmAction.*` keys with English and Spanish defaults, registered by\n`shared/text/texts.js` in the translator's lowest layer: an app dictionary always wins, and the\ncomponent keeps its English text when the translator is off.\n`confirmLabel` and `cancelLabel` still win over the dictionary.\nKeys: `confirmLabel`, `cancelLabel`, `confirmVariant`, `eventName`.\n\n:::related\n- [Modal](/docs/feedback/modal) - The dialog underneath.\n- [Button](/docs/input/button) - The action that asks the question.\n- [Unsaved changes guard](/docs/services/unsaved-changes-guard) - The other way to ask before losing work.\n:::\n";
     if (true) {
       await this.setupCopyButton();
     }
@@ -35,21 +35,6 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Build exactly one. Unlike a <code>Service</code>, a Visual component is <strong>not</strong> a singleton: a second instance would also subscribe to <code>confirm:request</code>, so every question would open two dialogs.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-3"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
             body.innerHTML = "<p>It must be <strong>in the document</strong>. The Modal is built inside the component, and <code>showModal()</code> on a detached <code>&lt;dialog&gt;</code> is a silent no-op: nothing appears, the promise still settles, and it looks like the button is dead. Append it somewhere real — <code>document.body</code> is the usual choice — and the component logs a warning if you forget.</p>";
             const callout = await slice.build('Callout', {
                tone: "warning",
@@ -61,7 +46,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-4"]');
+         const container = this.querySelector('[data-block-id="doc-block-3"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "if (!await confirm.ask({ title: 'Delete project?', danger: true })) return;\nawait deleteProject();",
@@ -77,7 +62,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-5"]');
+         const container = this.querySelector('[data-block-id="doc-block-4"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "slice.events.emit('confirm:request', {\n   title: 'Discard unsaved draft?',\n   message: 'Three responses have not been sent.',\n   danger: true,\n});",
@@ -93,7 +78,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-6"]');
+         const container = this.querySelector('[data-block-id="doc-block-5"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "slice.events.emit('confirm:request', {\n   title: 'Publish?',\n   onConfirm: () => publish(),\n   onCancel: () => console.log('left it'),\n});",
@@ -109,7 +94,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-7"]');
+         const container = this.querySelector('[data-block-id="doc-block-6"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "slice.events.emit('confirm:request', {\n   title: 'Your name',\n   inputLabel: 'Name',\n   inputValue: 'Ana',\n   onConfirm: (name) => save({ name }),\n});",
@@ -125,7 +110,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-8"]');
+         const container = this.querySelector('[data-block-id="doc-block-7"]');
          if (container) {
             const code = await slice.build('CodeVisualizer', {
                value: "const admin = await slice.build('ConfirmActionModal', {\n   sliceId: 'admin-confirm',\n   eventName: 'admin:confirm:request',\n});",
@@ -141,7 +126,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-9"]');
+         const container = this.querySelector('[data-block-id="doc-block-8"]');
          if (container) {
             const lines = ["| Option | Default | Notes |","| --- | --- | --- |","| `title` | `''` | |","| `message` | `''` | hidden when empty |","| `icon` | by `danger` | any Icon name; `false` hides the mark |","| `confirmLabel` | `'Confirm'` | |","| `cancelLabel` | `'Cancel'` | |","| `danger` | `false` | confirm button becomes the `danger` variant |","| `confirmVariant` | `'filled'` | used when `danger` is false |","| `inputLabel` / `inputPlaceholder` / `inputValue` | `''` | `prompt()` only |","| `inputType` | `'text'` | `'email'` adds native validation |","| `required` | `false` | `prompt()` only; blocks confirm while empty |"];
             const clean = (line) => {
@@ -225,7 +210,7 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         const container = this.querySelector('[data-block-id="doc-block-11"]');
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
@@ -240,52 +225,35 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
+         const container = this.querySelector('[data-block-id="doc-block-12"]');
+         if (container) {
+            const buildSide = async (side) => {
+               const body = document.createElement('div');
+               body.className = 'doc-callout-body';
+               body.innerHTML = side.html;
+               const callout = await slice.build('Callout', {
+                  tone: side.tone,
+                  title: side.title,
+                  content: Array.from(body.childNodes)
+               });
+               return callout || body;
+            };
+            const left = await buildSide({"title":"Await the promise","tone":"success","html":"<p><code>const ok = await confirm.ask({ … })</code> — the caller keeps the reference and reads the answer in the next line.</p>"});
+            const right = await buildSide({"title":"Listen to the event","tone":"danger","html":"<p><code>confirm:request</code> — for an emitter that genuinely has no reference to the component. Not because callbacks read nicely at the call site.</p>"});
+            const grid = await slice.build('Grid', {
+               columns: 2,
+               gap: '14px',
+               items: [left, right]
+            });
+            if (grid) container.appendChild(grid);
+            else {
+               container.appendChild(left);
+               container.appendChild(right);
+            }
+         }
+      }
+      {
          const container = this.querySelector('[data-block-id="doc-block-13"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Use <code>danger: true</code> for anything irreversible. It swaps the confirm button, the header mark and the badge behind it in one property.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "success",
-               variant: "soft",
-               title: "Tip",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-14"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Prefer the promise over the event. Reach for the event when the emitter genuinely has no reference to the component, not because callbacks read nicely at the call site.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "success",
-               variant: "soft",
-               title: "Tip",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-15"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p><code>required</code> blocks the confirm button and paints an error, but it does not disable it. That is deliberate: a permanently greyed-out button tells the user nothing about why. If the empty case should not even be reachable, validate before opening the modal.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-16"]');
          if (container) {
             const body = document.createElement('div');
             body.className = 'doc-callout-body';
@@ -300,48 +268,34 @@ export default class ConfirmActionModalDocumentation extends HTMLElement {
          }
       }
       {
-         const container = this.querySelector('[data-block-id="doc-block-17"]');
+         const container = this.querySelector('[data-block-id="doc-block-14"]');
          if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>A prompt's field is focused when it opens, so <code>Enter</code> confirms. If the answer is not something a user should be able to submit with a single keystroke, do not put a prompt on that action.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
+            const items = [{"title":"Modal","path":"/docs/feedback/modal","text":"The dialog underneath."},{"title":"Button","path":"/docs/input/button","text":"The action that asks the question."},{"title":"Unsaved changes guard","path":"/docs/services/unsaved-changes-guard","text":"The other way to ask before losing work."}];
+            const cards = [];
+            for (const item of items) {
+               const card = await slice.build('Card', {
+                  title: item.title,
+                  text: item.text || '',
+                  // The small mark beside the title, not the banner: a page
+                  // of four related links should not be four big arrows.
+                  headerIcon: 'arrow-right',
+                  interactive: true,
+                  onClick: () => {
+                     if (/^https?:/i.test(item.path)) {
+                        window.open(item.path, '_blank', 'noopener,noreferrer');
+                     } else {
+                        slice.router.navigate(item.path);
+                     }
+                  }
+               });
+               if (card) cards.push(card);
+            }
+            const grid = await slice.build('Grid', {
+               columns: items.length === 4 ? 2 : Math.min(3, Math.max(1, cards.length)),
+               gap: '14px',
+               items: cards
             });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-18"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p><code>ask()</code> cannot prevent the modal from being dismissed — <code>Escape</code> and the backdrop always count as \"no\". If the answer must be explicit, do not make it cancellable: leave <code>dismissable</code> on and accept that a stray Escape reads as a refusal.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
-         }
-      }
-      {
-         const container = this.querySelector('[data-block-id="doc-block-19"]');
-         if (container) {
-            const body = document.createElement('div');
-            body.className = 'doc-callout-body';
-            body.innerHTML = "<p>Every instance subscribes to <code>confirm:request</code>. Two instances means two dialogs for one question, so build exactly one, or give the second a different <code>eventName</code>.</p>";
-            const callout = await slice.build('Callout', {
-               tone: "warning",
-               variant: "soft",
-               title: "Warning",
-               content: Array.from(body.childNodes)
-            });
-            container.appendChild(callout || body);
+            if (grid) container.appendChild(grid);
          }
       }
       {

@@ -141,3 +141,9 @@ Give the root a name (`rootName: 'response'`) when people copy paths into code: 
 :::warning
 It shows data; it does not hide it. Remove tokens, passwords and personal data before passing a value to a viewer that anyone with the page can read.
 :::
+
+:::related
+- [Code visualizer](/docs/display/code-visualizer) - Source code instead of data.
+- [Table](/docs/data/table) - The same records as rows.
+- [Query service](/docs/services/query-service) - Where the JSON usually comes from.
+:::

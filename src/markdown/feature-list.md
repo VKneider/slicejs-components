@@ -151,3 +151,9 @@ Put a [SectionHeader](/docs/display/section-header) right before it: the header 
 :::warning
 Do not turn every item into a link just to make it "interactive". A link that leads to a page that only repeats the sentence is noise.
 :::
+
+:::related
+- [Card](/docs/layout/card) - A feature as a card.
+- [Grid](/docs/layout/grid) - Features in columns.
+- [Icon](/docs/display/icon) - The mark on each feature.
+:::

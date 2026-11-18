@@ -227,23 +227,25 @@ return box;
 :::
 
 ## Best Practices
+
 :::tip
 Keep it short: a name, or a sentence. If it needs a paragraph, it belongs on the page or in a toggletip.
 :::
 
-:::tip
-Explain disabled buttons. "Add a title to publish" saves people from guessing what is missing.
-:::
-
-:::tip
-Show the shortcut. A tooltip is the one place people look for it, and `shortcut` styles it as a key.
-:::
+Explain disabled buttons: "Add a title to publish" saves people from guessing what is missing. And show the shortcut — a tooltip is the one place people look for it, and `shortcut` styles it as a key.
 
 ## Pitfalls
+
 :::warning
 Do not put links or buttons in a plain tooltip: it closes when the pointer leaves, and touch users barely see it. Use `mode: 'toggletip'`.
 :::
 
 :::warning
 A tooltip is not a label. An icon-only button still needs its own accessible name (Button's `value`), and the tooltip describes it.
+:::
+
+:::related
+- [Tooltip provider](/docs/services/tooltip-provider) - Tooltips for many elements, one bubble.
+- [Button](/docs/input/button) - The icon-only button it explains.
+- [Shortcut service](/docs/services/shortcut-service) - The key the tooltip shows.
 :::

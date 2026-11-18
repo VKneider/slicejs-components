@@ -390,3 +390,8 @@ await render();
 return host;
 :::
 
+:::related
+- [Button](/docs/input/button) - An icon-only button, with its label.
+- [Badge](/docs/display/badge) - An icon inside a status.
+- [Tooltip](/docs/display/tooltip) - What the icon means.
+:::

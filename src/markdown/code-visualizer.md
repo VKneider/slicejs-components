@@ -91,3 +91,9 @@ Use `CodeVisualizer` inside documentation pages or tutorials to show inline code
 :::warning
 Language must match exactly (`javascript`, `html`, or `css`). Unknown languages render unhighlighted escaped text.
 :::
+
+:::related
+- [Json viewer](/docs/display/json-viewer) - Data instead of source.
+- [Html service](/docs/services/html-service) - Markup that must be sanitized first.
+- [Table](/docs/data/table) - Code in a cell.
+:::

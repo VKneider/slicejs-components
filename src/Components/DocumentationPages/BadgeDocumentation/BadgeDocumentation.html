@@ -18,26 +18,25 @@
 <ul><li><strong><code>label</code></strong>: the text. <strong><code>value</code></strong>: a number, which wins over <code>label</code> and is capped by <strong><code>max</code></strong> (99 by default, so 120 shows "99+").</li><li>A count of <code>0</code> hides the badge, so a "0 unread" bubble never shows. <strong><code>showZero: true</code></strong> keeps it.</li><li>With nothing to show (no label, no value, no icon), the badge hides itself.</li><li><strong><code>icon</code></strong>: an <span data-inline-link="4"></span> name before the text. It is built and destroyed with the badge.</li><li><strong><code>indicator</code></strong>: a small dot before the text, for a state that is live. <strong><code>pulse</code></strong> makes it breathe; with reduced motion it stays still.</li><li><strong><code>dot</code></strong>: only a dot, no text. <code>label</code> becomes what screen readers hear ("New" if there is none).</li><li><strong><code>color</code></strong>: a colour of your own (a category, a team, a project) instead of a tone. The text is mixed toward the page's text colour so it stays readable.</li><li>Every prop can change after building: <code>badge.value = 13</code>, <code>badge.tone = 'success'</code>.</li></ul>
 <h2 id="looks">Looks</h2>
 <ul><li><code>size</code>: <code>'sm'</code> (20px), <code>'md'</code> (24px, default), <code>'lg'</code> (30px).</li><li><code>shape</code>: <code>'pill'</code> (default) for states and counts, <code>'rounded'</code> for labels that are not states (versions, categories, keys).</li><li>In a line of text, the badge sits on the text's optical centre at any font size.</li></ul>
-<div class="callout-block" data-block-id="doc-block-1"></div>
+<p>Before tones, <code>variant</code> took the meaning (<code>variant: 'success'</code>). That still works: the badge takes it as the tone and logs one note.</p>
 <h2 id="live-preview">Live Preview</h2>
-<div class="component-block" data-block-id="doc-block-2"></div>
+<div class="component-block" data-block-id="doc-block-1"></div>
 <h2 id="examples">Examples</h2>
+<div class="script-block" data-block-id="doc-block-2"></div>
 <div class="script-block" data-block-id="doc-block-3"></div>
 <div class="script-block" data-block-id="doc-block-4"></div>
 <div class="script-block" data-block-id="doc-block-5"></div>
-<div class="script-block" data-block-id="doc-block-6"></div>
 <h2 id="theming">Theming</h2>
 <p>Each tone uses its theme colour (<code>--primary-color</code> for <code>accent</code>, <code>--success-color</code>, <code>--warning-color</code>, <code>--danger-color</code>, <code>--info-color</code>, <code>--medium-color</code> for <code>neutral</code>) and a <strong>readable shade</strong> of it for the text: the version of the colour that clears 4.5:1 against its own tint, and that <code>filled</code> uses as its fill.</p>
 <p>The shade has to move in opposite directions per theme. Light darkens the colour toward black; dark <strong>lightens it toward white</strong>, because a dark theme's status colours are already light. Declare the shades on <code>:root</code>:</p>
-<div class="code-block" data-block-id="doc-block-7"></div>
-<div class="callout-block" data-block-id="doc-block-8"></div>
-<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="code-block" data-block-id="doc-block-6"></div>
+<div class="details-block" data-block-id="doc-block-7"></div>
 <p>To restyle one badge or all of them, the per-badge variables are <code>--slice-badge-color</code>, <code>--slice-badge-ink</code> (text and fill), <code>--slice-badge-tint</code> (how strong the soft background is), <code>--slice-badge-height</code>, <code>--slice-badge-font</code>, <code>--slice-badge-pad</code> and <code>--slice-badge-dot</code>.</p>
 <h2 id="best-practices">Best Practices</h2>
-<div class="callout-block" data-block-id="doc-block-10"></div>
-<div class="callout-block" data-block-id="doc-block-11"></div>
-<div class="callout-block" data-block-id="doc-block-12"></div>
+<div class="callout-block" data-block-id="doc-block-8"></div>
+<p>Use <code>filled</code> only for what must be seen before anything else (Overdue, Down, a count of unread messages): if everything is filled, nothing stands out. On top of a button or an avatar, position the badge in your own layout (<code>position: absolute</code>); <code>Badge</code> styles itself, not its place next to a sibling. <span data-inline-link="5"></span> already does it with its <code>badge</code> prop.</p>
 <h2 id="pitfalls">Pitfalls</h2>
-<div class="callout-block" data-block-id="doc-block-13"></div>
-<div class="callout-block" data-block-id="doc-block-14"></div>
+<div class="callout-block" data-block-id="doc-block-9"></div>
+<div class="callout-block" data-block-id="doc-block-10"></div>
+<div class="related-block" data-block-id="doc-block-11"></div>
 </div>

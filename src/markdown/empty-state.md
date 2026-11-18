@@ -79,3 +79,9 @@ Give it a real empty state only where the absence is expected. A request that fa
 identical to an empty list, and "Nothing here" is the wrong message for a broken endpoint — handle
 errors separately.
 :::
+
+:::related
+- [Loading](/docs/feedback/loading) - The wait before the data arrives.
+- [DataList](/docs/data/datalist) - A list that shows an empty state.
+- [Card](/docs/layout/card) - A whole screen with nothing in it.
+:::

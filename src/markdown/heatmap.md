@@ -145,3 +145,9 @@ Use `thresholds` when the steps mean something (30 minutes, an hour, two hours).
 :::warning
 A heatmap shows a pattern, not exact values. If people need to compare numbers, give them the table too.
 :::
+
+:::related
+- [Table](/docs/data/table) - The same numbers as cells.
+- [Timeline](/docs/display/timeline) - The same events in order.
+- [Tooltip](/docs/display/tooltip) - The value behind a square.
+:::

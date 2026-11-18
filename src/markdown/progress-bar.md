@@ -87,3 +87,9 @@ return box;
 `texts: { label, working }` wins over the dictionary. Visible fallback texts follow locale changes.
 Colors follow theme tokens. Local CSS overrides: `--slice-progress-bar-track`, `--slice-progress-bar-fill`,
 `--slice-progress-bar-radius`, `--slice-progress-bar-height` and `--slice-progress-bar-color`.
+
+:::related
+- [Loading](/docs/feedback/loading) - The wait without a number.
+- [Skeleton service](/docs/services/skeleton-service) - The wait with the shape of the content.
+- [Stepper](/docs/display/stepper) - Progress through steps, not through bytes.
+:::
